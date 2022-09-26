@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        depends_on:
+            - db
+        environment:
+            - PMA_HOST=db
+        ports:
+            - "8080:80"
+    # db:
+    #     image: mysql:latest
+    #     restart: unless-stopped
+    #     environment:
+    #         MYSQL_USER: is212
+    #         MYSQL_PASSWORD: 123456
+    #         MYSQL_ROOT_PASSWORD: root
+    #     ports: 
+    #         - "9906:3306"
+    db:
+        build:
+            context: ./db
+        image: 212/database:1.0
+        restart: unless-stopped
+        # environment:
+        #     MYSQL_USER: is212
+        #     MYSQL_PASSWORD: 123456
+        #     MYSQL_ROOT_PASSWORD: root
+        ports: 
+            - "9906:3306"
+
