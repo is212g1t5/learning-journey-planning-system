@@ -70,7 +70,7 @@ def create_role():
                 "data": {
                     "role_name": data['role_name']
                 },
-                "message": "Role name pr role description cannot be empty ."
+                "message": "Role name or role description cannot be empty."
             }
         ), 400
 
