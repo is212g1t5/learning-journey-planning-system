@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS SKILLS (
 --
 
 INSERT INTO SKILLS(SKILL_NAME,SKILL_CATEGORY,SKILL_DESC,SKILL_STATUS) 
-VALUES ('Programming','Development','Pick up new programming skills like Python',TRUE),
-	   ('UI/UX','Development','Pick up new UI/UX Design Skills',TRUE);
+VALUES ('programming','development','pick up new programming skills like python',TRUE),
+	   ('ui/ux','development','pick up new ui/ux design skills',TRUE);
        
 -- ---------------------------------------------------------------- --
 --                     ROLES TABLE                       --
@@ -51,6 +51,6 @@ CREATE TABLE IF NOT EXISTS ROLES (
 --
 
 INSERT INTO ROLES(ROLE_NAME,ROLE_DESC,ROLE_STATUS) 
-VALUES ('Software Developer','Build Web Applications for company',TRUE),
-	   ('UX Designer','Design UX for Web Applications',TRUE);
+VALUES ('software developer','build web applications for company',TRUE),
+	   ('ux designer','design ux for web applications',TRUE);
 
