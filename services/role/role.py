@@ -48,14 +48,17 @@ def create_role():
     data = request.get_json()
     role_list = Role.query.all()
     role_names = []
+
     for role in role_list:
-        role_names.append(role.role_name)
-    if data['role_name'] in role_names:
+        role_names.append(role.role_name.lower())
+
+    if data['role_name'].lower() in role_names:
+        print(data['role_name'])
         return jsonify(
             {
                 "code": 400,
                 "data": {
-                    "role_name": data['role_name']
+                    "role_name": data['role_name'].lower()
                 },
                 "message": "This role already exists."
             }
@@ -72,7 +75,7 @@ def create_role():
         ), 400
 
     role_id= role_list[-1].role_id +1
-    role = Role(role_id=role_id, role_name=data['role_name'], role_desc=data['role_desc'], role_status=data['role_status'])
+    role = Role(role_id=role_id, role_name=data['role_name'].lower(), role_desc=data['role_desc'].lower(), role_status=data['role_status'])
 
     try:
         db.session.add(role)
@@ -82,7 +85,7 @@ def create_role():
             {
                 "code": 500,
                 "data": {
-                    "role": role.role_name
+                    "role": role.role_name.lower()
                 },
                 "message": "An error occurred creating the role."
             }
