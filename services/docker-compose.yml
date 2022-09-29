@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+    role:
+      build:
+        context: ./
+        dockerfile: role/role.dockerfile
+      image: ljps/role
+      restart: always
+      environment:
+        dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/ljps
+        PYTHONUNBUFFERED: 1
+      ports:
+              - "5000:5000"
+    
     phpmyadmin:
         image: phpmyadmin
         restart: always
@@ -30,4 +42,3 @@ services:
         #     MYSQL_ROOT_PASSWORD: root
         ports: 
             - "9906:3306"
-
