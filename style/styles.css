@@ -1,0 +1,31 @@
+/* General START */
+.action-header {
+   padding-top: 2%;
+   padding-bottom: 2%;
+}
+
+.formcontrol {
+   background-color: transparent;
+}
+
+.transparent-btn {
+   background-color: transparent;
+   border: 1px solid #fff;
+   color: #fff;
+}
+
+.transparent-btn:hover {
+   background-color: #fff;
+   color: #000;
+}
+
+/* General END */
+
+
+/* HR - Skills START */
+#create-skill {
+   border: 2px solid white;
+   border-radius: 10px;
+   width: 50%;
+}
+/* HR - Skills END */
