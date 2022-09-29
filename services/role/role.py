@@ -24,6 +24,7 @@ class Role(db.Model):
     def json(self):
         return {"role_id": self.role_id, "role_name": self.role_name, "role_desc": self.role_desc, "role_status": self.role_status}
 
+#AL-25 -- View all -- 
 @app.route("/roles")
 def get_all():
     role_list = Role.query.all()
@@ -43,6 +44,7 @@ def get_all():
         }
     ), 404
 
+# AL-2 -- Add New --
 @app.route("/roles/create", methods=['POST','GET'])
 def create_role():
     data = request.get_json()
@@ -97,5 +99,20 @@ def create_role():
             "data": role.json()
         }
     ), 201
+
+# AL-3 & AL-18 -- Update --
+@app.route("/roles/update/<int:role_id>", methods=['POST','GET'])
+def update_role(role_id):
+    pass
+
+
+#AL-17 --Delete--
+@app.route("/roles/delete/<int:role_id>", methods=['DELETE'])
+def delete_role(role_id):
+    pass
+
+
+
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
