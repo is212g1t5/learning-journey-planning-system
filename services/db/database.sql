@@ -51,6 +51,6 @@ CREATE TABLE IF NOT EXISTS ROLES (
 --
 
 INSERT INTO ROLES(ROLE_NAME,ROLE_DESC,ROLE_STATUS) 
-VALUES ('Software Developer','Build Web Applications for company',TRUE),
-	   ('UX Designer','Design UX for Web Applications',TRUE);
+VALUES ('software developer','build web applications for company',TRUE),
+	   ('ux designer','design ux for web applications',TRUE);
 

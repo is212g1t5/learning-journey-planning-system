@@ -36,7 +36,22 @@ services:
             - PMA_HOST=db
         ports:
             - "8080:80"
-    
+            
+    ###############################
+    # Role: Role service (CRUD) #
+    ###############################            
+    role:
+        build:
+            context: ./
+            dockerfile: role/role.dockerfile
+        image: ljps/role
+        restart: always
+        environment:
+            dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/ljps
+            PYTHONUNBUFFERED: 1
+        ports:
+            - "5000:5000"
+              
     ###############################
     # Skill: Skill service (CRUD) #
     ###############################
