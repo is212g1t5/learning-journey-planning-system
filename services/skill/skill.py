@@ -94,9 +94,8 @@ def processCreateSkill(skill):
     try:
         db.session.add(newSkill)
         status = db.session.commit()
-    except:
         print(status)
-
+    except:
         # 500 Internal Server Error - Server unable to commit into db for unknown reason(s)
         return jsonify(
             {
