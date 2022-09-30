@@ -1,9 +1,15 @@
 version: '3.8'
 
+networks:
+    ljps-net:
+        driver: bridge
+
 services:
     phpmyadmin:
         image: phpmyadmin
         restart: always
+        networks:
+            - ljps-net
         depends_on:
             - db
         environment:
@@ -24,10 +30,13 @@ services:
             context: ./db
         image: 212/database:1.0
         restart: unless-stopped
+        networks:
+            - ljps-net
         # environment:
         #     MYSQL_USER: is212
         #     MYSQL_PASSWORD: 123456
         #     MYSQL_ROOT_PASSWORD: root
         ports: 
             - "9906:3306"
+
 
