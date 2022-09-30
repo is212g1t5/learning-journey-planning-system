@@ -24,7 +24,7 @@ class Skills(db.Model):
     skill_id = db.Column(db.Integer, primary_key = True, nullable=True)
     skill_name = db.Column(db.String(64), nullable=False)
     skill_category = db.Column(db.String(64), nullable=False)
-    skill_desc = db.Column(db.String(64), nullable=False)
+    skill_desc = db.Column(db.String(256), nullable=False)
     skill_status = db.Column(db.Boolean, nullable=False)
     
     def __init__(self, skill_id, skill_name, skill_category, skill_desc, skill_status):
@@ -94,6 +94,7 @@ def processCreateSkill(skill):
         status = db.session.commit()
         print(status)
     except:
+        print(status)
         return jsonify(
             {
                 "code": 500,

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS skills (
 	skill_id INT NOT NULL auto_increment,
 	skill_name varchar(64) NOT NULL UNIQUE,
 	skill_category varchar(64) NOT NULL,
-    skill_desc varchar(64) NOT NULL,
+    skill_desc varchar(256) NOT NULL,
     skill_status BOOLEAN NOT NULL,
 	PRIMARY KEY(skill_id)
 ) ENGINE=InnoDB;
