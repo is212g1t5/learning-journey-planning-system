@@ -1,7 +1,7 @@
--- Database: `LJPS`
+-- Database: `ljps`
 --
-CREATE DATABASE IF NOT EXISTS LJPS;
-USE LJPS;
+CREATE DATABASE IF NOT EXISTS ljps;
+USE ljps;
 
 -- ---------------------------------------------------------------- --
 --                     SKILLS TABLE                       --
@@ -9,15 +9,15 @@ USE LJPS;
 --
 -- Table structure for table `SKILLS` --
 --
-DROP TABLE IF EXISTS SKILLS;
+DROP TABLE IF EXISTS skills;
 
-CREATE TABLE IF NOT EXISTS SKILLS (
-	SKILL_ID INT NOT NULL auto_increment,
-	SKILL_NAME varchar(64) NOT NULL UNIQUE,
-	SKILL_CATEGORY varchar(64) NOT NULL,
-    SKILL_DESC varchar(64) NOT NULL,
-    SKILL_STATUS BOOLEAN NOT NULL,
-	PRIMARY KEY(SKILL_ID)
+CREATE TABLE IF NOT EXISTS skills (
+	skill_id INT NOT NULL auto_increment,
+	skill_name varchar(64) NOT NULL UNIQUE,
+	skill_category varchar(64) NOT NULL,
+    skill_desc varchar(256) NOT NULL,
+    skill_status BOOLEAN NOT NULL,
+	PRIMARY KEY(skill_id)
 ) ENGINE=InnoDB;
 
 
@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS SKILLS (
 -- Insert Data into SKILLS -- 
 --
 
-INSERT INTO SKILLS(SKILL_NAME,SKILL_CATEGORY,SKILL_DESC,SKILL_STATUS) 
-VALUES ('programming','development','pick up new programming skills like python',TRUE),
-	   ('ui/ux','development','pick up new ui/ux design skills',TRUE);
+INSERT INTO skills(skill_name,skill_category,skill_desc,skill_status) 
+VALUES ('Programming','Development','Pick up new programming skills like Python',TRUE),
+	   ('UI/UX','Development','Pick up new UI/UX Design Skills',TRUE);
        
 -- ---------------------------------------------------------------- --
 --                     ROLES TABLE                       --
