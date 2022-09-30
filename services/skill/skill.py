@@ -87,14 +87,17 @@ def processCreateSkill(skill):
     skill_desc = request.json.get("skill_desc")
     skill_status = request.json.get("skill_status")
 
+    # Create new skill instance
     newSkill = Skills(skill_id, skill_name, skill_category, skill_desc, skill_status)
     
+    # Stage and commit into db
     try:
         db.session.add(newSkill)
         status = db.session.commit()
-        print(status)
     except:
         print(status)
+
+        # 500 Internal Server Error - Server unable to commit into db for unknown reason(s)
         return jsonify(
             {
                 "code": 500,
@@ -102,6 +105,7 @@ def processCreateSkill(skill):
             }
         ), 500
 
+    # 201 Created - Request success, new resource created
     return jsonify(
         {
             "code": 201,
