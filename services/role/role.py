@@ -60,7 +60,7 @@ def create_role():
         print(data['role_name'])
         return jsonify(
             {
-                "code": 400,
+                "code": 409,
                 "data": {
                     "role_name": data['role_name'].lower()
                 },
@@ -70,7 +70,7 @@ def create_role():
     if data['role_name'] == "" or data['role_desc'] == "":
         return jsonify(
             {
-                "code": 400,
+                "code": 409,
                 "data": {
                     "role_name": data['role_name']
                 },
