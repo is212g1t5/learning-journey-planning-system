@@ -38,15 +38,16 @@ def update_skill(skill_id):
     data = request.get_json()
     skill = Skill.query.filter_by(skill_id=skill_id).first()
     if skill:
+        # validation: check if no changes were made
         if data["skill_name"] == skill.skill_name and data["skill_category"] == skill.skill_category and data["skill_desc"] == skill.skill_desc and data["skill_status"] == skill.skill_status:
             return jsonify({
                 "code": 400,
                 "message": "No changes made."
             }), 400
         else:
+            # validation: ensure that the skill name inserted is unique
             if data["skill_name"] in [skill.skill_name for skill in Skill.query.all()]:
                 return jsonify({"code": 400, "message": "Skill name '{}' already exists.".format(data["skill_name"])}), 400
-
             if data['skill_name'] != '':
                 skill.skill_name = data['skill_name']
             else:
