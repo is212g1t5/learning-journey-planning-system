@@ -151,19 +151,10 @@ def create_role():
         }
     ), 201
 
-# AL-3 & AL-18 -- Update --
+# AL-3 & AL-18 & AL-17-- Update --
 @app.route("/roles/update/<int:role_id>", methods=['PUT','GET'])
 def update_role(role_id):
     pass
-
-
-#AL-17 --hide_role--
-@app.route("/roles/delete/<int:role_id>", methods=['PUT'])
-def hide_role(role_id):
-    pass
-
-
-
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
