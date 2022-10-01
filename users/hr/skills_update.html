@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bootstrap 5 Side Bar Navigation</title>
+    <title>Update Skills</title>
     <!-- bootstrap 5 css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <!-- custom css -->
     <link rel="stylesheet" href="../../style/style.css" />
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -18,12 +20,19 @@
         <navbar></navbar>
     </div>
     <div class="container">
-
-        <h2 class="my-5">Update Skill Information</h2>
-        <div class="rounded-3 bg-light p-5">
+        <h2 class="my-5">Edit Skill Information</h2>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="./skills.html">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit skill
+                </li>
+            </ol>
+        </nav>
+        <div class="rounded-3 bg-light p-5" id="update">
             <!-- Create skill form START -->
             <form>
                 <div class="row">
+                    <input type="text" class="form-control d-none" id="name-input" v-model="skillForm.id">
                     <!-- Skill name input -->
                     <div class="col-sm-6">
                         <div class="mb-3">
@@ -58,28 +67,50 @@
                     </label>
                     <textarea name="" id="description-input" rows="3" class="form-control"
                         v-model="skillForm.description"></textarea>
-                    <small class="text-danger">
-                        {{errorMsgs.description}}
-                    </small>
                 </div>
 
-                <div class="form-check form-switch mb-4">
+                <div class="form-check form-switch mb-3">
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
                         v-model="skillForm.status">
-                    <label class="form-check-label" for="flexSwitchCheckChecked">
-                        Show Skill
+                    <label v-if="skillForm.status" class="form-check-label" for="flexSwitchCheckChecked">
+                        Skill is currently visible to Learners
+                    </label>
+                    <label v-else class="form-check-label" for="flexSwitchCheckChecked">
+                        Skill is currently hidden from Learners
                     </label>
                 </div>
 
-                <!-- submit button; only able to submit when required inputs are valid -->
-                <button type="submit" class="btn btn-primary w-25 p-3 rounded-3" @click="confirmNewSkill"
-                    :disabled="isFormValid">
+                <button type="button" class="btn btn-primary my-3 w-100 p-3" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">
                     Update
                 </button>
 
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to update this skill?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary my-3" @click="updateSkill()"
+                                    data-bs-dismiss="modal">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
             <!-- Create skill form END -->
         </div>
+
 
 
 
@@ -93,6 +124,7 @@
     <script src="https://unpkg.com/vue@next"></script>
     <!-- external js -->
     <script src="../../components/navbar.js"></script>
+    <script src="../../api/update_skills.js"></script>
 </body>
 
 </html>
