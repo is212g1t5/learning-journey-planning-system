@@ -103,14 +103,14 @@ def create_role():
     ), 201
 
 # AL-3 & AL-18 -- Update --
-@app.route("/roles/update/<int:role_id>", methods=['POST','GET'])
+@app.route("/roles/update/<int:role_id>", methods=['PUT','GET'])
 def update_role(role_id):
     pass
 
 
-#AL-17 --Delete--
-@app.route("/roles/delete/<int:role_id>", methods=['DELETE'])
-def delete_role(role_id):
+#AL-17 --hide_role--
+@app.route("/roles/delete/<int:role_id>", methods=['PUT'])
+def hide_role(role_id):
     pass
 
 
