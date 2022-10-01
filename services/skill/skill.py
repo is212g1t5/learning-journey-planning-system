@@ -47,7 +47,10 @@ def update_skill(skill_id):
         else:
             # validation: ensure that the skill name inserted is unique
             if data["skill_name"] in [skill.skill_name for skill in Skill.query.all()]:
-                return jsonify({"code": 400, "message": "Skill name '{}' already exists.".format(data["skill_name"])}), 400
+                if data["skill_desc"] == skill.skill_desc:
+                    return jsonify({"code": 400, "message": "Skill name '{}' already exists.".format(data["skill_name"])}), 400
+
+
             if data['skill_name'] != '':
                 skill.skill_name = data['skill_name']
             else:
@@ -58,9 +61,9 @@ def update_skill(skill_id):
                 return jsonify({"code": 400, "message": "Skill category cannot be empty."}), 400
             if data['skill_desc'] != '':
                 skill.skill_desc = data['skill_desc']
-
             else:
                 return jsonify({"code": 400, "message": "Skill description cannot be empty."}), 400
+
             if data['skill_status'] != '':
                 skill.skill_status = data['skill_status']
             else:
