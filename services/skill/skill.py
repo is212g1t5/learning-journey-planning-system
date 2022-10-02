@@ -127,7 +127,7 @@ def get_skill(skill_id):
         return jsonify(skill.json())
 
 
-@app.route("/skills/update/<string:skill_id>", methods=['GET', 'PUT'])
+@app.route("/skills/update/<string:skill_id>", methods=['PUT'])
 def update_skill(skill_id):
     data = request.get_json()
     skill = Skills.query.filter_by(skill_id=skill_id).first()
