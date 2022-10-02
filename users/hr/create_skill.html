@@ -22,8 +22,8 @@
    <h2 class="my-5">
       HR Staff Create Skill
    </h2>
-      <div class="card">
-            <div class="card-body" id="create-skill">
+      <div class="card" id="create-skill">
+            <div class="card-body">
                <!-- Create skill form START -->
                <form>
                   <div class="row">
@@ -61,25 +61,56 @@
                            Description
                         </label>
                         <textarea name="" id="description-input" rows="3" class="form-control"
-                           v-model="skillForm.description"></textarea>
+                           v-model="skillForm.description">
+                        </textarea>
+                        <small class="text-danger">
+                           {{errorMsgs.description}}
+                        </small>
                   </div>
 
-                  <div class="form-check form-switch mb-3">
+                  <div class="row mb-3 ps-3">
+                     <div class="form-check form-switch col-sm-9 pt-2">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
                            v-model="skillForm.status">
                         <label class="form-check-label" for="flexSwitchCheckChecked">
                            Activate Skill?
                         </label>
+                     </div>
+
+                     <div class="col-sm-3 d-flex justify-content-end">
+                        <!-- submit button; only able to submit when required inputs are valid -->
+                        <button type="button" class="btn btn-primary my-3" @click, @keyup.enter="confirmNewSkill" :disabled="isFormValid">
+                           Submit
+                        </button>
+                     </div>
                   </div>
 
-                  <!-- submit button; only able to submit when required inputs are valid -->
-                  <button type="button" class="btn btn-primary my-3" @click="confirmNewSkill" :disabled="isFormValid">
-                        Submit
-                  </button>
-
+                  
                </form>
                <!-- Create skill form END -->
+
             </div>
+
+            <!-- confirmation section START -->
+            <ul class="list-group list-group-flush" v-if="confirmationMsg">
+               <li class="list-group-item py-3">
+                  <div class="row">
+                     <div class="col-sm-9 d-flex justify-content-end">
+                        {{confirmationMsg}}
+                     </div>
+                     <div class="col-sm-3 d-flex justify-content-end">
+                        <button class="btn btn-primary btn-sm" type="button" @click="createNewSkill">
+                           Confirm
+                        </button>
+
+                        <button class="btn btn-outline-secondary btn-sm ms-3" type="button" @click="cancelNewSkill">
+                           Cancel
+                        </button>
+                     </div>
+                  </div>
+               </li>
+            </ul>
+            <!-- confirmation section END -->
       </div>
 
    <!-- Optional JavaScript -->
@@ -94,6 +125,10 @@
 
    <!-- Vue Script -->
    <script src="./create_skill.js"></script>
+
+   <!-- axios -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </body>
 
 </html>
