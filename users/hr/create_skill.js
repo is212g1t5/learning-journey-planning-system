@@ -15,12 +15,15 @@ const app = Vue.createApp({
                description: '',
             },
             skill_api: {
-               create: ""
-            }
+               create: "http://127.0.0.1:5001/skills/create",
+               getAll: "",
+               getSkillId: "http://127.0.0.1:5001/skills/",
+            },
+            existingSkills: [],
          }
    },
    created() {
-      // this.getAllSkillNames();
+      this.getAllSkillNames();
       // this.getAllSkillCategories();
    },
    computed: {
@@ -28,19 +31,25 @@ const app = Vue.createApp({
          return !this.skillForm.name.trim() 
          || !this.skillForm.category.trim() 
          || !this.skillForm.description.trim()
-         || !Object.values(this.errorMsgs).some(
-            value => value !== ''
-         );
+         || Object.values(this.errorMsgs).some((error) => {return error !== ''});
       },//trying to make it check that if there are error msgs, dont allow submit
    },
    watch: {
       'skillForm.name'(newValue) {
-         if (newValue && newValue.trim().length >= 3) {
-            this.errorMsgs.name = '';
+         if (newValue && newValue.trim().length > 0) {
+            
+            //check if skill name already exists
+            if (this.existingSkills.includes(newValue.toLowerCase())) {
+               this.errorMsgs.name = 'Skill already exists';
+
+            } else {
+               this.errorMsgs.name = '';
+            }
 
          } else {
-            this.errorMsgs.name = 'Not long enough';
+            this.errorMsgs.name = 'Skill name cannot be empty';
          }
+
       },
       //validate whether category is empty
       'skillForm.category'(newValue) {
@@ -48,15 +57,15 @@ const app = Vue.createApp({
             this.errorMsgs.category = '';
 
          } else {
-            this.errorMsgs.category = 'Category cannot be left empty';
+            this.errorMsgs.category = 'Category cannot be empty';
          }
       }
    },
    methods: {
       //api call to retrieve all existing skill names
-      getAllSkilNames() {
+      getAllSkillNames() {
          //tbc
-         
+         this.existingSkills = ['skill1', 'skill2', 'skill3'];
       },
       //api call to retrieve all existing skill categories
       getAllSkillCategories(){
