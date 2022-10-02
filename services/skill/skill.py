@@ -25,7 +25,7 @@ db = SQLAlchemy(app)
 class Skills(db.Model):
     __tablesname__ = "skills"
 
-    skill_id = db.Column(db.Integer, primary_key=True, nullable=True)
+    skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
     skill_name = db.Column(db.String(64), nullable=False)
     skill_category = db.Column(db.String(64), nullable=False)
     skill_desc = db.Column(db.String(256), nullable=False)
