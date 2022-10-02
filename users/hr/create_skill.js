@@ -32,7 +32,7 @@ const app = Vue.createApp({
          || !this.skillForm.category.trim() 
          || !this.skillForm.description.trim()
          || Object.values(this.errorMsgs).some((error) => {return error !== ''});
-      },//trying to make it check that if there are error msgs, dont allow submit
+      },
    },
    watch: {
       'skillForm.name'(newValue) {
