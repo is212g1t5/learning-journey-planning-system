@@ -59,6 +59,15 @@ const app = Vue.createApp({
          } else {
             this.errorMsgs.category = 'Category cannot be empty';
          }
+      },
+      //validate whether description is empty
+      'skillForm.description'(newValue) {
+         if (newValue && newValue.trim().length > 0) {
+            this.errorMsgs.description = '';
+
+         } else {
+            this.errorMsgs.description = 'Description cannot be empty';
+         }
       }
    },
    methods: {
@@ -76,16 +85,40 @@ const app = Vue.createApp({
          this.confirmationMsg = 'Are you sure you want to create this skill, '
          + this.skillForm.name
          + '?';
-
-         this.createNewSkill();
          
       },
-      //call role api to create new skill
-      createNewSkill() {
-         console.log("API Call to create new skill");
-         console.log(this.skillForm);
+      //cancel skill creation
+      cancelNewSkill() {
+         this.confirmationMsg = '';
 
+      },
+      //call role api to create new skill
+      async createNewSkill() {
          //call api to create new skill
+         try {
+            const res = await axios({
+               method: 'post',
+               url: this.skill_api.create,
+               data: {
+                  "skill_name": this.skillForm.name,
+                  "skill_category": this.skillForm.category,
+                  "skill_desc" : this.skillForm.description,
+                  "skill_status": this.skillForm.status
+               }
+            });
+
+            data = res.data.data
+            console.log("New skill " + data.skill_name + " created successfully");
+            this.confirmationMsg = '';
+
+            //to be continued...
+            //redirect to created skill details page
+
+         } catch (err) {
+            // Handle Error Here
+            console.error(err);
+         }
+
       },
    }
 });
