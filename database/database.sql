@@ -32,7 +32,7 @@ USE `ljps`;
 
 DROP TABLE IF EXISTS `courses`;
 CREATE TABLE IF NOT EXISTS `courses` (
-  `course_id` int NOT NULL,
+  `course_id` varchar(20) NOT NULL,
   `course_name` varchar(50) NOT NULL,
   `course_desc` varchar(255) NOT NULL,
   `course_status` tinyint(1) NOT NULL,
@@ -110,11 +110,11 @@ INSERT INTO `skills` (`skill_id`, `skill_name`, `skill_category`, `skill_desc`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `staffs`
+-- Table structure for table `staff`
 --
 
-DROP TABLE IF EXISTS `staffs`;
-CREATE TABLE IF NOT EXISTS `staffs` (
+DROP TABLE IF EXISTS `staff`;
+CREATE TABLE IF NOT EXISTS `staff` (
   `staff_id` int NOT NULL,
   `staff_fname` varchar(50) NOT NULL,
   `staff_lname` varchar(50) NOT NULL,
@@ -130,85 +130,11 @@ CREATE TABLE IF NOT EXISTS `staffs` (
 --
 
 --
--- Constraints for table `staffs`
+-- Constraints for table `staff`
 --
-ALTER TABLE `staffs`
+ALTER TABLE `staff`
   ADD CONSTRAINT `group_FK` FOREIGN KEY (`user_group`) REFERENCES `groups` (`group_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
-
--- 
--- Table structure for `learning_journeys`
---
-DROP TABLE IF EXISTS `learning_journeys`;
-CREATE TABLE IF NOT EXISTS `learning_journeys` (
-  `learning_journey_id` int NOT NULL auto_increment,
-  `learning_journey_name` varchar(50) NOT NULL unique,
-  `staff_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  PRIMARY KEY (`learning_journey_id`),
-  constraint lj_fk1 FOREIGN KEY(staff_id) references staffs(staff_id),
-  constraint lj_fk2 FOREIGN KEY(role_id) references roles(role_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- 
--- Table structure for `learning_journey_courses`
---
-DROP TABLE IF EXISTS `learning_journey_courses`;
-CREATE TABLE IF NOT EXISTS `learning_journey_courses` (
-  `learning_journey_id` int NOT NULL,
-  `course_id` int NOT NULL,
-  PRIMARY KEY (`learning_journey_id`,`course_id`),
-  constraint lc_fk1 FOREIGN KEY(course_id) references courses(course_id),
-  constraint lc_fk2 FOREIGN KEY(learning_journey_id) references learning_journeys(learning_journey_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- 
--- Table structure for `learning_journey_skills`
---
-DROP TABLE IF EXISTS `learning_journey_skills`;
-CREATE TABLE IF NOT EXISTS `learning_journey_skills` (
-  `learning_journey_id` int NOT NULL,
-  `skill_id` int NOT NULL,
-  PRIMARY KEY (`learning_journey_id`,`skill_id`),
-  constraint ls_fk1 FOREIGN KEY(skill_id) references skills(skill_id),
-  constraint ls_fk2 FOREIGN KEY(learning_journey_id) references learning_journeys(learning_journey_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- 
--- Table structure for `learning_journey_roles`
---
-DROP TABLE IF EXISTS `learning_journey_roles`;
-CREATE TABLE IF NOT EXISTS `learning_journey_roles` (
-  `learning_journey_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  PRIMARY KEY (`learning_journey_id`,`role_id`),
-  constraint lr_fk1 FOREIGN KEY(role_id) references roles(role_id),
-  constraint lr_fk2 FOREIGN KEY(learning_journey_id) references learning_journeys(learning_journey_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- 
--- Table structure for `skills_courses`
---
-DROP TABLE IF EXISTS `skills_courses`;
-CREATE TABLE IF NOT EXISTS `skills_courses` (
-  `skill_id` int NOT NULL,
-  `course_id` int NOT NULL,
-  PRIMARY KEY (`skill_id`,`course_id`),
-  FOREIGN KEY (`skill_id`) REFERENCES skills(`skill_id`),
-  FOREIGN KEY (`course_id`) REFERENCES courses(`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- 
--- Table structure for `skills_roles`
---
-DROP TABLE IF EXISTS `skills_roles`;
-CREATE TABLE IF NOT EXISTS `skills_roles` (
-  `skill_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  PRIMARY KEY (`skill_id`,`role_id`),
-  FOREIGN KEY (`skill_id`) REFERENCES skills(`skill_id`),
-  FOREIGN KEY (`role_id`) REFERENCES roles(`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
