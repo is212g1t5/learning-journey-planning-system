@@ -16,8 +16,7 @@ const app = Vue.createApp({
             },
             skill_api: {
                create: "http://127.0.0.1:5001/skills/create",
-               getAll: "",
-               getSkillId: "http://127.0.0.1:5001/skills/",
+               getAll: "http://127.0.0.1:5001/skills",
             },
             existingSkills: [],
          }
@@ -72,9 +71,24 @@ const app = Vue.createApp({
    },
    methods: {
       //api call to retrieve all existing skill names
-      getAllSkillNames() {
+      async getAllSkillNames() {
          //tbc
          this.existingSkills = ['skill1', 'skill2', 'skill3'];
+
+         //call api to get all skill names
+         // try {
+         //    const res = await axios({
+         //       url: this.skill_api.getAll,
+         //    });
+
+         //    data = res.data.data;
+         //    console.log(data);
+         //    this.existingSkills = data;
+
+         // } catch (err) {
+         //    // Handle Error Here
+         //    console.error(err);
+         // }
       },
       //api call to retrieve all existing skill categories
       getAllSkillCategories(){
