@@ -14,8 +14,8 @@ from os import environ  # access env variable
 
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-    'dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL'
+    ) or 'mysql+mysqlconnector://root:root@db:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -49,6 +49,13 @@ class Skills(db.Model):
 
         return dto
 
+    def to_dict(self):
+            columns = self.mapper.column_attrs.keys()
+            result = {}
+            for column in columns:
+                result[column] = getattr(self, column)
+            return result
+
 # ====================
 
 #   A P I  E N D P O I N T S
@@ -59,6 +66,15 @@ class Skills(db.Model):
 
 # ====================
 
+@app.route("/skills")
+def display_skill():
+    skill_list = Skills.query.all()
+    return jsonify(
+        {
+            "data": [skill.json()
+                     for skill in skill_list]
+        }
+    ), 200
 
 @app.route("/skills/create", methods=['POST'])
 def create_skill():
