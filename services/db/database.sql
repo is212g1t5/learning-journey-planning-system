@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `learning_journeys` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 
--- Table structure for `learning_journey_courses`
+-- Table structure for `lj_courses`
 --
 DROP TABLE IF EXISTS `lj_courses`;
 CREATE TABLE IF NOT EXISTS `lj_courses` (
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `lj_courses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 
--- Table structure for `learning_journey_skills`
+-- Table structure for `lj_skills`
 --
 DROP TABLE IF EXISTS `lj_skills`;
 CREATE TABLE IF NOT EXISTS `lj_skills` (
@@ -177,10 +177,10 @@ CREATE TABLE IF NOT EXISTS `lj_skills` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 
--- Table structure for `learning_journey_roles`
+-- Table structure for `lj_roles`
 --
-DROP TABLE IF EXISTS `learning_journey_roles`;
-CREATE TABLE IF NOT EXISTS `learning_journey_roles` (
+DROP TABLE IF EXISTS `lj_roles`;
+CREATE TABLE IF NOT EXISTS `lj_roles` (
   `learning_journey_id` int NOT NULL,
   `role_id` int NOT NULL,
   PRIMARY KEY (`learning_journey_id`,`role_id`),
