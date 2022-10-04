@@ -32,7 +32,7 @@ USE `ljps`;
 
 DROP TABLE IF EXISTS `courses`;
 CREATE TABLE IF NOT EXISTS `courses` (
-  `course_id` int NOT NULL,
+  `course_id` varchar(20) NOT NULL,
   `course_name` varchar(50) NOT NULL,
   `course_desc` varchar(255) NOT NULL,
   `course_status` tinyint(1) NOT NULL,
@@ -153,10 +153,10 @@ CREATE TABLE IF NOT EXISTS `learning_journeys` (
 -- 
 -- Table structure for `learning_journey_courses`
 --
-DROP TABLE IF EXISTS `learning_journey_courses`;
-CREATE TABLE IF NOT EXISTS `learning_journey_courses` (
+DROP TABLE IF EXISTS `lj_courses`;
+CREATE TABLE IF NOT EXISTS `lj_courses` (
   `learning_journey_id` int NOT NULL,
-  `course_id` int NOT NULL,
+  `course_id` varchar(20) NOT NULL,
   PRIMARY KEY (`learning_journey_id`,`course_id`),
   constraint lc_fk1 FOREIGN KEY(course_id) references courses(course_id),
   constraint lc_fk2 FOREIGN KEY(learning_journey_id) references learning_journeys(learning_journey_id)
@@ -165,13 +165,15 @@ CREATE TABLE IF NOT EXISTS `learning_journey_courses` (
 -- 
 -- Table structure for `learning_journey_skills`
 --
-DROP TABLE IF EXISTS `learning_journey_skills`;
-CREATE TABLE IF NOT EXISTS `learning_journey_skills` (
+DROP TABLE IF EXISTS `lj_skills`;
+CREATE TABLE IF NOT EXISTS `lj_skills` (
   `learning_journey_id` int NOT NULL,
   `skill_id` int NOT NULL,
-  PRIMARY KEY (`learning_journey_id`,`skill_id`),
+  `role_id` int NOT NULL,
+  PRIMARY KEY (`learning_journey_id`,`skill_id`,`role_id`),
   constraint ls_fk1 FOREIGN KEY(skill_id) references skills(skill_id),
-  constraint ls_fk2 FOREIGN KEY(learning_journey_id) references learning_journeys(learning_journey_id)
+  constraint ls_fk2 FOREIGN KEY(role_id) references roles(role_id),
+  constraint ls_fk3 FOREIGN KEY(learning_journey_id) references learning_journeys(learning_journey_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 
@@ -192,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `learning_journey_roles` (
 DROP TABLE IF EXISTS `skills_courses`;
 CREATE TABLE IF NOT EXISTS `skills_courses` (
   `skill_id` int NOT NULL,
-  `course_id` int NOT NULL,
+  `course_id` varchar(20) NOT NULL,
   PRIMARY KEY (`skill_id`,`course_id`),
   FOREIGN KEY (`skill_id`) REFERENCES skills(`skill_id`),
   FOREIGN KEY (`course_id`) REFERENCES courses(`course_id`)
