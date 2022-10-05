@@ -30,11 +30,11 @@
         </nav>
         <div class="rounded-3 bg-light p-5" id="update">
             <div v-if="alerts.showAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error!</strong>
+                <strong>❌ Update Unsuccessful. </strong>
                 {{alerts.alertMsg}}
             </div>
             <div v-if="alerts.showSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success!</strong>
+                <strong>✔️ Update Successful! </strong>
                 {{alerts.successMsg}}
             </div>
             <!-- Create skill form START -->
@@ -109,7 +109,7 @@
                                 Are you sure you want to update this skill?
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-primary my-3" @click="updateSkill()"
                                     data-bs-dismiss="modal">
                                     Update
