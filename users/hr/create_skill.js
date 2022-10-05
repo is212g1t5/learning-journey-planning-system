@@ -3,10 +3,10 @@ const app = Vue.createApp({
          return {
             skillForm: {
                name: '',
-               category: 'example',
-               description: 'testing only',
+               category: '',
+               description: '',
                level: 1,
-               status: true, //0 - retired; 1 - active
+               status: true
             },
             confirmationMsg: '',
             errorMsgs: {

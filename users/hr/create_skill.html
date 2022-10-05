@@ -33,7 +33,7 @@
                               <label for="name-input" class="form-label">
                                  Skill Name
                               </label>
-                              <input type="text" class="form-control" id="name-input" v-model="skillForm.name">
+                              <input type="text" class="form-control" id="name-input" v-model="skillForm.name" maxlength="64">
                               <small class="text-danger">
                                  {{errorMsgs.name}}
                               </small>
@@ -47,7 +47,7 @@
                                  Category
                               </label>
                               <input type="text" class="form-control" id="category-input"
-                                 v-model="skillForm.category">
+                                 v-model="skillForm.category" maxlength="64">
                               <small class="text-danger">
                                  {{errorMsgs.category}}
                               </small>
@@ -61,7 +61,7 @@
                            Description
                         </label>
                         <textarea name="" id="description-input" rows="3" class="form-control"
-                           v-model="skillForm.description">
+                           v-model="skillForm.description" maxlength="512">
                         </textarea>
                         <small class="text-danger">
                            {{errorMsgs.description}}
@@ -79,7 +79,7 @@
 
                      <div class="col-sm-3 d-flex justify-content-end">
                         <!-- submit button; only able to submit when required inputs are valid -->
-                        <button type="button" class="btn btn-primary my-3" @click, @keyup.enter="confirmNewSkill" :disabled="isFormValid">
+                        <button type="button" class="btn btn-primary my-3" @click="confirmNewSkill"  @keyup.enter="confirmNewSkill" :disabled="isFormValid">
                            Submit
                         </button>
                      </div>
