@@ -93,6 +93,13 @@ def processCreateSkill(skill):
     skill_desc = request.json.get("skill_desc")
     skill_status = request.json.get("skill_status")
 
+    if "" in (skill_name, skill_category, skill_desc):
+        # 400 Bad Request - has empty arguments or arguments not passed
+        return jsonify({
+            "code": 400,
+            "message": "Empty inputs or Invalid JSON input: " + str(request.get_data())
+        }), 400
+
     # Create new skill instance
     newSkill = Skills(skill_id, skill_name, skill_category,
                       skill_desc, skill_status)
