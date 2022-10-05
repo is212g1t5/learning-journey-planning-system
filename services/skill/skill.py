@@ -209,7 +209,7 @@ def soft_delete_skills(skill_id):
         except:
             return jsonify({
                 "code": 500,
-                "message": "An error occurred while updating the skill."
+                "message": "An error occurred while deleting the skill."
             }), 500
     else:
         return jsonify({
