@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `learning_journeys` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 
--- Table structure for `lj_courses`
+-- Table structure for `learning_journey_courses`
 --
 DROP TABLE IF EXISTS `lj_courses`;
 CREATE TABLE IF NOT EXISTS `lj_courses` (
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `lj_courses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 
--- Table structure for `lj_skills`
+-- Table structure for `learning_journey_skills`
 --
 DROP TABLE IF EXISTS `lj_skills`;
 CREATE TABLE IF NOT EXISTS `lj_skills` (
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `lj_skills` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 
--- Table structure for `lj_roles`
+-- Table structure for `learning_journey_roles`
 --
 DROP TABLE IF EXISTS `lj_roles`;
 CREATE TABLE IF NOT EXISTS `lj_roles` (
@@ -210,6 +210,21 @@ CREATE TABLE IF NOT EXISTS `skills_roles` (
   PRIMARY KEY (`skill_id`,`role_id`),
   FOREIGN KEY (`skill_id`) REFERENCES skills(`skill_id`),
   FOREIGN KEY (`role_id`) REFERENCES roles(`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 
+-- Table structure for `registration`
+--
+DROP TABLE IF EXISTS `registration`;
+CREATE TABLE IF NOT EXISTS `registration` (
+  `reg_id` int NOT NULL,
+  `course_id` varchar(20) NOT NULL,
+  `staff_id` int NOT NULL,
+  `reg_status` varchar(11) NOT NULL,
+  `completion_status` varchar(20) NOT NULL,
+  PRIMARY KEY (`reg_id`),
+  FOREIGN KEY (`course_id`) REFERENCES courses(`course_id`),
+  FOREIGN KEY (`staff_id`) REFERENCES staffs(`staff_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
