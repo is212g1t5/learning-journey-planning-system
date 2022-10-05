@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `courses` (
 
 DROP TABLE IF EXISTS `groups`;
 CREATE TABLE IF NOT EXISTS `groups` (
-  `group_id` int NOT NULL AUTO_INCREMENT,
+  `group_id` int NOT NULL,
   `group_name` varchar(20) NOT NULL,
   PRIMARY KEY (`group_id`),
   UNIQUE KEY `group_name` (`group_name`)
@@ -145,6 +145,7 @@ CREATE TABLE IF NOT EXISTS `learning_journeys` (
   `learning_journey_name` varchar(50) NOT NULL unique,
   `staff_id` int NOT NULL,
   `role_id` int NOT NULL,
+  `role_name` varchar(64) NOT NULL,
   PRIMARY KEY (`learning_journey_id`),
   constraint lj_fk1 FOREIGN KEY(staff_id) references staffs(staff_id),
   constraint lj_fk2 FOREIGN KEY(role_id) references roles(role_id)
