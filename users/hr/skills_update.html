@@ -29,6 +29,14 @@
             </ol>
         </nav>
         <div class="rounded-3 bg-light p-5" id="update">
+            <div v-if="alerts.showAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong>
+                {{alerts.alertMsg}}
+            </div>
+            <div v-if="alerts.showSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong>
+                {{alerts.successMsg}}
+            </div>
             <!-- Create skill form START -->
             <form>
                 <div class="row">
@@ -67,6 +75,9 @@
                     </label>
                     <textarea name="" id="description-input" rows="3" class="form-control"
                         v-model="skillForm.description"></textarea>
+                    <small class="text-danger">
+                        {{errorMsgs.description}}
+                    </small>
                 </div>
 
                 <div class="form-check form-switch mb-3">
@@ -81,7 +92,7 @@
                 </div>
 
                 <button type="button" class="btn btn-primary my-3 w-100 p-3" data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop">
+                    data-bs-target="#staticBackdrop" :disabled="isFormValid">
                     Update
                 </button>
 
@@ -110,6 +121,7 @@
             </form>
             <!-- Create skill form END -->
         </div>
+
 
 
 
