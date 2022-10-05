@@ -120,9 +120,9 @@ CREATE TABLE IF NOT EXISTS `staffs` (
   `staff_lname` varchar(50) NOT NULL,
   `dept` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `user_group` int NOT NULL,
+  `group` int NOT NULL,
   PRIMARY KEY (`staff_id`),
-  KEY `group_FK` (`user_group`)
+  KEY `group_FK` (`group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `staffs` (
 -- Constraints for table `staffs`
 --
 ALTER TABLE `staffs`
-  ADD CONSTRAINT `group_FK` FOREIGN KEY (`user_group`) REFERENCES `groups` (`group_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `group_FK` FOREIGN KEY (`group`) REFERENCES `groups` (`group_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 -- 
