@@ -55,7 +55,7 @@ class Skills(db.Model):
 
     # create_skill(): Receive new skill details and create new skill into the db
     # xxxx(): xxxx
-    # xxxx(): xxxx
+    # soft_delete_skills(skill_id): Update skill status to 0
 
 # ====================
 
@@ -181,6 +181,34 @@ def update_skill(skill_id):
             "message": "Skill does not exist in database."
         }), 404
 
+@app.route("/skills/delete/<string:skill_id>", methods=['DELETE'])
+def soft_delete_skills(skill_id):
+    skill = Skills.query.filter_by(skill_id=skill_id).first() #find skill from skill id
+    if skill:
+        if skill.skill_status == 0:
+            return jsonify({
+                "code": 400,
+                "message": "Skill is already retired."
+            }), 400
+        else:
+            skill.skill_status = 0
+        try:
+            db.session.commit()
+            return jsonify({
+                "code": 200,
+                "data": skill.json(),
+                "message": "Skill retired."
+            }), 200
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred while updating the skill."
+            }), 500
+    else:
+        return jsonify({
+            "code": 404,
+            "message": "Skill does not exist in database."
+        }), 404
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
