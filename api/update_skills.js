@@ -28,7 +28,7 @@ const update = Vue.createApp({
       this.alerts.showSuccess = false;
       axios
         .put(
-          "http://127.0.0.1:5001/skills/update/" + this.id,
+          "http://localhost:5001/skills/update/" + this.id,
           {
             skill_name: this.skillForm.name,
             skill_category: this.skillForm.category,
@@ -60,7 +60,7 @@ const update = Vue.createApp({
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:5001/skills/" + this.id)
+      .get("http://localhost:5001/skills/" + this.id)
       .then((response) => {
         skill = response.data;
         this.skillForm.id = skill.skill_id;
