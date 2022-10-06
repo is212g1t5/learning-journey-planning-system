@@ -21,18 +21,19 @@
 
     <!-- axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 </head>
 <body>
   <div id="navbar">
       <navbar></navbar>
   </div>
 
-    <div class="container">
-     <h2 class="mt-5">Skills Management</h2>
+  <div class="container">
+    <h2 class="mt-5">Skills Management</h2>
     <div id="skillstable">
       <b-container class="mt-3" fluid>
           <b-row>
-              <b-col lg="6" >
+              <b-col class="second col-lg-6 col-md-6 col-sm-4 col-xs-2">
                   <b-form-group
                     label="Sort"
                     label-for="sort-by-select"
@@ -51,7 +52,7 @@
                         class="w-75"
                       >
                         <template #first>
-                          <option value="">None</option>
+                        <option value="">None</option>
                         </template>
                       </b-form-select>
           
@@ -68,11 +69,11 @@
                     </b-input-group>
                   </b-form-group>
                 </b-col>
-                <b-col lg="6" class="my-1">
+                <b-col class="third col-lg-3 col-md-3 col-sm-2 col-xs-2">
                   <b-form-group
                     label="Initial sort"
                     label-for="initial-sort-select"
-                    label-cols-sm="3"
+                    label-cols-md="6"
                     label-align-sm="right"
                     label-size="md"
                     class="mb-0"
@@ -85,8 +86,13 @@
                     ></b-form-select>
                   </b-form-group>
                 </b-col>
-
-              <b-col lg="6" class="my-1">
+                <b-col class="col-lg-3 col-md-3 col-sm-6 col-xs-8" >
+                  <!-- <label>Create a New Skill</label><br> -->
+                  <b-button class="btn-skill" button-size="md"  variant="primary" href="create_skill.html">Create New Skill</b-button>
+                </b-col>
+              </b-row>
+              <b-row>
+              <b-col lg="6" class="my-2">
                   <b-form-group
                   label="Filter"
                   label-for="filter-input"
@@ -112,7 +118,8 @@
 
               <b-col lg="6" >
               </b-col>
-
+            </b-row>    
+  <b-row> 
           <b-col sm="5" md="6" class="mt-3">
               Per Page 
               <b-form-select
@@ -141,13 +148,14 @@
               :current-page="currentPage"
               hover="hover"
               bordered="bordered"
-              head-variant="light"
+              head-variant="dark"
               :per-page="perPage"
               :filter="filter"
               :filter-included-fields="filterOn"
               :sort-by.sync="sortBy"
               :sort-desc.sync="sortDesc"
               :sort-direction="sortDirection"
+              sort-icon-left
               stacked="md"
               show-empty
               small
@@ -194,8 +202,8 @@
 
       </div> 
 
-	</div>
-    
+</div>
+  
 	
 </body>
 
@@ -231,6 +239,7 @@
           sortDirection: 'asc',
           filter: null,
           filterOn: [],
+          createSkillLink: '/users/hr/create_skill.html'
         }
       },
       computed: {
@@ -280,3 +289,4 @@ skillstable.mount("#skillstable");
 <!-- external js -->
 <script src="../../components/navbar.js"></script>
 </html>
+
