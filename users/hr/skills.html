@@ -20,7 +20,7 @@
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
     <!-- axios -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios@0.25.0/dist/axios.min.js"></script>
 
 </head>
 <body>
@@ -159,7 +159,8 @@
               show-empty
               small
               @filtered="onFiltered"
-              striped responsive="sm"     
+              striped responsive="sm"  
+              empty-text="There are no skills recorded. Please create a new skill."   
           >
     
           <template #cell(actions)="row">
