@@ -258,7 +258,7 @@
           window.location.href = '/users/hr/skills_update.html?id=' + id;
         },
         getSkillList() {
-          path= "http://127.0.0.1:5001/skills"
+          path= "http://localhost:5001/skills"
           axios.get(path).then(
               (response) => {
                   this.skill_list= response.data.data;

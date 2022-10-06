@@ -12,7 +12,7 @@ const display_skills = Vue.createApp({
       },
     mounted() {
         axios
-            .get("http://127.0.0.1:5001/skills")
+            .get("http://localhost:5001/skills")
             .then((response) => {
                 var skill_list = response.data.data;
                 this.skill_list= skill_list
