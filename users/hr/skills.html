@@ -163,6 +163,9 @@
           >
     
           <template #cell(actions)="row">
+              <b-button size="sm" @click="row.toggleDetails">
+                {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+              </b-button>
               <b-button variant="success" size="sm" @click="updateSkill(row.item.skill_id)" class="mr-1">
                   Edit
               </b-button>
@@ -170,7 +173,27 @@
                 Delete
             </b-button>
             </template>
+
+      
+            <template #row-details="row">
+              <b-card>
+                  <div class="container pr-5">
+                      <strong>Skill Details</strong>
+                      
+                      <b-table-simple table-variant="table-info" hover small responsive bordered>
+                          <b-tr v-for="(value, key) in row.item " v-if="key!= '_showDetails'" :primary-key="row.item.skill_id" :key="row.item.skill_id">
+                              <b-td variant="secondary" style="width: 15%  ">
+                                {{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}} {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}
+                              </b-td>
+                              <b-td style="width: 75%">{{value}}</b-td>
+                          </b-tr>
+                      </b-table-simple>
+                  </div>
+
+              </b-card>
+            </template>
           </template>
+
           </b-table>
 
       </div> 
@@ -262,4 +285,3 @@ skillstable.mount("#skillstable");
 <!-- external js -->
 <script src="../../components/navbar.js"></script>
 </html>
-
