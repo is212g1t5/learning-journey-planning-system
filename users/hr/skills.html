@@ -148,20 +148,18 @@
               :current-page="currentPage"
               hover="hover"
               bordered="bordered"
-              head-variant="dark"
+              head-variant="light"
               :per-page="perPage"
               :filter="filter"
               :filter-included-fields="filterOn"
               :sort-by.sync="sortBy"
               :sort-desc.sync="sortDesc"
               :sort-direction="sortDirection"
-              sort-icon-left
               stacked="md"
               show-empty
               small
               @filtered="onFiltered"
               striped responsive="sm"     
-              empty-text="There are no available skills. Please create a new skill."  
           >
     
           <template #cell(actions)="row">
