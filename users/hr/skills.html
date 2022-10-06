@@ -23,259 +23,257 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+  <div id="navbar">
+      <navbar></navbar>
+  </div>
 
-	<div id="app" >
-        <div id="navbar">
-            <navbar></navbar>
-        </div>
-
-        <div class="container">
-            <h2 class="mt-5">Skills Management</h2>
-            <b-container class="mt-3" fluid>
-                <b-row>
-                    <b-col lg="6" >
-                        <b-form-group
-                          label="Sort"
-                          label-for="sort-by-select"
-                          label-cols-sm="3"
-                          label-align-sm="right"
-                          label-size="md"
-                          class="mb-0"
-                          v-slot="{ ariaDescribedby }"
-                        >
-                          <b-input-group size="sm">
-                            <b-form-select
-                              id="sort-by-select"
-                              v-model="sortBy"
-                              :options="sortOptions"
-                              :aria-describedby="ariaDescribedby"
-                              class="w-75"
-                            >
-                              <template #first>
-                                <option value="">None</option>
-                              </template>
-                            </b-form-select>
-                
-                            <b-form-select
-                              v-model="sortDesc"
-                              :disabled="!sortBy"
-                              :aria-describedby="ariaDescribedby"
-                              size="sm"
-                              class="w-25"
-                            >
-                              <option :value="false">Asc</option>
-                              <option :value="true">Desc</option>
-                            </b-form-select>
-                          </b-input-group>
-                        </b-form-group>
-                      </b-col>
-                      <b-col lg="6" class="my-1">
-                        <b-form-group
-                          label="Initial sort"
-                          label-for="initial-sort-select"
-                          label-cols-sm="3"
-                          label-align-sm="right"
-                          label-size="md"
-                          class="mb-0"
-                        >
-                          <b-form-select
-                            id="initial-sort-select"
-                            v-model="sortDirection"
-                            :options="['asc', 'desc', 'last']"
-                            size="sm"
-                          ></b-form-select>
-                        </b-form-group>
-                      </b-col>
-
-                    <b-col lg="6" class="my-1">
-                        <b-form-group
-                        label="Filter"
-                        label-for="filter-input"
-                        label-cols-sm="3"
-                        label-align-sm="right"
-                        label-size="md"
-                        class="mb-5"
-                        >
-                        <b-input-group size="sm">
-                            <b-form-input
-                            id="filter-input"
-                            v-model="filter"
-                            type="search"
-                            placeholder="Type to Search"
-                            ></b-form-input>
-
-                            <b-input-group-append>
-                            <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col lg="6" >
-                    </b-col>
-
-                <b-col sm="5" md="6" class="mt-3">
-                    Per Page 
-                    <b-form-select
-                        id="per-page-select"
-                        v-model="perPage"
-                        :options="pageOptions"
+    <div class="container">
+     <h2 class="mt-5">Skills Management</h2>
+    <div id="skillstable">
+      <b-container class="mt-3" fluid>
+          <b-row>
+              <b-col lg="6" >
+                  <b-form-group
+                    label="Sort"
+                    label-for="sort-by-select"
+                    label-cols-sm="3"
+                    label-align-sm="right"
+                    label-size="md"
+                    class="mb-0"
+                    v-slot="{ ariaDescribedby }"
+                  >
+                    <b-input-group size="sm">
+                      <b-form-select
+                        id="sort-by-select"
+                        v-model="sortBy"
+                        :options="sortOptions"
+                        :aria-describedby="ariaDescribedby"
+                        class="w-75"
+                      >
+                        <template #first>
+                          <option value="">None</option>
+                        </template>
+                      </b-form-select>
+          
+                      <b-form-select
+                        v-model="sortDesc"
+                        :disabled="!sortBy"
+                        :aria-describedby="ariaDescribedby"
                         size="sm"
+                        class="w-25"
+                      >
+                        <option :value="false">Asc</option>
+                        <option :value="true">Desc</option>
+                      </b-form-select>
+                    </b-input-group>
+                  </b-form-group>
+                </b-col>
+                <b-col lg="6" class="my-1">
+                  <b-form-group
+                    label="Initial sort"
+                    label-for="initial-sort-select"
+                    label-cols-sm="3"
+                    label-align-sm="right"
+                    label-size="md"
+                    class="mb-0"
+                  >
+                    <b-form-select
+                      id="initial-sort-select"
+                      v-model="sortDirection"
+                      :options="['asc', 'desc', 'last']"
+                      size="sm"
                     ></b-form-select>
-                    </b-form-group>
+                  </b-form-group>
                 </b-col>
 
-                <b-col sm="7" md="6" class="my-2">
-                    <b-pagination
-                    v-model="currentPage"
-                    :total-rows="totalRows"
-                    :per-page="perPage"
-                    align="fill"
-                    size="sm"
-                    class="my-0"
-                    ></b-pagination>
-                </b-col>
-                </b-row>
-                <b-table 
-                    :items= "skill_list"
-                    :fields="fields"
-                    :current-page="currentPage"
-                    hover="hover"
-                    bordered="bordered"
-                    head-variant="light"
-                    :per-page="perPage"
-                    :filter="filter"
-                    :filter-included-fields="filterOn"
-                    :sort-by.sync="sortBy"
-                    :sort-desc.sync="sortDesc"
-                    :sort-direction="sortDirection"
-                    stacked="md"
-                    show-empty
-                    small
-                    @filtered="onFiltered"
-                    striped responsive="sm"       
-                >
+              <b-col lg="6" class="my-1">
+                  <b-form-group
+                  label="Filter"
+                  label-for="filter-input"
+                  label-cols-sm="3"
+                  label-align-sm="right"
+                  label-size="md"
+                  class="mb-5"
+                  >
+                  <b-input-group size="sm">
+                      <b-form-input
+                      id="filter-input"
+                      v-model="filter"
+                      type="search"
+                      placeholder="Type to Search"
+                      ></b-form-input>
 
-                <template #cell(actions)="row">
-                    <b-button size="sm" @click="row.toggleDetails">
-                      {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-                    </b-button>
-                    <b-button variant="success" size="sm"  class="mr-1">
-                        Edit
-                    </b-button>
-                    <b-button variant="danger" size="sm"  class="mr-1">
-                      Delete
-                  </b-button>
-                  </template>
-            
-                  <template #row-details="row">
-                    <b-card>
-                        <div class="container pr-5">
-                            <strong>Skill Details</strong>
-                            <b-table-simple table-variant="table-info" hover small responsive bordered>
-                                <b-tr v-for="(value, key) in row.item " v-if="key!= '_showDetails'" :key="key">
-                                    <b-td variant="secondary" style="width: 15%">
-                                      {{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}} {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}
-                                    </b-td>
-                                    <b-td style="width: 75%">{{value}}</b-td>
-                                </b-tr>
-                            </b-table-simple>
-                        </div>
+                      <b-input-group-append>
+                      <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                      </b-input-group-append>
+                  </b-input-group>
+                  </b-form-group>
+              </b-col>
 
-                    </b-card>
-                  </template>
-                    <b-button></b-button>
-                </template>
-                </b-table>
-        </div>
+              <b-col lg="6" >
+              </b-col>
+
+          <b-col sm="5" md="6" class="mt-3">
+              Per Page 
+              <b-form-select
+                  id="per-page-select"
+                  v-model="perPage"
+                  :options="pageOptions"
+                  size="sm"
+              ></b-form-select>
+              </b-form-group>
+          </b-col>
+
+          <b-col sm="7" md="6" class="my-2">
+              <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              align="fill"
+              size="sm"
+              class="my-0"
+              ></b-pagination>
+          </b-col>
+          </b-row>
+          <b-table 
+              :items= "skill_list"
+              :fields="fields"
+              :current-page="currentPage"
+              hover="hover"
+              bordered="bordered"
+              head-variant="light"
+              :per-page="perPage"
+              :filter="filter"
+              :filter-included-fields="filterOn"
+              :sort-by.sync="sortBy"
+              :sort-desc.sync="sortDesc"
+              :sort-direction="sortDirection"
+              stacked="md"
+              show-empty
+              small
+              @filtered="onFiltered"
+              striped responsive="sm"     
+              empty-text="There are no available skills. Please create a new skill."  
+          >
+    
+          <template #cell(actions)="row">
+              <b-button size="sm" @click="row.toggleDetails">
+                {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+              </b-button>
+              <b-button variant="success" size="sm" @click="updateSkill(row.item.skill_id)" class="mr-1">
+                  Edit
+              </b-button>
+              <b-button variant="danger" size="sm"  class="mr-1">
+                Delete
+            </b-button>
+            </template>
+
+      
+            <template #row-details="row">
+              <b-card>
+                  <div class="container pr-5">
+                      <strong>Skill Details</strong>
+                      
+                      <b-table-simple table-variant="table-info" hover small responsive bordered>
+                          <b-tr v-for="(value, key) in row.item " v-if="key!= '_showDetails'" :primary-key="row.item.skill_id" :key="row.item.skill_id">
+                              <b-td variant="secondary" style="width: 15%  ">
+                                {{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}} {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}
+                              </b-td>
+                              <b-td style="width: 75%">{{value}}</b-td>
+                          </b-tr>
+                      </b-table-simple>
+                  </div>
+
+              </b-card>
+            </template>
+
+              <b-button></b-button>
+          </template>
+
+          </b-table>
+
+      </div> 
+
 	</div>
     
 	
 </body>
-    <script>
-        console.clear()
-        new Vue({
-        el:"#app",
-        data() {
-            return {
-              skill_list: [],
-              fields: [
-                { key: 'skill_name', label: 'Skill', sortable: true, sortDirection: 'desc' },
-                { key: 'skill_category', label: 'Category', sortable: true },
-                {
-                  key: 'skill_status',
-                  label: 'Is Active',
-                  formatter: (value, key, item) => {
-                    return value ? 'Yes' : 'No'
-                  },
-                  sortable: true,
-                  sortByFormatted: true,
-                  filterByFormatted: true
-                },
-                { key: 'actions', label: 'Actions' }
-              ],
-              totalRows: 1,
-              currentPage: 1,
-              perPage: 10,
-              pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
-              sortBy: '',
-              sortDesc: false,
-              sortDirection: 'asc',
-              filter: null,
-              filterOn: [],
-              infoModal: {
-                id: 'info-modal',
-                title: '',
-                content: ''
+
+ <script>
+  console.clear()
+
+  new Vue({
+    el:"#skillstable", 
+    data() {
+        return {
+          skill_list:[],
+          fields: [
+            { key: 'skill_name', label: 'Skill', sortable: true, sortDirection: 'desc' },
+            { key: 'skill_category', label: 'Category', sortable: true },
+            {
+              key: 'skill_status',
+              label: 'Is Active',
+              formatter: (value, key, item) => {
+                return value ? 'Yes' : 'No'
+              },
+              sortable: true,
+              sortByFormatted: true,
+              filterByFormatted: true
+            },
+            { key: 'actions', label: 'Actions' }
+          ],
+          totalRows: 1,
+          currentPage: 1,
+          perPage: 10,
+          pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+          sortBy: '',
+          sortDesc: false,
+          sortDirection: 'asc',
+          filter: null,
+          filterOn: [],
+        }
+      },
+      computed: {
+        sortOptions() {
+          // Create an options list from our fields
+          return this.fields
+            .filter(f => f.sortable)
+            .map(f => {
+              return { text: f.label, value: f.key }
+            })
+        }
+      },
+      mounted() {
+        // Set the initial number of items
+        this.totalRows = this.skill_list.length;
+        this.getSkillList();
+      },
+      methods: {
+        onFiltered(filteredItems) {
+          // Trigger pagination to update the number of buttons/pages due to filtering
+          this.totalRows = filteredItems.length
+          this.currentPage = 1
+        },
+        updateSkill(id){
+          window.location.href = '/users/hr/skills_update.html?id=' + id;
+        },
+        getSkillList() {
+          path= "http://127.0.0.1:5001/skills"
+          axios.get(path).then(
+              (response) => {
+                  this.skill_list= response.data.data;
+                  console.log(response.data);
+              },
+              (error) => {
+                  console.log(error);
               }
-            }
-          },
-          computed: {
-            sortOptions() {
-              // Create an options list from our fields
-              return this.fields
-                .filter(f => f.sortable)
-                .map(f => {
-                  return { text: f.label, value: f.key }
-                })
-            }
-          },
-          mounted() {
-            // Set the initial number of items
-            this.totalRows = this.skill_list.length;
-            this.getSkillList();
-          },
-          methods: {
-            info(item, index, button) {
-              this.infoModal.title = `Row index: ${index}`
-              this.infoModal.content = JSON.stringify(item, null, 2)
-              this.$root.$emit('bv::show::modal', this.infoModal.id, button)
-            },
-            resetInfoModal() {
-              this.infoModal.title = ''
-              this.infoModal.content = ''
-            },
-            onFiltered(filteredItems) {
-              // Trigger pagination to update the number of buttons/pages due to filtering
-              this.totalRows = filteredItems.length
-              this.currentPage = 1
-            },
-            getSkillList() {
-              path= "http://127.0.0.1:5001/skills"
-              axios.get(path).then(
-                  (response) => {
-                      this.skill_list= response.data.data;
-                      console.log(response.data);
-                  },
-                  (error) => {
-                      console.log(error);
-                  }
-              )}
-            },
-         },
-      )
-      </script>
-      
+          )}
+        },
+      },
+  )
+skillstable.mount("#skillstable");
+</script> 
+  
 <!-- vue.js -->
 <script src="https://unpkg.com/vue@next"></script>
 
