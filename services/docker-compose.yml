@@ -47,7 +47,7 @@ services:
         image: 212/role:1.0
         restart: always
         environment:
-            dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/ljps
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
             PYTHONUNBUFFERED: 1
         ports:
             - "5002:5002"
