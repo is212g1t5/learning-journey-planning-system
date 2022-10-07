@@ -159,7 +159,8 @@
               show-empty
               small
               @filtered="onFiltered"
-              striped responsive="sm"     
+              striped responsive="sm"
+              empty-text="There are no recorded skills. Please create a new skill."     
           >
     
           <template #cell(actions)="row">
@@ -253,7 +254,6 @@
         },
       },
   )
-skillstable.mount("#skillstable");
 </script> 
   
 <!-- vue.js -->
