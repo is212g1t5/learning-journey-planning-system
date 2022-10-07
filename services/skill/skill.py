@@ -64,6 +64,7 @@ class Skills(db.Model):
     # create_skill(): Receive new skill details and create new skill into the db
     # xxxx(): xxx
     # soft_delete_skills(skill_id): Update skill status to 0
+    # restore_skills(skill_id): Update skill status to 1
 
 # ====================
 
