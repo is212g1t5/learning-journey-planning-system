@@ -43,7 +43,7 @@ services:
     role:
         build:
             context: ./
-            dockerfile: role/Dockerfile
+            dockerfile: ./role/Dockerfile
         image: 212/role:1.0
         restart: always
         environment:
