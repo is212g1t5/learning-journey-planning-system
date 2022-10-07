@@ -46,8 +46,9 @@
                </div>
 
                <!-- Show data of skill to be deleted START -->
-
-                <div class="row">
+               <div v-if="skillInfo.id==''" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>❌ Skill does not exist in database</strong></div>
+                <div v-else class="row">
                     <table class = "table table-striped">
                         <thead>
                             <tr>
@@ -73,7 +74,6 @@
                 </div>
 
                 <!-- submit button; only able to submit when required inputs are valid -->
-                <div v-show="skillInfo.id==''">Skill does not exist in database</div>
                 <div v-if="skillInfo.status==true">
                     <button type="button" class="btn btn-danger my-3 w-100 p-3" data-bs-toggle="modal"
                         data-bs-target="#staticBackdrop" :disabled="skillInfo.id==''">
