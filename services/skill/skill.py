@@ -60,8 +60,9 @@ class Skills(db.Model):
 
 #   A P I  E N D P O I N T S
 
+    # display_skill(): Diplay all skills
     # create_skill(): Receive new skill details and create new skill into the db
-    # xxxx(): xxxx
+    # xxxx(): xxx
     # soft_delete_skills(skill_id): Update skill status to 0
 
 # ====================
