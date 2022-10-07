@@ -8,17 +8,27 @@ const delete_skill = Vue.createApp({
             category: "",
             desc: "",
             status: true,
+        },
+        msges: {
+            successMsg: "",
+            successAlert: false,
+            errorMsg: "",
+            errorAlert: false,
         }
       };
     },
     methods: {
         deleteSkill() {      
-            axios.delete("http://localhost:5001/skills/delete/" + 2)
+            this.msges.errorAlert = false;
+            this.msges.successAlert = false;       
+            axios.delete("http://localhost:5001/skills/delete/" + this.id)
             .then((response) => {
                 console.log(response.data)
             })
             .catch((error) => {
                 if (error) {
+                    this.msges.errorAlert = true;
+                    this.msges.errorMsg = "❌ Delete Unsuccessful";
                     console.log(error);
                     this.error = true;
                 }
@@ -27,14 +37,20 @@ const delete_skill = Vue.createApp({
                 this.loading = false;
             });
             this.skillInfo.status = false;
+            this.msges.successAlert = true;
+            this.msges.successMsg = "✔️ Delete Successful!"
         },
         restoreSkill() {      
-            axios.delete("http://localhost:5001/skills/restore/" + 2)
+            this.msges.errorAlert = false;
+            this.msges.successAlert = false;   
+            axios.put("http://localhost:5001/skills/restore/" + this.id)
             .then((response) => {
                 console.log(response.data)
             })
             .catch((error) => {
                 if (error) {
+                    this.msges.errorAlert = true;
+                    this.msges.errorMsg = "❌ Delete Unsuccessful";
                     console.log(error);
                     this.error = true;
                 }
@@ -43,6 +59,8 @@ const delete_skill = Vue.createApp({
                 this.loading = false;
             });
             this.skillInfo.status = true;
+            this.msges.successAlert = true;
+            this.msges.successMsg = "✔️ Restore Successful!"
         },
         
     },
@@ -54,7 +72,7 @@ const delete_skill = Vue.createApp({
     },
     mounted() {
         axios
-        .get("http://localhost:5001/skills/" + 2)
+        .get("http://localhost:5001/skills/" + this.id)
         .then((response) => {
             skill = response.data;
             this.skillInfo.id = skill.skill_id;

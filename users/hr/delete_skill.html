@@ -37,14 +37,13 @@
     </nav>
         <div class="rounded-3 bg-light p-5" id="delete_skill">
             <div>
-               <!-- <div v-if="alerts.showAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <strong>❌ Delete Unsuccessful. </strong>
-                  {{alerts.alertMsg}}
+               <div v-if="msges.errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>{{msges.errorMsg}}</strong>
                </div>
-               <div v-if="alerts.showSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
-                  <strong>✔️ Delete Successful! </strong>
-                  {{alerts.successMsg}}
-               </div> -->
+               <div v-if="msges.successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>{{msges.successMsg}}</strong>
+                  
+               </div>
 
                <!-- Show data of skill to be deleted START -->
 
@@ -65,17 +64,19 @@
                                 <td>{{skillInfo.name}}</td>
                                 <td>{{skillInfo.category}}</td>
                                 <td>{{skillInfo.desc}}</td>
-                                <td v-if="skillInfo.status==true">Active</td>
-                                <td v-else>Retired</td>
+                                <td v-if="skillInfo.status==true && skillInfo.id!=''">Active</td>
+                                <td v-else-if="skillInfo.status==false">Retired</td>
+                                <td v-else> </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- submit button; only able to submit when required inputs are valid -->
+                <div v-show="skillInfo.id==''">Skill does not exist in database</div>
                 <div v-if="skillInfo.status==true">
                     <button type="button" class="btn btn-danger my-3 w-100 p-3" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop" :disabled="skillInfo.status==false ? true : false">
+                        data-bs-target="#staticBackdrop" :disabled="skillInfo.id==''">
                         Delete
                     </button>
                     <!-- Modal START -->
@@ -104,7 +105,7 @@
                 </div>
                 <div v-else>
                     <button type="button" class="btn btn-success my-3 w-100 p-3" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop">
+                        data-bs-target="#staticBackdrop" :disabled="skillInfo.id==''">
                         Retrieve
                     </button>
                     <!-- Modal START -->
