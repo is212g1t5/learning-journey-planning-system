@@ -28,6 +28,22 @@ const delete_skill = Vue.createApp({
             });
             this.skillInfo.status = false;
         },
+        restoreSkill() {      
+            axios.delete("http://localhost:5001/skills/restore/" + 2)
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                if (error) {
+                    console.log(error);
+                    this.error = true;
+                }
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+            this.skillInfo.status = true;
+        },
         
     },
     created() {
