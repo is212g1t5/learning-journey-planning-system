@@ -15,7 +15,7 @@ from os import environ  # access env variable
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL'
-    ) or 'mysql+mysqlconnector://root:root@db:3306/ljps'
+    ) or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
