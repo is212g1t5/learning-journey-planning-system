@@ -234,5 +234,34 @@ def soft_delete_skills(skill_id):
             "message": "Skill does not exist in database."
         }), 404
 
+@app.route("/skills/restore/<string:skill_id>", methods=['PUT'])
+def restore_skills(skill_id):
+    skill = Skills.query.filter_by(skill_id=skill_id).first() #find skill from skill id
+    if skill:
+        if skill.skill_status == 1:
+            return jsonify({
+                "code": 400,
+                "message": "Skill is already active."
+            }), 400
+        else:
+            skill.skill_status = 1
+        try:
+            db.session.commit()
+            return jsonify({
+                "code": 200,
+                "data": skill.json(),
+                "message": "Skill restored."
+            }), 200
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred while restoring the skill."
+            }), 500
+    else:
+        return jsonify({
+            "code": 404,
+            "message": "Skill does not exist in database."
+        }), 404
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
