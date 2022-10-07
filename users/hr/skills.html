@@ -164,7 +164,7 @@
           >
     
           <template #cell(actions)="row">
-              <b-button size="sm" @click="row.toggleDetails">
+              <b-button name="show_details" size="sm" @click="row.toggleDetails">
                 {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
               </b-button>
               <b-button variant="success" size="sm" @click="updateSkill(row.item.skill_id)" class="mr-1">
@@ -181,7 +181,7 @@
                   <div class="container pr-5">
                       <strong>Skill Details</strong>
                       
-                      <b-table-simple table-variant="table-info" hover small responsive bordered>
+                      <b-table-simple id="single_skill_table" table-variant="table-info" hover small responsive bordered>
                           <b-tr v-for="(value, key) in row.item " v-if="key!= '_showDetails'" :primary-key="row.item.skill_id" :key="row.item.skill_id">
                               <b-td variant="secondary" style="width: 15%  ">
                                 {{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}} {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}
