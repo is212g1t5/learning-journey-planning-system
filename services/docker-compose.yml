@@ -37,20 +37,6 @@ services:
         ports:
             - "8080:80"
             
-    ###############################
-    # Role: Role service (CRUD) #
-    ###############################            
-    role:
-        build:
-            context: ./
-            dockerfile: role/Dockerfile
-        image: 212/role:1.0
-        restart: always
-        environment:
-            dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/ljps
-            PYTHONUNBUFFERED: 1
-        ports:
-            - "5000:5000"
     
     ###############################
     # Skill: Skill service (CRUD) #
@@ -69,3 +55,197 @@ services:
             dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
         ports:
             - "5001:5001"
+    ###############################
+    # Role: Role service (CRUD) #
+    ###############################            
+    role:
+        build:
+            context: ./
+            dockerfile: role/Dockerfile
+        image: 212/role:1.0
+        restart: always
+        environment:
+            dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/ljps
+            PYTHONUNBUFFERED: 1
+        ports:
+            - "5002:5002"
+
+    ###############################
+    # Course: Course service (CRUD) #
+    ###############################
+    courses:
+        build: 
+            context: ./
+            dockerfile: ./course/Dockerfile
+        image: 212/course:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5003:5003"
+
+    ###############################
+    # Learning Journey: Learning Journey service (CRUD) #
+    ###############################
+    learningjourney:
+        build: 
+            context: ./
+            dockerfile: ./learningjourney/Dockerfile
+        image: 212/learningjourney:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5004:5004"
+
+    ###############################
+    # Skills Courses: Skills Courses service (CRUD) #
+    ###############################
+    skillscourses:
+        build: 
+            context: ./
+            dockerfile: ./skillscourses/Dockerfile
+        image: 212/skillscourses:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5005:5005"
+
+    ###############################
+    # Skills Roles: Skills Roles service (CRUD) #
+    ###############################
+    skillsroles:
+        build: 
+            context: ./
+            dockerfile: ./skillsroles/Dockerfile
+        image: 212/skillsroles:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5006:5006"
+
+    ###############################
+    # Learning Journey Skills : Learning Journey Skills  service (CRUD) #
+    ###############################
+    ljskills:
+        build: 
+            context: ./
+            dockerfile: ./ljskills/Dockerfile
+        image: 212/ljskills:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5007:5007"
+
+    ###############################
+    # Learning Journey Courses : Learning Journey Courses  service (CRUD) #
+    ###############################
+    ljcourses:
+        build: 
+            context: ./
+            dockerfile: ./ljcourses/Dockerfile
+        image: 212/ljcourses:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5008:5008"
+
+    ###############################
+    # Learning Journey Roles : Learning Journey Roles service (CRUD) #
+    ###############################
+    ljroles:
+        build: 
+            context: ./
+            dockerfile: ./ljroles/Dockerfile
+        image: 212/ljroles:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5009:5009"
+
+    ###############################
+    # groups : groups service (CRUD) #
+    ###############################
+    groups:
+        build: 
+            context: ./
+            dockerfile: ./groups/Dockerfile
+        image: 212/groups:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5010:5010"
+
+    ###############################
+    # staff : staff service (CRUD) #
+    ###############################
+    staff:
+        build: 
+            context: ./
+            dockerfile: ./staff/Dockerfile
+        image: 212/staff:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5011:5011"
+
+    ###############################
+    # registration : registration service (CRUD) #
+    ###############################
+    registration:
+        build: 
+            context: ./
+            dockerfile: ./registration/Dockerfile
+        image: 212/registration:1.0
+        restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
+        environment:
+            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+        ports:
+            - "5012:5012"

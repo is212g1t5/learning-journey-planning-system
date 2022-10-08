@@ -154,7 +154,64 @@ def create_role():
 # AL-3 & AL-18 & AL-17-- Update --
 @app.route("/roles/update/<int:role_id>", methods=['PUT','GET'])
 def update_role(role_id):
-    pass
+    data = request.get_json()
+    role = Role.query.filter_by(role_id=role_id).first()
+
+    if role:
+        if data["role_name"] == role.role_name and data["role_desc"] == role.role_desc and data["role_status"] == role.role_status and data["role_sector"] == role.role_sector and data["role_track"] == role.role_track:
+            return jsonify({
+                "code": 400,
+                "message": "No changes made."
+            }), 400
+        # validation: check if no changes were made
+        if data['role_name'] != role.role_name:
+            if data['role_name']  != '':
+                role.role_name = data['role_name']
+            else:
+                return jsonify({"code": 400, "message": "Role name cannot be empty."}), 400
+
+        if data['role_desc'] != role.role_desc:
+            if data['role_desc']  != '':
+                role.role_desc = data['role_desc']
+            else:
+                return jsonify({"code": 400, "message": "Role description cannot be empty."}), 400
+
+        if data['role_status'] != role.role_status:
+            if data['role_status']  != '':
+                role.role_status = data['role_status']
+            else:
+                return jsonify({"code": 400, "message": "Role status cannot be empty."}), 400
+
+        if data['role_sector'] != role.role_sector:
+            if data['role_sector']  != '':
+                role.role_sector = data['role_sector']
+            else:
+                return jsonify({"code": 400, "message": "Role sector cannot be empty."}), 400
+        
+        if data['role_track'] != role.role_track:
+            if data['role_track']  != '':
+                role.role_track = data['role_track']
+            else:
+                return jsonify({"code": 400, "message": "Role track cannot be empty."}), 400
+
+        try:
+            db.session.commit()
+            return jsonify({
+                "code": 200,
+                "data": role.json(),
+                "message": "Role updated."
+            })
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred while updating the role."
+            }), 500
+
+    else:
+        return jsonify({
+            "code": 404,
+            "message": "Role does not exist in database."
+        }), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0'port=5000, debug=True)
+    app.run(host='0.0.0.0',port=5000, debug=True)
