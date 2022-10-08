@@ -20,7 +20,7 @@
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
     <!-- axios -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios@0.25.0/dist/axios.min.js"></script>
 
 </head>
 <body>
@@ -162,17 +162,41 @@
               @filtered="onFiltered"
               striped responsive="sm"
               empty-text="There are no recorded skills. Please create a new skill."     
+
           >
     
           <template #cell(actions)="row">
+              <b-button name="show_details" size="sm" @click="row.toggleDetails">
+                {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+              </b-button>
               <b-button variant="success" size="sm" @click="updateSkill(row.item.skill_id)" class="mr-1">
                   Edit
               </b-button>
-              <b-button variant="danger" size="sm"  class="mr-1">
+              <b-button variant="danger" size="sm"  @click="deleteSkill(row.item.skill_id)" class="mr-1">
                 Delete
             </b-button>
             </template>
+
+      
+            <template #row-details="row">
+              <b-card>
+                  <div class="container pr-5">
+                      <strong>Skill Details</strong>
+                      
+                      <b-table-simple id="single_skill_table" table-variant="table-info" hover small responsive bordered>
+                          <b-tr v-for="(value, key) in row.item " v-if="key!= '_showDetails'" :primary-key="row.item.skill_id" :key="row.item.skill_id">
+                              <b-td variant="secondary" style="width: 15%  ">
+                                {{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}} {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}
+                              </b-td>
+                              <b-td style="width: 75%">{{value}}</b-td>
+                          </b-tr>
+                      </b-table-simple>
+                  </div>
+
+              </b-card>
+            </template>
           </template>
+
           </b-table>
 
       </div> 
@@ -241,6 +265,9 @@
         updateSkill(id){
           window.location.href = '/users/hr/skills_update.html?id=' + id;
         },
+        deleteSkill(id){
+          window.location.href = '/users/hr/delete_skill.html?id=' + id;
+        },
         getSkillList() {
           path= "http://localhost:5001/skills"
           axios.get(path).then(
@@ -263,4 +290,3 @@
 <!-- external js -->
 <script src="../../components/navbar.js"></script>
 </html>
-
