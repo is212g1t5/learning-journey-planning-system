@@ -170,7 +170,7 @@
               <b-button variant="success" size="sm" @click="updateSkill(row.item.skill_id)" class="mr-1">
                   Edit
               </b-button>
-              <b-button variant="danger" size="sm"  class="mr-1">
+              <b-button variant="danger" size="sm"  @click="deleteSkill(row.item.skill_id)" class="mr-1">
                 Delete
             </b-button>
             </template>
@@ -263,6 +263,9 @@
         updateSkill(id){
           window.location.href = '/users/hr/skills_update.html?id=' + id;
         },
+        deleteSkill(id){
+          window.location.href = '/users/hr/delete_skill.html?id=' + id;
+        },
         getSkillList() {
           path= "http://localhost:5001/skills"
           axios.get(path).then(
@@ -277,7 +280,6 @@
         },
       },
   )
-skillstable.mount("#skillstable");
 </script> 
   
 <!-- vue.js -->
