@@ -116,6 +116,7 @@ const create = Vue.createApp({
 
             data = res.data.data;
             console.log("New skill " + data.skill_name + " created successfully");
+            console.log(data);
             this.confirmationMsg = "";
 
          //to be continued...: REDIRECT to created skill details page
