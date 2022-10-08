@@ -14,8 +14,8 @@ from os import environ  # access env variable
 
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-    'dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL'
+    ) or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -49,16 +49,34 @@ class Skills(db.Model):
 
         return dto
 
+    def to_dict(self):
+            columns = self.mapper.column_attrs.keys()
+            result = {}
+            for column in columns:
+                result[column] = getattr(self, column)
+            return result
+
 # ====================
 
 #   A P I  E N D P O I N T S
 
+    # display_skill(): Diplay all skills
     # create_skill(): Receive new skill details and create new skill into the db
-    # xxxx(): xxxx
-    # xxxx(): xxxx
+    # xxxx(): xxx
+    # soft_delete_skills(skill_id): Update skill status to 0
+    # restore_skills(skill_id): Update skill status to 1
 
 # ====================
 
+@app.route("/skills")
+def display_skill():
+    skill_list = Skills.query.all()
+    return jsonify(
+        {
+            "data": [skill.json()
+                     for skill in skill_list]
+        }
+    ), 200
 
 @app.route("/skills/create", methods=['POST'])
 def create_skill():
@@ -92,6 +110,13 @@ def processCreateSkill(skill):
     skill_category = request.json.get("skill_category")
     skill_desc = request.json.get("skill_desc")
     skill_status = request.json.get("skill_status")
+
+    if "" in (skill_name, skill_category, skill_desc):
+        # 400 Bad Request - has empty arguments or arguments not passed
+        return jsonify({
+            "code": 400,
+            "message": "Empty inputs or Invalid JSON input: " + str(request.get_data())
+        }), 400
 
     # Create new skill instance
     newSkill = Skills(skill_id, skill_name, skill_category,
@@ -181,6 +206,63 @@ def update_skill(skill_id):
             "message": "Skill does not exist in database."
         }), 404
 
+@app.route("/skills/delete/<string:skill_id>", methods=['DELETE'])
+def soft_delete_skills(skill_id):
+    skill = Skills.query.filter_by(skill_id=skill_id).first() #find skill from skill id
+    if skill:
+        if skill.skill_status == 0:
+            return jsonify({
+                "code": 400,
+                "message": "Skill is already retired."
+            }), 400
+        else:
+            skill.skill_status = 0
+        try:
+            db.session.commit()
+            return jsonify({
+                "code": 200,
+                "data": skill.json(),
+                "message": "Skill retired."
+            }), 200
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred while deleting the skill."
+            }), 500
+    else:
+        return jsonify({
+            "code": 404,
+            "message": "Skill does not exist in database."
+        }), 404
+
+@app.route("/skills/restore/<string:skill_id>", methods=['PUT'])
+def restore_skills(skill_id):
+    skill = Skills.query.filter_by(skill_id=skill_id).first() #find skill from skill id
+    if skill:
+        if skill.skill_status == 1:
+            return jsonify({
+                "code": 400,
+                "message": "Skill is already active."
+            }), 400
+        else:
+            skill.skill_status = 1
+        try:
+            db.session.commit()
+            return jsonify({
+                "code": 200,
+                "data": skill.json(),
+                "message": "Skill restored."
+            }), 200
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred while restoring the skill."
+            }), 500
+    else:
+        return jsonify({
+            "code": 404,
+            "message": "Skill does not exist in database."
+        }), 404
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
