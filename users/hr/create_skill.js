@@ -99,10 +99,6 @@ const create = Vue.createApp({
          this.skillForm.name +
          "?";
       },
-      //cancel skill creation
-      cancelNewSkill() {
-         this.confirmationMsg = "";
-      },
       //call role api to create new skill
       async createNewSkill() {
          //call api to create new skill
@@ -122,8 +118,7 @@ const create = Vue.createApp({
             console.log("New skill " + data.skill_name + " created successfully");
             this.confirmationMsg = "";
 
-         //to be continued...
-         //redirect to created skill details page
+         //to be continued...: REDIRECT to created skill details page
          } catch (err) {
             // Handle Error Here
             console.error(err);
