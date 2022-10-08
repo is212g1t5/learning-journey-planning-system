@@ -142,7 +142,8 @@
               ></b-pagination>
           </b-col>
           </b-row>
-          <b-table 
+          <b-table
+              id="display_skills_table" 
               :items= "skill_list"
               :fields="fields"
               :current-page="currentPage"
@@ -159,8 +160,9 @@
               show-empty
               small
               @filtered="onFiltered"
-              striped responsive="sm"  
-              empty-text="There are no skills recorded. Please create a new skill."   
+              striped responsive="sm"
+              empty-text="There are no recorded skills. Please create a new skill."     
+
           >
     
           <template #cell(actions)="row">
