@@ -64,9 +64,12 @@ services:
             dockerfile: ./role/Dockerfile
         image: 212/role:1.0
         restart: always
+        networks:
+            - ljps-net
+        depends_on:
+            - db
         environment:
             dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
-            PYTHONUNBUFFERED: 1
         ports:
             - "5002:5002"
     
