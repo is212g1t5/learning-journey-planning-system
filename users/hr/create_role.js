@@ -3,32 +3,38 @@ const createRole = Vue.createApp({
       return {
          roleForm: {
             name: "",
+            sector: "",
             description: "",
+            track: "",
             status: true
          },
          confirmationMsg: "",
          errorMsgs: {
             name: "",
-            category: "",
+            sector: "",
             description: "",
+            track: ""
          },
          role_api: {
             create: "http://127.0.0.1:5002/roles/create",
             getAll: "http://127.0.0.1:5002/roles",
          },
          existingRoles: [],
+         alerts: {
+            alertMsg: "",
+            successMsg: "",
+            showAlert: false,
+            showSuccess: false
+         }
       };
    },
    created() {
       this.getAllRoleNames();
-      console.log(this.existingRoles);
-      // this.getAllSkillCategories();
    },
    computed: {
       isFormValid() {
          return (
             !this.roleForm.name.trim() ||
-            !this.roleForm.category.trim() ||
             !this.roleForm.description.trim() ||
             Object.values(this.errorMsgs).some((error) => {
                return error !== "";
@@ -47,6 +53,22 @@ const createRole = Vue.createApp({
          }
          } else {
             this.errorMsgs.name = "Skill name cannot be empty";
+         }
+      },
+      //validate whether sector is empty
+      "roleForm.sector"(newValue) {
+         if (newValue && newValue.trim().length > 0) {
+            this.errorMsgs.sector = "";
+         } else {
+            this.errorMsgs.sector = "Sector cannot be empty";
+         }
+      },
+      //validate whether track is empty
+      "roleForm.track"(newValue) {
+         if (newValue && newValue.trim().length > 0) {
+            this.errorMsgs.track = "";
+         } else {
+            this.errorMsgs.track = "Track cannot be empty";
          }
       },
       //validate whether description is empty
@@ -69,8 +91,7 @@ const createRole = Vue.createApp({
             });
 
             data = res.data.data;
-            console.log(data);
-            this.existingRoles = data;
+            this.existingRoles = data.roles.map((role) => role.role_name.toLowerCase());
 
          } catch (err) {
             // Handle Error Here
@@ -92,22 +113,28 @@ const createRole = Vue.createApp({
                method: "post",
                url: this.role_api.create,
                data: {
-                  skill_name: this.roleForm.name,
-                  skill_category: this.roleForm.category,
-                  skill_desc: this.roleForm.description,
-                  skill_status: this.roleForm.status,
+                  role_name: this.roleForm.name,
+                  role_sector: this.roleForm.sector,
+                  role_desc: this.roleForm.description,
+                  role_track: this.roleForm.track,
+                  role_status: this.roleForm.status
                },
             });
 
             data = res.data.data;
-            console.log("New skill " + data.skill_name + " created successfully");
+            console.log("New skill " + data.role_name + " created successfully");
             this.confirmationMsg = "";
+
+            this.alerts.successMsg = "New role '" + data.role_name + "' created successfully";
+            this.alerts.showSuccess = true;
 
          //to be continued...
          //redirect to created skill details page
          } catch (err) {
             // Handle Error Here
             console.error(err);
+            this.alerts.showAlert = true;
+            this.alerts.alertMsg = err;
          }
       },
    },
