@@ -14,7 +14,7 @@ class LjCourses(db.Model):
     __tablename__ = 'lj_courses'
 
     learning_journey_id = db.Column(db.Integer(), primary_key=True)
-    course_id = db.Column(db.varchar(20), primary_key=True)
+    course_id = db.Column(db.String(20), primary_key=True)
 
     def __init__(self, learning_journey_id, course_id):
         self.learning_journey_id = learning_journey_id

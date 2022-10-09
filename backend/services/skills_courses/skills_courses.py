@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 class SkillsCourses(db.Model):
     __tablename__ = 'skills_courses'
     skill_id = db.Column(db.Integer(), primary_key=True)
-    course_id=  db.Column(db.Integer(), primary_key=True)
+    course_id=  db.Column(db.String(50), primary_key=True)
 
     def __init__(self, skill_id, course_id):
         self.skill_id = skill_id

@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 class Groups(db.Model):
     __tablename__ = 'groups'
     group_id = db.Column(db.Integer(), primary_key=True )
-    group_name=  db.Column(db.varchar(20), primary_key=True)
+    group_name=  db.Column(db.String(20), primary_key=True)
 
     def __init__(self, group_id, group_name):
         self.group_id = group_id
