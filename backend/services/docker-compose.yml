@@ -91,11 +91,11 @@ services:
     ###############################
     # Learning Journey: Learning Journey service (CRUD) #
     ###############################
-    learningjourney:
+    learning_journey:
         build: 
             context: ./
-            dockerfile: ./learningjourney/Dockerfile
-        image: 212/learningjourney:1.0
+            dockerfile: ./learning_journey/Dockerfile
+        image: 212/learning_journey:1.0
         restart: always
         networks:
             - ljps-net
@@ -109,11 +109,11 @@ services:
     ###############################
     # Skills Courses: Skills Courses service (CRUD) #
     ###############################
-    skillscourses:
+    skills_courses:
         build: 
             context: ./
-            dockerfile: ./skillscourses/Dockerfile
-        image: 212/skillscourses:1.0
+            dockerfile: ./skills_courses/Dockerfile
+        image: 212/skills_courses:1.0
         restart: always
         networks:
             - ljps-net
@@ -127,11 +127,11 @@ services:
     ###############################
     # Skills Roles: Skills Roles service (CRUD) #
     ###############################
-    skillsroles:
+    skills_roles:
         build: 
             context: ./
-            dockerfile: ./skillsroles/Dockerfile
-        image: 212/skillsroles:1.0
+            dockerfile: ./skills_roles/Dockerfile
+        image: 212/skills_roles:1.0
         restart: always
         networks:
             - ljps-net
@@ -145,11 +145,11 @@ services:
     ###############################
     # Learning Journey Skills : Learning Journey Skills  service (CRUD) #
     ###############################
-    ljskills:
+    lj_skills:
         build: 
             context: ./
-            dockerfile: ./ljskills/Dockerfile
-        image: 212/ljskills:1.0
+            dockerfile: ./lj_skills/Dockerfile
+        image: 212/lj_skills:1.0
         restart: always
         networks:
             - ljps-net
@@ -163,11 +163,11 @@ services:
     ###############################
     # Learning Journey Courses : Learning Journey Courses  service (CRUD) #
     ###############################
-    ljcourses:
+    lj_courses:
         build: 
             context: ./
-            dockerfile: ./ljcourses/Dockerfile
-        image: 212/ljcourses:1.0
+            dockerfile: ./lj_courses/Dockerfile
+        image: 212/lj_courses:1.0
         restart: always
         networks:
             - ljps-net
@@ -181,11 +181,11 @@ services:
     ###############################
     # Learning Journey Roles : Learning Journey Roles service (CRUD) #
     ###############################
-    ljroles:
+    lj_roles:
         build: 
             context: ./
-            dockerfile: ./ljroles/Dockerfile
-        image: 212/ljroles:1.0
+            dockerfile: ./lj_roles/Dockerfile
+        image: 212/lj_roles:1.0
         restart: always
         networks:
             - ljps-net
