@@ -1,4 +1,5 @@
 const create = Vue.createApp({
+   //resolving
    data() {
       return {
          skillForm: {
