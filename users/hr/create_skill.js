@@ -30,7 +30,7 @@ const create = Vue.createApp({
       };
    },
    created() {
-      // this.getAllSkillNames();
+      this.getAllSkillNames();
       // this.getAllSkillCategories();
    },
    computed: {
@@ -78,21 +78,20 @@ const create = Vue.createApp({
    methods: {
       //api call to retrieve all existing skill names
       async getAllSkillNames() {
-         //tbc
          //call api to get all skill names
-         // try {
-         //    const res = await axios({
-         //       url: this.skill_api.getAll,
-         //    });
+         try {
+            const res = await axios({
+               url: this.skill_api.getAll,
+            });
 
-         //    data = res.data.data;
-         //    console.log(data);
-         //    this.existingSkills = data;
+            data = res.data.data;
+            this.existingSkills = data.roles.map((skill) => skill.skill_name.toLowerCase());
+            console.log(this.existingSkills);
 
-         // } catch (err) {
-         //    // Handle Error Here
-         //    console.error(err);
-         // }
+         } catch (err) {
+            // Handle Error Here
+            console.error(err);
+         }
       },
       //api call to retrieve all existing skill categories
       getAllSkillCategories() {
