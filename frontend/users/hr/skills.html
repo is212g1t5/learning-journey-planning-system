@@ -272,7 +272,7 @@
           path= "http://localhost:5001/skills"
           axios.get(path).then(
               (response) => {
-                  this.skill_list= response.data.data;
+                  this.skill_list= response.data.data.skills;
                   console.log(response.data);
               },
               (error) => {
