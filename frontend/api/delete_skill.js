@@ -50,7 +50,7 @@ const delete_skill = Vue.createApp({
             .catch((error) => {
                 if (error) {
                     this.msges.errorAlert = true;
-                    this.msges.errorMsg = "❌ Delete Unsuccessful";
+                    this.msges.errorMsg = "❌ Restore Unsuccessful";
                     console.log(error);
                     this.error = true;
                 }
