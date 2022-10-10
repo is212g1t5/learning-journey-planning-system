@@ -5,20 +5,28 @@ const create = Vue.createApp({
             name: "",
             category: "",
             description: "",
-            level: 1,
             status: true
          },
          confirmationMsg: "",
          errorMsgs: {
-         name: "",
-         category: "",
-         description: "",
+            name: "",
+            category: "",
+            description: "",
          },
          skill_api: {
-         create: "http://127.0.0.1:5001/skills/create",
-         getAll: "http://127.0.0.1:5001/skills",
+            create: "http://127.0.0.1:5001/skills/create",
+            getAll: "http://127.0.0.1:5001/skills",
+            viewSpecific: "http://127.0.0.1:5001/skills/"
          },
          existingSkills: [],
+         alerts: {
+            showAlert: false,
+            showSuccess: false,
+            alertMsg: "",
+            successMsg1: "New skill ",
+            successMsg2: " created successfully."
+         },
+         viewSkillLink: ''
       };
    },
    created() {
@@ -70,23 +78,20 @@ const create = Vue.createApp({
    methods: {
       //api call to retrieve all existing skill names
       async getAllSkillNames() {
-         //tbc
-         this.existingSkills = ["skill1", "skill2", "skill3"];
-
          //call api to get all skill names
-         // try {
-         //    const res = await axios({
-         //       url: this.skill_api.getAll,
-         //    });
+         try {
+            const res = await axios({
+               url: this.skill_api.getAll,
+            });
 
-         //    data = res.data.data;
-         //    console.log(data);
-         //    this.existingSkills = data;
+            data = res.data.data;
+            this.existingSkills = data.roles.map((skill) => skill.skill_name.toLowerCase());
+            console.log(this.existingSkills);
 
-         // } catch (err) {
-         //    // Handle Error Here
-         //    console.error(err);
-         // }
+         } catch (err) {
+            // Handle Error Here
+            console.error(err);
+         }
       },
       //api call to retrieve all existing skill categories
       getAllSkillCategories() {
@@ -120,7 +125,20 @@ const create = Vue.createApp({
 
             data = res.data.data;
             console.log("New skill " + data.skill_name + " created successfully");
+            console.log(data);
             this.confirmationMsg = "";
+
+            //LINK HERE NEEDS TO BE CHANGED TO LINK TO VIEW SPECIFIC SKILL PAGE
+            this.viewSkillLink = `<a href="${this.skill_api.viewSpecific}${data.skill_id}">${data.skill_name}</a>`;
+
+            this.alerts.showSuccess = true;
+            //reset form
+            this.skillForm = {
+               name: "",
+               category: "",
+               description: "",
+               status: true
+            };
 
          //to be continued...
          //redirect to created skill details page
