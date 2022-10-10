@@ -71,12 +71,22 @@ class Skills(db.Model):
 @app.route("/skills")
 def display_skill():
     skill_list = Skills.query.all()
+    if len(skill_list):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "skills_roles": [skill.json() for skill in skill_list]
+                }
+            }
+        )
     return jsonify(
         {
-            "data": [skill.json()
-                     for skill in skill_list]
+            "code": 404,
+            "message": "There are no skills.",
+            "data": []
         }
-    ), 200
+    ), 404  
 
 @app.route("/skills/create", methods=['POST'])
 def create_skill():

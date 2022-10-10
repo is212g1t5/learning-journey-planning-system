@@ -137,7 +137,8 @@ const create = Vue.createApp({
                status: true
             };
 
-         //to be continued...: REDIRECT to created skill details page
+         //to be continued...
+         //redirect to created skill details page
          } catch (err) {
             // Handle Error Here
             console.error(err);
