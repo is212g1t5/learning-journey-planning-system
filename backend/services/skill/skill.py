@@ -14,16 +14,14 @@ from os import environ  # access env variable
 
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL'
-    ) or 'mysql+mysqlconnector://root@localhost:3306/ljps'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 db = SQLAlchemy(app)
 
-
 class Skills(db.Model):
-    __tablesname__ = "skills"
+    __tablesname__ = 'skills'
 
     skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
     skill_name = db.Column(db.String(64), nullable=False)
@@ -62,9 +60,10 @@ class Skills(db.Model):
 
     # display_skill(): Diplay all skills
     # create_skill(): Receive new skill details and create new skill into the db
-    # xxxx(): xxx
-    # soft_delete_skills(skill_id): Update skill status to 0
-    # restore_skills(skill_id): Update skill status to 1
+    # get_skill(skill_id): Display only one skill
+    # update_skill(skill_id): Receive updated skill details and reflect updated details in the db
+    # soft_delete_skill(skill_id): Update skill status to 0
+    # restore_skill(skill_id): Update skill status to 1
 
 # ====================
 
@@ -217,7 +216,7 @@ def update_skill(skill_id):
         }), 404
 
 @app.route("/skills/delete/<string:skill_id>", methods=['DELETE'])
-def soft_delete_skills(skill_id):
+def soft_delete_skill(skill_id):
     skill = Skills.query.filter_by(skill_id=skill_id).first() #find skill from skill id
     if skill:
         if skill.skill_status == 0:
@@ -246,7 +245,7 @@ def soft_delete_skills(skill_id):
         }), 404
 
 @app.route("/skills/restore/<string:skill_id>", methods=['PUT'])
-def restore_skills(skill_id):
+def restore_skill(skill_id):
     skill = Skills.query.filter_by(skill_id=skill_id).first() #find skill from skill id
     if skill:
         if skill.skill_status == 1:
