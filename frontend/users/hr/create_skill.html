@@ -31,7 +31,7 @@
       <h2 class="my-5">Create Skill</h2>
       <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="./skills.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="./skills.html">View All Skills</a></li>
             <li class="breadcrumb-item active" aria-current="page">
                Create skill
             </li>
@@ -62,7 +62,8 @@
                            <label for="name-input" class="form-label">
                               Skill Name
                            </label>
-                           <input type="text" class="form-control" id="name-input" v-model="skillForm.name"  maxlength="64">
+                           <input type="text" class="form-control" id="name-input" v-model="skillForm.name"
+                              maxlength="64">
                            <small class="text-danger">
                               {{errorMsgs.name}}
                            </small>
@@ -75,7 +76,8 @@
                            <label for="category-input" class="form-label">
                               Category
                            </label>
-                           <input type="text" class="form-control" id="category-input" v-model="skillForm.category"  maxlength="64">
+                           <input type="text" class="form-control" id="category-input" v-model="skillForm.category"
+                              maxlength="64">
                            <small class="text-danger">
                               {{errorMsgs.category}}
                            </small>
