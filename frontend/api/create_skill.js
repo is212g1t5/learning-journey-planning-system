@@ -1,4 +1,5 @@
 const create = Vue.createApp({
+   //resolving
    data() {
       return {
          skillForm: {
@@ -104,10 +105,6 @@ const create = Vue.createApp({
          this.skillForm.name +
          "?";
       },
-      //cancel skill creation
-      cancelNewSkill() {
-         this.confirmationMsg = "";
-      },
       //call role api to create new skill
       async createNewSkill() {
          //call api to create new skill
@@ -145,6 +142,7 @@ const create = Vue.createApp({
          } catch (err) {
             // Handle Error Here
             console.error(err);
+            this.alerts.showAlert = true;
          }
       },
    },
