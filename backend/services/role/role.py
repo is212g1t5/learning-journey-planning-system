@@ -5,14 +5,16 @@ from os import environ
 
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
+    'dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 db = SQLAlchemy(app)
 
+
 class Role(db.Model):
-    
+
     __tablename__ = 'roles'
 
     role_id = db.Column(db.Integer(), primary_key=True)
@@ -33,7 +35,9 @@ class Role(db.Model):
     def json(self):
         return {"role_id": self.role_id, "role_name": self.role_name, "role_desc": self.role_desc, "role_status": self.role_status, "role_sector": self.role_sector, "role_track": self.role_track}
 
-#AL-25 -- View all -- 
+# AL-25 -- View all --
+
+
 @app.route("/roles")
 def get_all():
     role_list = Role.query.all()
@@ -54,7 +58,9 @@ def get_all():
     ), 404
 
 # AL-2 -- Add New --
-@app.route("/roles/create", methods=['POST','GET'])
+
+
+@app.route("/roles/create", methods=['POST', 'GET'])
 def create_role():
     data = request.get_json()
     role_list = Role.query.all()
@@ -83,7 +89,7 @@ def create_role():
                 "message": "Role name cannot be empty."
             }
         ), 400
-        
+
     if data['role_desc'] == "":
         return jsonify(
             {
@@ -105,7 +111,7 @@ def create_role():
                 "message": "Role status cannot be empty."
             }
         ), 400
-    
+
     if data['role_sector'] == "":
         return jsonify(
             {
@@ -116,7 +122,7 @@ def create_role():
                 "message": "Role sector cannot be empty."
             }
         ), 400
-    
+
     if data['role_track'] == "":
         return jsonify(
             {
@@ -128,9 +134,9 @@ def create_role():
             }
         ), 400
 
-
-    role_id= role_list[-1].role_id +1
-    role = Role(role_id=role_id, role_name=data['role_name'].lower(), role_desc=data['role_desc'].lower(), role_status=data['role_status'], role_sector=data['role_sector'].lower(), role_track=data['role_track'].lower())
+    role_id = role_list[-1].role_id + 1
+    role = Role(role_id=role_id, role_name=data['role_name'].lower(), role_desc=data['role_desc'].lower(
+    ), role_status=data['role_status'], role_sector=data['role_sector'].lower(), role_track=data['role_track'].lower())
 
     try:
         db.session.add(role)
@@ -154,7 +160,16 @@ def create_role():
     ), 201
 
 # AL-3 & AL-18 & AL-17-- Update --
-@app.route("/roles/update/<int:role_id>", methods=['PUT','GET'])
+
+
+@app.route("/roles/<int:role_id>")
+def get_role(role_id):
+    role = Role.query.filter_by(role_id=role_id).first()
+    if role:
+        return jsonify(role.json())
+
+
+@app.route("/roles/update/<int:role_id>", methods=['PUT', 'GET'])
 def update_role(role_id):
     data = request.get_json()
     role = Role.query.filter_by(role_id=role_id).first()
@@ -167,31 +182,31 @@ def update_role(role_id):
             }), 400
         # validation: check if no changes were made
         if data['role_name'] != role.role_name:
-            if data['role_name']  != '':
+            if data['role_name'] != '':
                 role.role_name = data['role_name']
             else:
                 return jsonify({"code": 400, "message": "Role name cannot be empty."}), 400
 
         if data['role_desc'] != role.role_desc:
-            if data['role_desc']  != '':
+            if data['role_desc'] != '':
                 role.role_desc = data['role_desc']
             else:
                 return jsonify({"code": 400, "message": "Role description cannot be empty."}), 400
 
         if data['role_status'] != role.role_status:
-            if data['role_status']  != '':
+            if data['role_status'] != '':
                 role.role_status = data['role_status']
             else:
                 return jsonify({"code": 400, "message": "Role status cannot be empty."}), 400
 
         if data['role_sector'] != role.role_sector:
-            if data['role_sector']  != '':
+            if data['role_sector'] != '':
                 role.role_sector = data['role_sector']
             else:
                 return jsonify({"code": 400, "message": "Role sector cannot be empty."}), 400
-        
+
         if data['role_track'] != role.role_track:
-            if data['role_track']  != '':
+            if data['role_track'] != '':
                 role.role_track = data['role_track']
             else:
                 return jsonify({"code": 400, "message": "Role track cannot be empty."}), 400
@@ -214,6 +229,7 @@ def update_role(role_id):
             "code": 404,
             "message": "Role does not exist in database."
         }), 404
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)
