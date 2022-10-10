@@ -76,7 +76,7 @@ def display_skill():
             {
                 "code": 200,
                 "data": {
-                    "skills_roles": [skill.json() for skill in skill_list]
+                    "skills": [skill.json() for skill in skill_list]
                 }
             }
         )
