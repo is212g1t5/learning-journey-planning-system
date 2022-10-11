@@ -95,7 +95,7 @@ def create_role():
             {
                 "code": 409,
                 "data": {
-                    "role_name": data['role_name'].lower()
+                    "role_name": data['role_name']
                 },
                 "message": "This role already exists."
             }
@@ -158,7 +158,7 @@ def create_role():
 
 
     role_id= role_list[-1].role_id +1
-    role = Role(role_id=role_id, role_name=data['role_name'].lower(), role_desc=data['role_desc'].lower(), role_status=data['role_status'], role_sector=data['role_sector'].lower(), role_track=data['role_track'].lower())
+    role = Role(role_id=role_id, role_name=data['role_name'], role_desc=data['role_desc'], role_status=data['role_status'], role_sector=data['role_sector'], role_track=data['role_track'])
 
     try:
         db.session.add(role)
@@ -168,7 +168,7 @@ def create_role():
             {
                 "code": 500,
                 "data": {
-                    "role": role.role_name.lower()
+                    "role": role.role_name
                 },
                 "message": "An error occurred creating the role."
             }
