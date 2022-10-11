@@ -75,7 +75,7 @@ def get_all():
     ), 404
 
 # Display one role
-@app.route("/roles/<string:role_id>")
+@app.route("/roles/<int:role_id>")
 def get_role(role_id):
     role = Role.query.filter_by(role_id=role_id).first()
     if role:
@@ -244,7 +244,7 @@ def update_role(role_id):
         }), 404
 
 # AL-17 Delete --
-@app.route("/roles/delete/<string:role_id>", methods=['DELETE'])
+@app.route("/roles/delete/<int:role_id>", methods=['DELETE'])
 def soft_delete_role(role_id):
     role = Role.query.filter_by(role_id=role_id).first() #find role from role id
     if role:
