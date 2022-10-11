@@ -15,7 +15,7 @@ class Course(db.Model):
     course_id = db.Column(db.String(24), primary_key=True)
     course_name = db.Column(db.String(64), nullable=False)
     course_desc = db.Column(db.String(250), nullable=False)
-    course_status = db.Column(db.Boolean(), nullable=False)
+    course_status = db.Column(db.Integer, nullable=False)
     course_type = db.Column(db.String(10), nullable=False)
     course_category = db.Column(db.String(50), nullable=False)
 
@@ -172,6 +172,6 @@ def update_course(course_id):
     ), 404
 
 if __name__ == '__main__':
-    app.run( host='0.0.0.0', port=5002, debug=True)
+    app.run( host='0.0.0.0', port=5003, debug=True)
 
 # 
