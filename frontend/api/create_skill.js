@@ -86,7 +86,7 @@ const create = Vue.createApp({
             });
 
             data = res.data.data;
-            this.existingSkills = data.roles.map((skill) => skill.skill_name.toLowerCase());
+            this.existingSkills = data.skills.map((skill) => skill.skill_name.toLowerCase());
             console.log(this.existingSkills);
 
          } catch (err) {
