@@ -1,7 +1,16 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from os import environ
+# roles service
+
+from flask import Flask, request, jsonify  # web framework
+from flask_sqlalchemy import SQLAlchemy  # for database (ORM)
+from flask_cors import CORS  # enable CORS
+
+from os import environ  # access env variable
+
+# ====================
+
+#   F L A S K  &  D B  S E T U P
+
+# ====================
 
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
@@ -14,13 +23,12 @@ db = SQLAlchemy(app)
 
 
 class Role(db.Model):
-
     __tablename__ = 'roles'
 
-    role_id = db.Column(db.Integer(), primary_key=True)
+    role_id = db.Column(db.Integer, primary_key=True)
     role_name = db.Column(db.String(64), nullable=False)
     role_desc = db.Column(db.String(64), nullable=False)
-    role_status = db.Column(db.Boolean(), nullable=False)
+    role_status = db.Column(db.Boolean, nullable=False)
     role_sector = db.Column(db.String(64), nullable=False)
     role_track = db.Column(db.String(64), nullable=False)
 
@@ -35,9 +43,20 @@ class Role(db.Model):
     def json(self):
         return {"role_id": self.role_id, "role_name": self.role_name, "role_desc": self.role_desc, "role_status": self.role_status, "role_sector": self.role_sector, "role_track": self.role_track}
 
-# AL-25 -- View all --
+# ====================
 
+#   A P I  E N D P O I N T S
 
+    # get_all(): Diplay all roles
+    # create_role(): Receive new role details and create new role into the db
+    # get_role(role_id): Display only one role
+    # update_role(role_id): Receive updated role details and reflect updated details in the db
+    # soft_delete_role(role_id): Update role status to 0
+    # restore_role(role_id): Update role status to 1 [will be added in Sprint 3]
+
+# ====================
+
+#AL-25 -- View all -- 
 @app.route("/roles")
 def get_all():
     role_list = Role.query.all()
@@ -57,9 +76,8 @@ def get_all():
         }
     ), 404
 
+
 # AL-2 -- Add New --
-
-
 @app.route("/roles/create", methods=['POST', 'GET'])
 def create_role():
     data = request.get_json()
@@ -73,7 +91,7 @@ def create_role():
             {
                 "code": 409,
                 "data": {
-                    "role_name": data['role_name'].lower()
+                    "role_name": data['role_name']
                 },
                 "message": "This role already exists."
             }
@@ -134,9 +152,8 @@ def create_role():
             }
         ), 400
 
-    role_id = role_list[-1].role_id + 1
-    role = Role(role_id=role_id, role_name=data['role_name'].lower(), role_desc=data['role_desc'].lower(
-    ), role_status=data['role_status'], role_sector=data['role_sector'].lower(), role_track=data['role_track'].lower())
+    role_id= role_list[-1].role_id +1
+    role = Role(role_id=role_id, role_name=data['role_name'], role_desc=data['role_desc'], role_status=data['role_status'], role_sector=data['role_sector'], role_track=data['role_track'])
 
     try:
         db.session.add(role)
@@ -146,7 +163,7 @@ def create_role():
             {
                 "code": 500,
                 "data": {
-                    "role": role.role_name.lower()
+                    "role": role.role_name
                 },
                 "message": "An error occurred creating the role."
             }
@@ -159,9 +176,8 @@ def create_role():
         }
     ), 201
 
-# AL-3 & AL-18 & AL-17-- Update --
 
-
+# AL-3 & AL-18 Update --
 @app.route("/roles/<int:role_id>")
 def get_role(role_id):
     role = Role.query.filter_by(role_id=role_id).first()
@@ -224,6 +240,37 @@ def update_role(role_id):
                 "message": "An error occurred while updating the role."
             }), 500
 
+    else:
+        return jsonify({
+            "code": 404,
+            "message": "Role does not exist in database."
+        }), 404
+
+
+# AL-17 Delete --
+@app.route("/roles/delete/<int:role_id>", methods=['DELETE'])
+def soft_delete_role(role_id):
+    role = Role.query.filter_by(role_id=role_id).first() #find role from role id
+    if role:
+        if role.role_status == 0:
+            return jsonify({
+                "code": 400,
+                "message": "Role is already retired."
+            }), 400
+        else:
+            role.role_status = 0
+        try:
+            db.session.commit()
+            return jsonify({
+                "code": 200,
+                "data": role.json(),
+                "message": "Role retired."
+            }), 200
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred while deleting the role."
+            }), 500
     else:
         return jsonify({
             "code": 404,

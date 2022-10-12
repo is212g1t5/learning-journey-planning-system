@@ -1,13 +1,14 @@
-const delete_skill = Vue.createApp({
+const delete_role = Vue.createApp({
     data() {
       return {
         id: "",
-        skillInfo: {
+        roleInfo: {
             id: "",
             name: "",
-            category: "",
             desc: "",
             status: true,
+            sector: "",
+            track: "",
         },
         msges: {
             successMsg: "",
@@ -18,10 +19,10 @@ const delete_skill = Vue.createApp({
       };
     },
     methods: {
-        deleteSkill() {      
+        deleteRole() {      
             this.msges.errorAlert = false;
             this.msges.successAlert = false;       
-            axios.delete("http://localhost:5001/skills/delete/" + this.id)
+            axios.delete("http://localhost:5002/roles/delete/" + this.id)
             .then((response) => {
                 console.log(response.data)
             })
@@ -36,14 +37,14 @@ const delete_skill = Vue.createApp({
             .finally(() => {
                 this.loading = false;
             });
-            this.skillInfo.status = false;
+            this.roleInfo.status = false;
             this.msges.successAlert = true;
             this.msges.successMsg = "✔️ Delete Successful!"
         },
-        restoreSkill() {      
+        restoreRole() {      
             this.msges.errorAlert = false;
             this.msges.successAlert = false;   
-            axios.put("http://localhost:5001/skills/restore/" + this.id)
+            axios.put("http://localhost:5002/roles/restore/" + this.id)
             .then((response) => {
                 console.log(response.data)
             })
@@ -58,7 +59,7 @@ const delete_skill = Vue.createApp({
             .finally(() => {
                 this.loading = false;
             });
-            this.skillInfo.status = true;
+            this.roleInfo.status = true;
             this.msges.successAlert = true;
             this.msges.successMsg = "✔️ Restore Successful!"
         },
@@ -72,14 +73,15 @@ const delete_skill = Vue.createApp({
     },
     mounted() {
         axios
-        .get("http://localhost:5001/skills/" + this.id)
+        .get("http://localhost:5002/roles/" + this.id)
         .then((response) => {
-            skill = response.data;
-            this.skillInfo.id = skill.skill_id;
-            this.skillInfo.name = skill.skill_name;
-            this.skillInfo.category = skill.skill_category;
-            this.skillInfo.desc = skill.skill_desc;
-            this.skillInfo.status = skill.skill_status;
+            role = response.data;
+            this.roleInfo.id = role.role_id;
+            this.roleInfo.name = role.role_name;
+            this.roleInfo.desc = role.role_desc;
+            this.roleInfo.status = role.role_status;
+            this.roleInfo.sector = role.role_sector;
+            this.roleInfo.track = role.role_track;
         })
         .catch((error) => {
             if (error) {
@@ -93,4 +95,4 @@ const delete_skill = Vue.createApp({
     },
     });
   
-delete_skill.mount("#delete_skill");
+delete_role.mount("#delete_role");
