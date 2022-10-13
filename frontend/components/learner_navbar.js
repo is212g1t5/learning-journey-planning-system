@@ -1,7 +1,7 @@
-const app = Vue.createApp({});
+const navbar = Vue.createApp({});
 
 //navbar vue component
-app.component("navbar", {
+navbar.component("navbar", {
   data() {
     return {
       appName: "ljps",
@@ -9,18 +9,18 @@ app.component("navbar", {
   },
   computed: {
     links() {
-      if (window.location.href.includes("learner")) {
-        if (window.location.href.includes("role")) {
+      if (window.location.href.includes("learners")) {
+        if (window.location.href.includes("journey")) {
           return {
-            roleLink: "",
-            LJLink: "./learning_journey",
-            learnerLink: "./",
+            roleLink: "./",
+            ljLink: "./journeys",
             hrLink: "../hr",
+            learnerLink: "./",
           };
         } else {
           return {
             roleLink: "./",
-            LJLink: "",
+            ljLink: "./journeys",
             hrLink: "../hr",
             learnerLink: "./",
           };
@@ -40,7 +40,7 @@ app.component("navbar", {
           <a class="nav-link" aria-current="page" :href=links.roleLink>Roles</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" :href=links.LJLink>Learning Journey</a>
+          <a class="nav-link" :href=links.ljLink>Learning Journey</a>
         </li>
       </ul>
       <span>
@@ -64,4 +64,4 @@ app.component("navbar", {
   </div>
 </nav>`,
 });
-app.mount("#navbar");
+navbar.mount("#navbar");
