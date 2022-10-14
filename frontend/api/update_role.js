@@ -22,6 +22,11 @@ const update = Vue.createApp({
         showSuccess: false,
         successMsg: "",
       },
+      skillSearch: "",
+      skillsList: [],
+      assignedSkills: [],
+      addedSKills: [],
+      removedSkills: [],
     };
   },
   methods: {
@@ -30,7 +35,7 @@ const update = Vue.createApp({
       this.alerts.showSuccess = false;
       axios
         .put(
-          "http://localhost:5002/roles/update/" + this.id,
+          "http://127.0.0.1:5002/roles/update/" + this.id,
           {
             role_name: this.roleForm.name,
             role_desc: this.roleForm.description,
@@ -54,6 +59,41 @@ const update = Vue.createApp({
           this.loading = false;
         });
     },
+    async getAllSkills() {
+      //call api to get all skills
+      try {
+        const res = await axios({
+          url: "http://127.0.0.1:5001/skills",
+        });
+
+        data = res.data.data;
+        this.skillsList = data.skills;
+        console.log(this.skillsList);
+
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+    },
+    //get skills tied to role
+    async getAssignedSkills() {
+      try {
+        const res = await axios({
+          url: "http://127.0.0.1:5005/skills_roles/" + this.id
+        });
+
+        data = res.data.data;
+        this.assignedSkills = data.skills_roles.map((pair) => pair.skills_id);
+        console.log(this.assignedSkills);
+
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+    },
+    //assign skills to role
+
+    //remove skills from role
   },
   created() {
     let urlParams = new URLSearchParams(window.location.search);
@@ -63,7 +103,7 @@ const update = Vue.createApp({
   },
   mounted() {
     axios
-      .get("http://localhost:5002/roles/" + this.id)
+      .get("http://127.0.0.1:5002/roles/" + this.id)
       .then((response) => {
         role = response.data;
         this.roleForm.id = role.role_id;
@@ -80,6 +120,12 @@ const update = Vue.createApp({
       .finally(() => {
         this.loading = false;
       });
+
+      //retrieve all skills
+    this.getAllSkills();
+
+    //retrieve list of id of assigned skills
+    this.getAssignedSkills();
   },
   watch: {
     "roleForm.name"(newValue) {
@@ -144,6 +190,9 @@ const update = Vue.createApp({
           return error !== "";
         })
       );
+    },
+    skillOptions() {
+      return this.skillsList;
     },
   },
 });
