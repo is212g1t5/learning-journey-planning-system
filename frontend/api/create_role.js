@@ -127,6 +127,7 @@ const createRole = Vue.createApp({
 
             this.alerts.successMsg = "New role '" + data.role_name + "' created successfully";
             this.alerts.showSuccess = true;
+            this.getAllRoleNames();
 
          //to be continued...
          //redirect to created skill details page

@@ -129,6 +129,7 @@ const create = Vue.createApp({
             this.viewSkillLink = `<a href="${this.skill_api.viewSpecific}${data.skill_id}">${data.skill_name}</a>`;
 
             this.alerts.showSuccess = true;
+            this.getAllSkillNames();
             //reset form
             this.skillForm = {
                name: "",
