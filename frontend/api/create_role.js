@@ -46,7 +46,7 @@ const createRole = Vue.createApp({
       "roleForm.name"(newValue) {
          if (newValue && newValue.trim().length > 0) {
          //check if skill name already exists
-         if (this.existingRoles.includes(newValue.toLowerCase())) {
+         if (this.existingRoles.includes(newValue.trim().toLowerCase())) {
             this.errorMsgs.name = "Skill already exists";
          } else {
             this.errorMsgs.name = "";
@@ -113,10 +113,10 @@ const createRole = Vue.createApp({
                method: "post",
                url: this.role_api.create,
                data: {
-                  role_name: this.roleForm.name,
-                  role_sector: this.roleForm.sector,
-                  role_desc: this.roleForm.description,
-                  role_track: this.roleForm.track,
+                  role_name: this.roleForm.name.trim(),
+                  role_sector: this.roleForm.sector.trim(),
+                  role_desc: this.roleForm.description.trim(),
+                  role_track: this.roleForm.track.trim(),
                   role_status: this.roleForm.status
                },
             });
