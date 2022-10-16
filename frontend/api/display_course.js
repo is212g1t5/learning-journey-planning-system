@@ -101,7 +101,7 @@ const display_courses = Vue.createApp({
         }
     },
     methods: {
-        async getAllCourses(){
+        getAllCourses(){
             axios
                 .get("http://localhost:5003/courses")
                 .then((response) => {
@@ -121,8 +121,8 @@ const display_courses = Vue.createApp({
                     console.log(error);
                 })
         },
-        async getAllSkills(){
-           await axios
+        getAllSkills(){
+           axios
                 .get("http://localhost:5001/skills")
                 .then((response) => {
                     if (response.data.code == 404) {
@@ -138,8 +138,8 @@ const display_courses = Vue.createApp({
                     console.log(error);
                 })
         },
-        async getAllSkillsCourses(){
-           await axios
+        getAllSkillsCourses(){
+           axios
                 .get("http://localhost:5004/skills_courses/all")
                 .then((response) => {
                     if (response.data.code == 404) {
