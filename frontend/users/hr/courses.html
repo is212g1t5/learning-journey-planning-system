@@ -92,9 +92,7 @@
                           <td>{{course.course_status}}</td>
                           <td>{{course.skill_name}}</td>
                           <td>
-                                <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
-                                Map Skill
-                              </button> 
+                            <button type="button" class="btn btn-success btn-sm mx-1" @click="mapSkill(course.course_id)"><i class="fa fa-pencil"></i> Map Skill</button>
                               <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
                                 View Details
                               </button>
