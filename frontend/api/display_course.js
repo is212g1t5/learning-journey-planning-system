@@ -2,11 +2,15 @@ const display_courses = Vue.createApp({
     data() {
         return {
             course_list: [],
+            skill_list: [],
+            skills_courses_list: [],
+            final_course_data:[],
             emptyText: "",
             searchQuery: null,
             fields: [
                 { key: 'course_name', label: 'Course Name', sortable: true, sortDirection: 'desc' },
                 { key: 'course_category', label: 'Course Category', sortable: true },
+                { key: 'skill_name', label: 'Skill Name', sortable: true },
                 {
                     key: 'course_status',
                     label: 'Is Active',
@@ -35,15 +39,40 @@ const display_courses = Vue.createApp({
                 'course_name': 'mx-2 fa fa-xs fa-sort',
                 'course_category': 'mx-2 fa fa-xs fa-sort',
                 'course_status': 'mx-2 fa fa-xs fa-sort',
+                'skill_name': 'mx-2 fa fa-xs fa-sort',
             },
             pageItemIcon: {
                 'false': 'page-item',
                 'true': 'page-item active'
             },
-            createSkillLink: "create_skill.html"
         }
     },
     computed: {
+        finalCourseList(){
+            this.getAllSkills();
+            this.getAllSkillsCourses();
+            console.log(this.skills_courses_list);
+            for(course of this.course_list){
+                var course_id = course.course_id;
+                var skill_name = "";
+                var skill_id = "";
+                for(skills_courses of this.skills_courses_list){
+                    if(course_id == skills_courses.course_id){
+                        skill_id = skills_courses.skill_id;
+                        }
+                    }
+                for(skill of this.skill_list){
+                    if(skill_id == skill.skill_id){
+                        skill_name = skill.skill_name;
+                        course.skill_name = skill_name;
+                        
+                    }
+                    
+                }
+            
+            }
+            
+        },
         sortedResultQuery() {
             return this.resultQuery.sort((a, b) => {
                 let modifier = 1;
@@ -54,6 +83,7 @@ const display_courses = Vue.createApp({
             });
         },
         resultQuery() {
+            this.finalCourseList;
             if (this.searchQuery) {
                 return this.course_list.filter(item => {
                     return this.searchQuery
@@ -77,11 +107,41 @@ const display_courses = Vue.createApp({
         }
     },
     methods: {
-        updateSkill(id) {
-            window.location.href = 'update_skill.html?id=' + id;
+        async getAllSkills(){
+           await axios
+                .get("http://localhost:5001/skills")
+                .then((response) => {
+                    if (response.data.code == 404) {
+                        this.emptyText += "\nThere are no skills record, please create skill."
+                        return []
+                    } else {
+                
+                        var skill_list = response.data.data.skills;
+                        this.skill_list = skill_list
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         },
-        deleteSkill(id) {
-            window.location.href = 'delete_skill.html?id=' + id;
+        async getAllSkillsCourses(){
+           await axios
+                .get("http://localhost:5004/skills_courses/all")
+                .then((response) => {
+                    if (response.data.code == 404) {
+                        return
+                    } else {
+                        
+                        var skills_courses_list = response.data.data.skills_courses;
+                        this.skills_courses_list = skills_courses_list;
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
+        mapSkill(id) {
+            window.location.href = 'map_skill.html?id=' + id;
         },
         sort(s) {
             //if s == current sort, reverse
@@ -123,14 +183,14 @@ const display_courses = Vue.createApp({
             this.currentPage = page;
             this.endRow = parseInt(this.currentPage) * parseInt(this.perPage);
             this.startRow = parseInt(this.endRow) - parseInt(this.perPage);
-        }
+        },
     },
     mounted() {
         axios
             .get("http://localhost:5003/courses")
             .then((response) => {
                 if (response.data.code == 404) {
-                    this.emptyText = "There are no courses recorded. Please fetch data from LMS."
+                    this.emptyText += "There are no courses recorded. Please fetch data from LMS."
                     return
                 } else {
                     var course_list = response.data.data.courses;
@@ -139,14 +199,15 @@ const display_courses = Vue.createApp({
                     // Set the initial number of items
                     this.totalRows = this.course_list.length;
                     this.pageSize = Math.ceil(this.totalRows / this.perPage);
-                    console.log(course_list)
                 }
-
             })
             .catch((error) => {
                 console.log(error);
             })
+        
+        
     },
 })
 
 display_courses.mount("#display_courses");
+

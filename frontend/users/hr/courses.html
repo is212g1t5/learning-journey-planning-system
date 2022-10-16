@@ -20,6 +20,7 @@
 <body>
     <div id="navbar">
         <navbar></navbar>
+        
     </div>
     <div class="container">
         <div class="container" id="display_courses">
@@ -79,6 +80,7 @@
                             <th @click="sort('course_name')" data-field="course"  data-sortable="true" scope="col">Course <i :class="sortIcon.course_name"></i></th>
                             <th @click="sort('course_category')" data-field="category"  data-sortable="true" scope="col">Category<i :class="sortIcon.course_category"></i></th>
                             <th @click="sort('course_status')" data-field="active"  data-sortable="true" scope="col">Is Active<i :class="sortIcon.course_status"></i></th>
+                            <th @click="sort('skill_name')" data-field="active"  data-sortable="true" scope="col">Skill<i :class="sortIcon.skill_name"></i></th>
                             <th data-field="actions"  data-sortable="true" scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -88,10 +90,15 @@
                           <td>{{course.course_name}}</td>
                           <td>{{course.course_category}}</td>
                           <td>{{course.course_status}}</td>
-                          <td> 
+                          <td>{{course.skill_name}}</td>
+                          <td>
+                                <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
+                                Map Skill
+                              </button> 
                               <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
                                 View Details
                               </button>
+                              
                           </td>
                           </tr>
                           <tr class="collapse" :id="`collapse-${course.course_id}`" >

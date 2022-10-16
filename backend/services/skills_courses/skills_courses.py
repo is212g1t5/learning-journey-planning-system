@@ -19,7 +19,7 @@ class SkillsCourses(db.Model):
         self.course_id = course_id
 
     def json(self):
-        return {"skills_id": self.skill_id, "course_id": self.course_id}
+        return {"skill_id": self.skill_id, "course_id": self.course_id}
 
 # --view all skills --
 @app.route("/skills_courses/all")
