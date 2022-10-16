@@ -26,6 +26,10 @@ body {
   }
 }
 
+.bg-success {
+  background-color: #3CB371 !important;
+}
+
 /* update role styling */
 .list-group {
   height: 18vh;

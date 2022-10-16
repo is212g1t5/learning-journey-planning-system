@@ -102,16 +102,50 @@
                             Skills Assigned
                         </label>
 
-                        <!-- assigned skills pills -->
-                        <div class="mb-3">
+                        <!-- newly assigned skills -->
+                        <div class="mb-3" v-if="addedSkills.length !== 0">
                             <template v-for="skill in skillsList">
-                                <span class="badge rounded-pill bg-dark px-3 me-3" v-if="assignedSkills.includes(skill.skill_id)">
+                                <span class="badge rounded-pill bg-success px-2 me-3" v-if="addedSkills.includes(skill.skill_id)">
                                     {{ skill.skill_name }}
-                                    <button type="button" class="ps-1 text-secondary close-btn">
+                                    <button type="button" class="ps-1 text-dark close-btn" @click="addedSkills.splice(addedSkills.indexOf(skill.skill_id), 1)">
                                         &times;
                                     </button>
                                 </span>
                             </template>
+                            <hr>
+                        </div>
+
+                        <!-- assigned skills pills -->
+                        <div class="mb-3">
+                            <template v-for="skill in skillsList">
+                                <span class="badge rounded-pill bg-dark px-2 me-3" v-if="assignedSkills.includes(skill.skill_id) && !removedSkills.includes(skill.skill_id)">
+                                    {{ skill.skill_name }}
+                                    <button type="button" class="ps-1 text-secondary close-btn" @click="removedSkills.push(skill.skill_id)">
+                                        &times;
+                                    </button>
+                                </span>
+                            </template>
+                            <span v-if="!hasSkills" class="text-danger">
+                                No skills assigned.
+                            </span>
+                        </div>
+
+                        <!-- skills to be removed -->
+                        <div class="my-3" v-if="removedSkills.length > 0">
+                            <label for="skills-removed" class="form-label">
+                                Removed Skills
+                            </label>
+
+                            <div class="mb-3">
+                                <template v-for="skill in skillsList">
+                                    <span class="badge rounded-pill bg-danger px-2 me-3" v-if="removedSkills.includes(skill.skill_id)">
+                                        {{ skill.skill_name }}
+                                        <button type="button" class="ps-1 text-white close-btn" @click="removedSkills.splice(removedSkills.indexOf(skill.skill_id), 1)">
+                                            +
+                                        </button>
+                                    </span>
+                                </template>
+                            </div>
                         </div>
                     </div>
 
@@ -120,13 +154,19 @@
                         <label for="skills-options" class="form-label">
                             Assign Skills
                         </label>
+                        
+                        <!-- skill search -->
                         <div class="mb-2">
                             <input type="search" name="search-skills" id="search-skills" placeholder="Type skill name here..." v-model="skillSearch" class="w-100 form-control"> 
                         </div>
 
+                        <!-- skill category filtering -->
+                        <!-- NOT DONE YET -->
+
+                        <!-- available skill buttons -->
                         <div class="list-group skills-options-group">
                             <template v-for="skill in skillOptions">
-                                <button type="button" class="list-group-item list-group-item-action" v-if="!assignedSkills.includes(skill.skill_id)">
+                                <button type="button" class="list-group-item list-group-item-action" @click="addedSkills.push(skill.skill_id)" v-if="skill.skill_name.toLowerCase().includes(skillSearch.toLowerCase())">
                                     {{ skill.skill_name }}
                                 </button>
                             </template>
@@ -153,7 +193,7 @@
 
                 <!-- update button -->
                 <button type="button" class="btn btn-primary my-3 w-100 p-3" data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop" :disabled="isFormValid">
+                    data-bs-target="#staticBackdrop" :disabled="isFormInvalid">
                     Update
                 </button>
 

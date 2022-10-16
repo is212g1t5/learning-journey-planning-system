@@ -2,11 +2,18 @@ const update = Vue.createApp({
   data() {
     return {
       id: "",
+      currentRoleInfo: {
+        name: "",
+        description: "",
+        status: true, //0 - retired; 1 - active
+        sector: "",
+        track: "",
+      },
       roleForm: {
         id: "",
         name: "",
         description: "",
-        status: true, //0 - retired; 1 - active
+        status: true,
         sector: "",
         track: "",
       },
@@ -25,12 +32,32 @@ const update = Vue.createApp({
       skillSearch: "",
       skillsList: [],
       assignedSkills: [],
-      addedSKills: [],
+      addedSkills: [],
       removedSkills: [],
     };
   },
   methods: {
     updateRole() {
+      //if new skills to assign, assign added skills
+      if (this.addedSkills.length > 0) {
+        for (let id of this.addedSkills) {
+          this.assignSkills(id);
+        }
+      }
+
+      //if skills to remove, remove skills
+      if (this.removedSkills.length > 0) {
+        for (let id of this.removedSkills) {
+          this.removeSkills(id);
+        }
+      }
+
+      //update role details
+      if (this.hasChangesMade) {
+        this.updateRoleDetails();
+      }
+    },
+    updateRoleDetails() {
       this.alerts.showAlert = false;
       this.alerts.showSuccess = false;
       axios
@@ -84,7 +111,6 @@ const update = Vue.createApp({
 
         data = res.data.data;
         this.assignedSkills = data.skills_roles.map((pair) => pair.skills_id);
-        console.log(this.assignedSkills);
 
       } catch (err) {
         // Handle Error Here
@@ -92,8 +118,43 @@ const update = Vue.createApp({
       }
     },
     //assign skills to role
+    async assignSkills(skillId){
+      try {
+        const res = await axios({
+          url: "http://127.0.0.1:5005/skills_roles",
+          method: 'post',
+          data: {
+            role_id: this.id,
+            skill_id: skillId
+          }
+        });
 
+        data = res.data.data;
+        this.addedSkills = [];
+        this.getAssignedSkills();
+
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+    },
     //remove skills from role
+    async removeSkills(skillId){
+      try {
+        const res = await axios({
+          url: "http://127.0.0.1:5005/skills_roles/" + skillId + "/" + this.id,
+          method: 'delete'
+        });
+
+        data = res.data.data;
+        this.removedSkills = [];
+        this.getAssignedSkills();
+
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+    }
   },
   created() {
     let urlParams = new URLSearchParams(window.location.search);
@@ -107,11 +168,17 @@ const update = Vue.createApp({
       .then((response) => {
         role = response.data;
         this.roleForm.id = role.role_id;
-        this.roleForm.name = role.role_name;
-        this.roleForm.description = role.role_desc;
-        this.roleForm.status = role.role_status;
-        this.roleForm.sector = role.role_sector;
-        this.roleForm.track = role.role_track;
+        this.currentRoleInfo.name = role.role_name;
+        this.currentRoleInfo.description = role.role_desc;
+        this.currentRoleInfo.status = role.role_status;
+        this.currentRoleInfo.sector = role.role_sector;
+        this.currentRoleInfo.track = role.role_track;
+
+        this.roleForm.name = this.currentRoleInfo.name
+        this.roleForm.description = this.currentRoleInfo.description
+        this.roleForm.status = this.currentRoleInfo.status
+        this.roleForm.sector = this.currentRoleInfo.sector
+        this.roleForm.track = this.currentRoleInfo.track
       })
       .catch((error) => {
         console.log(error);
@@ -121,7 +188,7 @@ const update = Vue.createApp({
         this.loading = false;
       });
 
-      //retrieve all skills
+    //retrieve all skills
     this.getAllSkills();
 
     //retrieve list of id of assigned skills
@@ -180,21 +247,52 @@ const update = Vue.createApp({
     },
   },
   computed: {
-    isFormValid() {
+    isFormInvalid() {
       return (
         !this.roleForm.name.trim() ||
         !this.roleForm.description.trim() ||
         !this.roleForm.sector.trim() ||
         !this.roleForm.track.trim() ||
         Object.values(this.errorMsgs).some((error) => {
-          return error !== "";
-        })
+          return error !== ""
+        }) ||
+        !(this.hasChangesMade || this.addedSkills.length > 0 || this.removedSkills.length > 0) ||
+        !this.hasSkills
       );
     },
+    //return skills that are not assigned to role and not already added
     skillOptions() {
-      return this.skillsList;
+      let result = [];
+
+      for (let skill of this.skillsList) {
+        if (
+          !this.assignedSkills.includes(skill.skill_id) &&
+          !this.addedSkills.includes(skill.skill_id) &&
+          !this.removedSkills.includes(skill.skill_id)
+        ) {
+          result.push(skill);
+        }
+      }
+
+      return result;
     },
+    //return if there are any skills assigend or to be assigned to the role
+    hasSkills() {
+      return this.addedSkills.length > 0 ||
+      this.assignedSkills.length !== this.removedSkills.length;
+    },
+    //check if changes have been made to role details
+    hasChangesMade() {
+      return (
+        this.roleForm.name !== this.currentRoleInfo.name ||
+        this.roleForm.description !== this.currentRoleInfo.description ||
+        this.roleForm.status !== this.currentRoleInfo.status ||
+        this.roleForm.sector !== this.currentRoleInfo.sector ||
+        this.roleForm.track !== this.currentRoleInfo.track
+      );
+    }
   },
 });
+
 
 update.mount("#update");
