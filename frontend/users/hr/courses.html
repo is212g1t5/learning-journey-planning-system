@@ -84,12 +84,14 @@
                             <th data-field="actions"  data-sortable="true" scope="col">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                      <template v-if="emptyText==''" v-for="course in paginatedQuery">
+                    <tbody v-bind="finalCourseList">
+                      <template v-if="emptyText==''" v-for="course in paginatedQuery" >
                         <tr>
                           <td>{{course.course_name}}</td>
                           <td>{{course.course_category}}</td>
-                          <td>{{course.course_status}}</td>
+                          
+                          <td v-if="course.course_status == 1">true</td>
+                            <td v-else>false</td>
                           <td>{{course.skill_name}}</td>
                           <td>
                             <button type="button" class="btn btn-success btn-sm mx-1" @click="mapSkill(course.course_id)"><i class="fa fa-pencil"></i> Map Skill</button>

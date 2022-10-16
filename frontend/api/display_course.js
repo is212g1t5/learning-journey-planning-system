@@ -4,7 +4,6 @@ const display_courses = Vue.createApp({
             course_list: [],
             skill_list: [],
             skills_courses_list: [],
-            final_course_data:[],
             emptyText: "",
             searchQuery: null,
             fields: [
@@ -49,9 +48,6 @@ const display_courses = Vue.createApp({
     },
     computed: {
         finalCourseList(){
-            this.getAllSkills();
-            this.getAllSkillsCourses();
-            console.log(this.skills_courses_list);
             for(course of this.course_list){
                 var course_id = course.course_id;
                 var skill_name = "";
@@ -69,9 +65,7 @@ const display_courses = Vue.createApp({
                     }
                     
                 }
-            
             }
-            
         },
         sortedResultQuery() {
             return this.resultQuery.sort((a, b) => {
@@ -83,7 +77,7 @@ const display_courses = Vue.createApp({
             });
         },
         resultQuery() {
-            this.finalCourseList;
+            
             if (this.searchQuery) {
                 return this.course_list.filter(item => {
                     return this.searchQuery
@@ -107,6 +101,26 @@ const display_courses = Vue.createApp({
         }
     },
     methods: {
+        async getAllCourses(){
+            axios
+                .get("http://localhost:5003/courses")
+                .then((response) => {
+                    if (response.data.code == 404) {
+                        this.emptyText += "There are no courses recorded. Please fetch data from LMS."
+                        return
+                    } else {
+                        var course_list = response.data.data.courses;
+                        this.course_list = course_list
+
+                        // Set the initial number of items
+                        this.totalRows = this.course_list.length;
+                        this.pageSize = Math.ceil(this.totalRows / this.perPage);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
         async getAllSkills(){
            await axios
                 .get("http://localhost:5001/skills")
@@ -185,28 +199,14 @@ const display_courses = Vue.createApp({
             this.startRow = parseInt(this.endRow) - parseInt(this.perPage);
         },
     },
-    mounted() {
-        axios
-            .get("http://localhost:5003/courses")
-            .then((response) => {
-                if (response.data.code == 404) {
-                    this.emptyText += "There are no courses recorded. Please fetch data from LMS."
-                    return
-                } else {
-                    var course_list = response.data.data.courses;
-                    this.course_list = course_list
-
-                    // Set the initial number of items
-                    this.totalRows = this.course_list.length;
-                    this.pageSize = Math.ceil(this.totalRows / this.perPage);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        
+   mounted() {
         
     },
+    async created(){
+        await this.getAllCourses();
+        await this.getAllSkills();
+        await this.getAllSkillsCourses();
+    }
 })
 
 display_courses.mount("#display_courses");
