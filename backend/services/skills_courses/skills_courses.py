@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 class SkillsCourses(db.Model):
     __tablename__ = 'skills_courses'
     skill_id = db.Column(db.Integer(), primary_key=True)
-    course_id=  db.Column(db.String(50), primary_key=True)
+    course_id=  db.Column(db.String(20), primary_key=True)
 
     def __init__(self, skill_id, course_id):
         self.skill_id = skill_id
@@ -68,7 +68,7 @@ def create_skills_courses():
         }
     ), 201
 
-# -- Detele skills_courses by course_id --
+# -- Delete skills_courses by course_id --
 @app.route("/skills_courses/delete/<string:course_id>/<int:skill_id>", methods=['DELETE'])
 def delete_skills_courses(course_id, skill_id):
     skills_courses = SkillsCourses.query.filter_by(skill_id=skill_id,course_id=course_id).first()
