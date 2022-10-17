@@ -18,7 +18,49 @@
         <navbar></navbar>
     </div>
     <div class="container">
-        PLACEHOLDER FOR COURSES-SKill MAPPING
+        <h2 class="my-5">Assign Skills to Course</h2>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="./courses.html">View All Courses</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Assign Skills to Course
+                </li>
+            </ol>
+        </nav>
+        <div class="row justify-content-around">
+            <div class="col-5 rounded-3 bg-light p-5" id="mapping">
+                <h3>List of skills</h3>
+                <input type="checkbox" class="btn-check" id="btn-check-2-outlined" checked autocomplete="off">
+                <label class="btn btn-outline-success" for="btn-check-2-outlined">Mapped</label><br>
+            </div>
+            <div class="col-5 rounded-3 bg-light p-5" id="mapped">
+                <h3>Skills Mapped</h3>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary my-3 w-100 p-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Update Mapping
+        </button>
+
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to map these skills to the course?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary my-3" @click="mapSkills()"
+                            data-bs-dismiss="modal">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- bootstrap js -->
@@ -29,6 +71,7 @@
     <script src="https://unpkg.com/vue@next"></script>
     <!-- external js -->
     <script src="../../components/hr_navbar.js"></script>
+    <script src="../../api/map_course.js"></script>
 </body>
 
 </html>
