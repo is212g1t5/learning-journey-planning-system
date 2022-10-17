@@ -29,6 +29,7 @@ const update = Vue.createApp({
         showSuccess: false,
         successMsg: "",
       },
+      existingRoles: [],
       skillSearch: "",
       skillsList: [],
       assignedSkills: [],
@@ -51,6 +52,8 @@ const update = Vue.createApp({
           this.removeSkills(id);
         }
       }
+
+      console.log(this.hasChangesMade);
 
       //update role details
       if (this.hasChangesMade) {
@@ -95,7 +98,6 @@ const update = Vue.createApp({
 
         data = res.data.data;
         this.skillsList = data.skills;
-        console.log(this.skillsList);
 
       } catch (err) {
         // Handle Error Here
@@ -133,9 +135,15 @@ const update = Vue.createApp({
         this.addedSkills = [];
         this.getAssignedSkills();
 
+        this.alerts.successMsg = "Skills assigned successfully.";
+        this.alerts.showSuccess = true;
+
       } catch (err) {
         // Handle Error Here
         console.error(err);
+
+        this.alerts.showAlert = true;
+        this.alerts.alertMsg = err;
       }
     },
     //remove skills from role
@@ -150,17 +158,41 @@ const update = Vue.createApp({
         this.removedSkills = [];
         this.getAssignedSkills();
 
+        this.alerts.successMsg = "Skills updated successfully.";
+        this.alerts.showSuccess = true;
+
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+
+        this.alerts.showAlert = true;
+        this.alerts.alertMsg = err;
+      }
+    },
+    //api call to retrieve all existing skill names
+    async getAllRoleNames() {
+      //call api to get all skill names
+      try {
+        const res = await axios({
+          url: "http://127.0.0.1:5002/roles",
+        });
+
+        data = res.data.data;
+        this.existingRoles = data.roles.map((role) => role.role_name.toLowerCase());
+
       } catch (err) {
         // Handle Error Here
         console.error(err);
       }
-    }
+    },
   },
   created() {
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("id")) {
       this.id = urlParams.get("id");
     }
+
+    this.getAllRoleNames();
   },
   mounted() {
     axios
@@ -198,6 +230,13 @@ const update = Vue.createApp({
     "roleForm.name"(newValue) {
       if (newValue && newValue.trim().length > 0) {
         this.errorMsgs.name = "";
+
+        if (this.existingRoles.includes(newValue.trim().toLowerCase())) {
+          this.errorMsgs.name = "Role already exists";
+        } else {
+          this.errorMsgs.name = "";
+        }
+        
         if (newValue && newValue.trim().length > 64) {
           this.errorMsgs.name = "Role name cannot be more than 64 characters";
         } else {

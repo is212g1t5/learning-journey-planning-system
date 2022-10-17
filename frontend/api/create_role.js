@@ -47,12 +47,12 @@ const createRole = Vue.createApp({
          if (newValue && newValue.trim().length > 0) {
          //check if skill name already exists
          if (this.existingRoles.includes(newValue.trim().toLowerCase())) {
-            this.errorMsgs.name = "Skill already exists";
+            this.errorMsgs.name = "Role already exists";
          } else {
             this.errorMsgs.name = "";
          }
          } else {
-            this.errorMsgs.name = "Skill name cannot be empty";
+            this.errorMsgs.name = "Role name cannot be empty";
          }
       },
       //validate whether sector is empty
