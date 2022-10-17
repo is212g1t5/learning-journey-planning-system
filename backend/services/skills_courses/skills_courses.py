@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from os import environ
 
 app = Flask(__name__)
+cors = CORS(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -68,6 +70,40 @@ def create_skills_courses():
         }
     ), 201
 
+## -- Map skills_courses --
+@app.route("/skills_courses/map", methods=['POST'])
+def map_skills_courses():
+    data = request.get_json()
+    skills = data["skill_ids"]
+    course_id = data["course_id"]
+    new_skills = [SkillsCourses(skill, course_id) for skill in skills]
+
+    if new_skills:
+        old = SkillsCourses.query.filter_by(course_id=course_id).delete()
+
+    try:
+        db.session.add_all(new_skills)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "skills_courses": [new_skill.json() for new_skill in new_skills]
+                },
+                "message": "An error occurred while creating the skills_courses."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": {
+                "skills_courses": [new_skill.json() for new_skill in new_skills]
+            }
+        }
+    ), 201
+
 # -- Delete skills_courses by course_id --
 @app.route("/skills_courses/delete/<string:course_id>/<int:skill_id>", methods=['DELETE'])
 def delete_skills_courses(course_id, skill_id):
@@ -92,4 +128,4 @@ def delete_skills_courses(course_id, skill_id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5004, debug=True)
+    app.run(host='0.0.0.0', port=5005, debug=True)
