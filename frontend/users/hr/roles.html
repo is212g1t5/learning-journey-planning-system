@@ -81,6 +81,7 @@
 
             <div class="row">
                 <table
+                    id="display_roles_table"
                     class="table table-hover table-striped table-bordered table-responsive">
                     <thead class="thead-dark">
                         <tr>
@@ -99,27 +100,12 @@
                           <td>{{role.role_track}}</td>
                           <td>{{role.role_status}}</td>
                           <td> 
-                              <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${role.role_id}`">
+                              <button type="button" name="show_details" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" id="show_details" :data-bs-target="`#collapse-${role.role_id}`">
                                 View Details
                               </button>
                               <button type="button" class="btn btn-success btn-sm mx-1" @click="updateRole(role.role_id)"><i class="fa fa-pencil"></i> Edit</button>
                               <button type="button" class="btn btn-danger btn-sm mx-1" @click="deleteRole(role.role_id)"><i class="fa fa-trash"></i> Delete</button>
                           </td>
-                          </tr>
-                          <tr class="collapse" :id="`collapse-${role.role_id}`" >
-                            <td colspan="5">
-                                <div class="container pr-5">
-                                  <strong>Skill Details</strong>
-                                  <table id="single-skill-detail" class="table table-hover table-bordered" >
-                                    <tr v-for="(value,key) in role" v-if="key!= '_showDetails'" >
-                                        <td width="10%" class="table-secondary">{{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}}
-                                            {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}</td>
-                                        <td>{{value}}</td>
-                                    </tr>
-                                  </table>
-                                </div>
-                            </td>
-                          </tr>
                       </template>
                       <tr v-else>
                         <td class="text-center" colspan="5">
