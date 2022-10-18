@@ -99,8 +99,10 @@ def map_skills_courses():
     course_id = data["course_id"]
     new_skills = [SkillsCourses(skill, course_id) for skill in skills]
 
+    # Drops all current mapping with course
     SkillsCourses.query.filter_by(course_id=course_id).delete()
 
+    # Commits all new mapping with course
     try:
         db.session.add_all(new_skills)
         db.session.commit()
