@@ -11,13 +11,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <!-- custom css -->
     <link rel="stylesheet" href="../../style/style.css" />
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
     <div id="navbar">
         <navbar></navbar>
     </div>
-    <div class="container">
+    <div class="container" id="mapping">
         <h2 class="my-5">Assign Skills to Course</h2>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -27,13 +29,24 @@
             </ol>
         </nav>
         <div class="row justify-content-around">
-            <div class="col-5 rounded-3 bg-light p-5" id="mapping">
-                <h3>List of skills</h3>
-                <input type="checkbox" class="btn-check" id="btn-check-2-outlined" checked autocomplete="off">
-                <label class="btn btn-outline-success" for="btn-check-2-outlined">Mapped</label><br>
+            <div v-if="alerts.showAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>❌ Update Unsuccessful! </strong>
+                {{alerts.alertMsg}}
             </div>
-            <div class="col-5 rounded-3 bg-light p-5" id="mapped">
-                <h3>Skills Mapped</h3>
+            <div v-if="alerts.showSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>✔️ Update Successful! </strong>
+                {{alerts.successMsg}}
+            </div>
+            <div class="col-5 rounded-3 bg-light p-5">
+                <h3>List of skills</h3>
+                <div v-for="skillDetails, skillId in allSkills" class="mb-3">
+                    <input type="checkbox" class="btn-check" :id="skillId" :value="skillId" v-model="skillMapped">
+                    <label class="btn btn-outline-success" :for="skillId"><!--{{ skillMapped.includes(skillId) ? "Mapped" : "Unmapped" }}--></label> {{ skillDetails.skillName }}<br>
+                </div>
+            </div>
+            <div class="col-5 rounded-3 bg-light p-5">
+                <h3>Skills Mapped to {{ id }}</h3>
+                <p v-for="skillId in skillMapped">{{ this.allSkills[skillId].skillName }}</p>
             </div>
         </div>
         <button type="button" class="btn btn-primary my-3 w-100 p-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">

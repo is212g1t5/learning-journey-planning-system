@@ -1,8 +1,9 @@
 const update = Vue.createApp({
   data() {
     return {
-      course_id: "",
+      id: "",
       skillMapped: [],
+      allSkills: {},
       errorMsgs: {
         name: "",
         category: "",
@@ -18,18 +19,16 @@ const update = Vue.createApp({
   },
   methods: {
     mapSkills() {
+      console.log("Mapping");
       this.alerts.showAlert = false;
       this.alerts.showSuccess = false;
       axios
-        .put(
-          "http://localhost:5001/skills/update/" + this.id,
+        .post(
+          "http://localhost:5005/skills_courses/map",
           {
-            skill_name: this.skillForm.name,
-            skill_category: this.skillForm.category,
-            skill_desc: this.skillForm.description,
-            skill_status: this.skillForm.status,
-          },
-          {}
+            skill_ids: this.skillMapped,
+            course_id: this.id,
+          }
         )
         .then((response) => {
           this.alerts.showSuccess = true;
@@ -44,7 +43,7 @@ const update = Vue.createApp({
         .finally(() => {
           this.loading = false;
         });
-    },
+    }
   },
   created() {
     let urlParams = new URLSearchParams(window.location.search);
@@ -54,14 +53,37 @@ const update = Vue.createApp({
   },
   mounted() {
     axios
-      .get("http://localhost:5001/skills/" + this.id)
+      .get("http://localhost:5001/skills")
       .then((response) => {
-        skill = response.data;
-        this.skillForm.id = skill.skill_id;
-        this.skillForm.name = skill.skill_name;
-        this.skillForm.category = skill.skill_category;
-        this.skillForm.description = skill.skill_desc;
-        this.skillForm.status = skill.skill_status;
+        skills = response.data.data;
+        skills.skills.forEach( element => {
+          this.allSkills[element.skill_id] = {
+            skillName: element.skill_name,
+            skillCategory: element.skill_category,
+            skillDesc: element.skill_desc,
+            skillStatus: element.skill_status
+          }
+        });
+        // console.log(skills.skills)
+      })
+      .catch((error) => {
+        console.log(error);
+        this.error = true;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+
+    axios
+      .get("http://localhost:5005/skills_courses/course/" + this.id)
+      .then((response) => {
+        skills_courses = response.data.data;
+        skills_courses.skills_courses.forEach(element => {
+          this.skillMapped.push(element.skills_id)
+        });
+        
+        // console.log(skills_courses.skills_courses)
+        // console.log(response)
       })
       .catch((error) => {
         console.log(error);
@@ -72,60 +94,11 @@ const update = Vue.createApp({
       });
   },
   watch: {
-    "skillForm.name"(newValue) {
-      if (newValue && newValue.trim().length > 0) {
-        //check if skill name already exists
-        this.errorMsgs.name = "";
-        if (newValue && newValue.trim().length > 64) {
-          this.errorMsgs.name = "Skill name cannot be more than 64 characters";
-        } else {
-          this.errorMsgs.description = "";
-        }
-      } else {
-        this.errorMsgs.name = "Skill name cannot be empty";
-      }
-    },
-    //validate whether category is empty
-    "skillForm.category"(newValue) {
-      if (newValue && newValue.trim().length > 0) {
-        this.errorMsgs.category = "";
-        if (newValue && newValue.trim().length > 64) {
-          this.errorMsgs.category =
-            "Category cannot be more than 64 characters";
-        } else {
-          this.errorMsgs.description = "";
-        }
-      } else {
-        this.errorMsgs.category = "Category cannot be empty";
-      }
-    },
-    //validate whether description is empty
-    "skillForm.description"(newValue) {
-      if (newValue && newValue.trim().length > 0) {
-        this.errorMsgs.description = "";
-        if (newValue && newValue.trim().length > 512) {
-          this.errorMsgs.description =
-            "Description cannot be more than 250 characters";
-        } else {
-          this.errorMsgs.description = "";
-        }
-      } else {
-        this.errorMsgs.description = "Description cannot be empty";
-      }
-    },
+    
   },
   computed: {
-    isFormValid() {
-      return (
-        !this.skillForm.name.trim() ||
-        !this.skillForm.category.trim() ||
-        !this.skillForm.description.trim() ||
-        Object.values(this.errorMsgs).some((error) => {
-          return error !== "";
-        })
-      );
-    },
+
   },
 });
 
-update.mount("#update");
+update.mount("#mapping");
