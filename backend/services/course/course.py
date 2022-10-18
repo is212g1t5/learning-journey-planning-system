@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS  # enable CORS
 from os import environ
 
-
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/ljps'
