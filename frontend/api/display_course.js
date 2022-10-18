@@ -6,6 +6,7 @@ const display_courses = Vue.createApp({
             skills_courses_list: [],
             emptyText: "",
             searchQuery: null,
+            searchSkillQuery: null,
             fields: [
                 { key: 'course_name', label: 'Course Name', sortable: true, sortDirection: 'desc' },
                 { key: 'course_category', label: 'Course Category', sortable: true },
@@ -44,6 +45,7 @@ const display_courses = Vue.createApp({
                 'false': 'page-item',
                 'true': 'page-item active'
             },
+            filter_list: [],
         }
     },
     computed: {
@@ -61,11 +63,35 @@ const display_courses = Vue.createApp({
                     if(skill_id == skill.skill_id){
                         skill_name = skill.skill_name;
                         course.skill_name = skill_name;
-                        
                     }
                     
                 }
             }
+        },
+        checkedSkills () {
+            return this.filter_list.filter(item => item.checked).map(skill_name => skill_name.skill_name)
+         },
+        filteredCourseList(){
+            for(course of this.course_list){
+                course.skill_name= "Unassigned"
+                course.skill_value= " "
+                var course_id = course.course_id;
+                var skill_id = "";
+                for(skills_courses of this.skills_courses_list){
+                    if(course_id == skills_courses.course_id){
+                        skill_id = skills_courses.skill_id;
+                        }
+                    }
+                for(skill of this.skill_list){
+                    if(skill_id == skill.skill_id){
+                        skill_name = skill.skill_name;
+                        course.skill_name = skill_name;
+                        course.skill_value = skill_name;
+                    }
+                }
+            }
+            var selected_skills= this.checkedSkills
+            return this.course_list.filter(course => selected_skills.includes(course.skill_name))
         },
         sortedResultQuery() {
             return this.resultQuery.sort((a, b) => {
@@ -76,17 +102,29 @@ const display_courses = Vue.createApp({
                 return 0;
             });
         },
+        resultSkillQuery(){
+            if(this.searchSkillQuery){
+                return this.filter_list.filter(item => {
+                    console.log(item)
+                    return this.searchSkillQuery
+                        .toLowerCase()
+                        .split(" ")
+                        .every(v => item.skill_name.toLowerCase().includes(v));
+                });
+            }else{
+                return this.filter_list
+            }
+        },
         resultQuery() {
-            
             if (this.searchQuery) {
-                return this.course_list.filter(item => {
+                return this.filteredCourseList.filter(item => {
                     return this.searchQuery
                         .toLowerCase()
                         .split(" ")
                         .every(v => item.course_name.toLowerCase().includes(v));
                 });
             } else {
-                return this.course_list;
+                return this.filteredCourseList
             }
         },
         paginatedQuery() {
@@ -167,6 +205,26 @@ const display_courses = Vue.createApp({
             this.sortIconFn(s)
 
         },
+        getFilterList(){
+            const source = {'checked':true};
+            final_list=[]
+            final_list.push({'skill_name':'Unassigned', 'skill_value':'', 'skill_id':'NA', 'checked':true})
+            this.skill_list.forEach(function (e) {
+                returnedTarget= Object.assign(e, source);
+                final_list.push(returnedTarget)
+            });
+            this.filter_list= final_list;
+        },
+        checkAllSkills(){
+            this.filter_list.forEach(function (e) {
+                e.checked= true
+            });
+         },
+         checkNoSkills(){
+            this.filter_list.forEach(function (e) {
+                e.checked= false
+            });
+         },
         sortIconFn(s) {
             Object.keys(this.sortIcon).forEach(key => {
                 this.sortIcon[key] = 'mx-2 fa fa-xs fa-sort'
@@ -200,12 +258,12 @@ const display_courses = Vue.createApp({
         },
     },
    mounted() {
-        
     },
     async created(){
         await this.getAllCourses();
         await this.getAllSkills();
         await this.getAllSkillsCourses();
+        this.getFilterList();
     }
 })
 
