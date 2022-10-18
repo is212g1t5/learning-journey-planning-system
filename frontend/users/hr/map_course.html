@@ -37,10 +37,20 @@
                 <strong>✔️ Update Successful! </strong>
                 {{alerts.successMsg}}
             </div>
-            <div class="col-5 rounded-3 bg-light p-5">
+            <div class="col-5 rounded-3 bg-light p-5" v-if="courseDetails.courseStatus == 1">
                 <h3>List of skills</h3>
                 <div v-for="skillDetails, skillId in allSkills" class="mb-3">
                     <input type="checkbox" class="btn-check" :id="skillId" :value="skillId" v-model="skillMapped">
+                    <label class="btn btn-outline-success" :for="skillId"><!--{{ skillMapped.includes(skillId) ? "Mapped" : "Unmapped" }} Cannot work because initial render is not accurate (even though the skill is mapped it will say Unmapped, but is accurate onchange of checked state)--></label> {{ skillDetails.skillName }}<br>
+                </div>
+            </div>
+            <div class="col-5 rounded-3 bg-light p-5" v-else>
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <strong>ℹ️ Course inactive, reactivate course to map skills </strong>
+                </div>
+                <h3>List of skills</h3>
+                <div v-for="skillDetails, skillId in allSkills" class="mb-3">
+                    <input type="checkbox" class="btn-check" :id="skillId" :value="skillId" v-model="skillMapped" disabled>
                     <label class="btn btn-outline-success" :for="skillId"><!--{{ skillMapped.includes(skillId) ? "Mapped" : "Unmapped" }} Cannot work because initial render is not accurate (even though the skill is mapped it will say Unmapped, but is accurate onchange of checked state)--></label> {{ skillDetails.skillName }}<br>
                 </div>
             </div>
@@ -49,7 +59,7 @@
                 <p v-for="skillId in skillMapped">{{ this.allSkills[skillId].skillName }}</p>
             </div>
         </div>
-        <button type="button" class="btn btn-primary my-3 w-100 p-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-primary my-3 w-100 p-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop" :disabled="courseDetails.courseStatus != 1">
             Update Mapping
         </button>
 
