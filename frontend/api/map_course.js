@@ -19,7 +19,6 @@ const update = Vue.createApp({
   },
   methods: {
     mapSkills() {
-      console.log("Mapping");
       this.alerts.showAlert = false;
       this.alerts.showSuccess = false;
       axios
