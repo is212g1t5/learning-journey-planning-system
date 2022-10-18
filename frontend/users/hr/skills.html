@@ -81,6 +81,7 @@
 
             <div class="row">
                 <table
+                    id="display_skills_table"
                     class="table table-hover table-striped table-bordered table-responsive">
                     <thead class="thead-dark">
                         <tr>
@@ -97,7 +98,7 @@
                           <td>{{skill.skill_category}}</td>
                           <td>{{skill.skill_status}}</td>
                           <td> 
-                              <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${skill.skill_id}`">
+                              <button name="show_details" type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${skill.skill_id}`">
                                 View Details
                               </button>
                               <button type="button" class="btn btn-success btn-sm mx-1" @click="updateSkill(skill.skill_id)"><i class="fa fa-pencil"></i> Edit</button>
@@ -108,7 +109,7 @@
                             <td colspan="5">
                                 <div class="container pr-5">
                                   <strong>Skill Details</strong>
-                                  <table id="single-skill-detail" class="table table-hover table-bordered" >
+                                  <table id="single_skill_table" class="table table-hover table-bordered" >
                                     <tr v-for="(value,key) in skill" v-if="key!= '_showDetails'" >
                                         <td width="10%" class="table-secondary">{{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}}
                                             {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}</td>
@@ -139,7 +140,7 @@
     <!-- vue.js -->
     <script src="https://unpkg.com/vue@next"></script>
     <!-- external js -->
-    <script src="../../components/hr_navbar.js"></script>
+    <script src="../../components/navbar.js"></script>
     <script src="../../api/display_skill.js"></script>
     
 </body>
