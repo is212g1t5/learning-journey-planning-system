@@ -2,6 +2,7 @@ const update = Vue.createApp({
   data() {
     return {
       id: "",
+      courseDetails: {},
       skillMapped: [],
       allSkills: {},
       errorMsgs: {
@@ -51,6 +52,26 @@ const update = Vue.createApp({
     }
   },
   mounted() {
+    axios
+      .get("http://localhost:5003/courses/" + this.id)
+      .then((response) => {
+        skills = response.data.data;
+        this.courseDetails = {
+          courseName: skills.course_name,
+          courseCategory: skills.course_category,
+          courseDesc: skills.course_desc,
+          courseType: skills.course_type,
+          courseStatus: skills.course_status
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.error = true;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+
     axios
       .get("http://localhost:5001/skills")
       .then((response) => {

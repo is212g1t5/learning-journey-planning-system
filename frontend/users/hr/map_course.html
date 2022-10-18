@@ -20,7 +20,7 @@
         <navbar></navbar>
     </div>
     <div class="container" id="mapping">
-        <h2 class="my-5">Assign Skills to Course</h2>
+        <h2 class="my-5">Assign Skills to Course #{{ id }} {{ courseDetails.courseName }}</h2>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="./courses.html">View All Courses</a></li>
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="col-5 rounded-3 bg-light p-5">
-                <h3>Skills Mapped to {{ id }}</h3>
+                <h3>Skills Mapped</h3>
                 <p v-for="skillId in skillMapped">{{ this.allSkills[skillId].skillName }}</p>
             </div>
         </div>
