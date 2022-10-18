@@ -25,13 +25,17 @@
     <div class="container">
         <div class="container" id="display_courses">
         <h2 class="mt-5">Course Management</h2>
+
+
         <div class="container mt-3">
             <div class="row">
               <div class="second col-lg-9">
                 <div class="column my-4 col-lg-6" >
                   <div class="form-group mb-0" >
                       <label for="filter-input">Filter</label>
+                      
                       <div class="input-group mb-3" id="filter-input" type="search">
+                        <button type="button"  class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#skillFilterModal"><i class="bi bi-filter "></i></button>
                           <input type="text" class="form-control"  v-model="searchQuery" placeholder="Search Course Name">
                           <div class="input-group-append">
                               <span class="input-group-text" :disabled="!searchQuery" @click="searchQuery = ''">Clear</span>
@@ -41,8 +45,37 @@
                 </div>
               </div>
             </div>
-
-            
+                    
+            <!-- Skill Filter Modal -->
+            <div class="modal fade" id="skillFilterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog  modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="skillFilterModalLabel">Filter By Skills</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="input-group mb-3" id="filter-input" type="search">
+                      <input type="text" class="form-control"  v-model="searchSkillQuery" placeholder="Search Skill Name">
+                      <div class="input-group-append">
+                          <button class="input-group-text btn-block btn-dark" @click="checkAllSkills()">Select All</button>
+                      </div>
+                      <div class="input-group-append">
+                        <button class="input-group-text btn btn-dark" @click="checkNoSkills()">Select None</button>
+                    </div>
+                  </div>
+      
+                    <div class="form-check"  v-for="skill in resultSkillQuery">
+                      <input class="form-check-input" type="checkbox" :id="skill.skill_id" v-model="skill.checked">
+                      <label class="form-check-label" :for="skill.skill_id">
+                        {{skill.skill_name}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
             <div class="row">
                 <div class="column col-lg-9 col-md-6 col-sm-5">
                     Per page
@@ -71,7 +104,6 @@
                       </nav>
                 </div>
             </div>
-
             <div class="row">
                 <table
                     class="table table-hover table-striped table-bordered table-responsive">
@@ -80,11 +112,11 @@
                             <th @click="sort('course_name')" data-field="course"  data-sortable="true" scope="col">Course <i :class="sortIcon.course_name"></i></th>
                             <th @click="sort('course_category')" data-field="category"  data-sortable="true" scope="col">Category<i :class="sortIcon.course_category"></i></th>
                             <th @click="sort('course_status')" data-field="active"  data-sortable="true" scope="col">Is Active<i :class="sortIcon.course_status"></i></th>
-                            <th @click="sort('skill_name')" data-field="active"  data-sortable="true" scope="col">Skill<i :class="sortIcon.skill_name"></i></th>
+                            <th @click="sort('skill_value')" data-field="active"  data-sortable="true" scope="col">Skill<i :class="sortIcon.skill_name"></i></th>
                             <th data-field="actions"  data-sortable="true" scope="col">Actions</th>
                         </tr>
                     </thead>
-                    <tbody v-bind="finalCourseList">
+                    <tbody v-bind="filteredCourseList">
                       <template v-if="emptyText==''" v-for="course in paginatedQuery" >
                         <tr>
                           <td>{{course.course_name}}</td>
@@ -92,7 +124,7 @@
                           
                           <td v-if="course.course_status == 1">true</td>
                             <td v-else>false</td>
-                          <td>{{course.skill_name}}</td>
+                          <td>{{course.skill_value}}</td>
                           <td>
                             <button type="button" class="btn btn-success btn-sm mx-1" @click="mapSkill(course.course_id)"><i class="fa fa-pencil"></i> Map Skill</button>
                               <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
