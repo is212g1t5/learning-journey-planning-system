@@ -23,8 +23,28 @@ class SkillsCourses(db.Model):
     def json(self):
         return {"skills_id": self.skill_id, "course_id": self.course_id}
 
+# -- view all skills_courses by course_id -- 
+@app.route("/skills_courses/course/<string:course_id>")
+def get_all_by_course(course_id):
+    skills_courses_list = SkillsCourses.query.filter_by(course_id=course_id).all()
+    if len(skills_courses_list):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "skills_courses": [skills_courses.json() for skills_courses in skills_courses_list]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no skills_courses for this skill"
+        }
+    ), 404
+
 # -- view all skills_courses by skill_id -- 
-@app.route("/skills_courses/<int:skill_id>")
+@app.route("/skills_courses/skill/<int:skill_id>")
 def get_all_by_skills(skill_id):
     skills_courses_list = SkillsCourses.query.filter_by(skill_id=skill_id).all()
     if len(skills_courses_list):
@@ -78,8 +98,7 @@ def map_skills_courses():
     course_id = data["course_id"]
     new_skills = [SkillsCourses(skill, course_id) for skill in skills]
 
-    if new_skills:
-        old = SkillsCourses.query.filter_by(course_id=course_id).delete()
+    SkillsCourses.query.filter_by(course_id=course_id).delete()
 
     try:
         db.session.add_all(new_skills)
