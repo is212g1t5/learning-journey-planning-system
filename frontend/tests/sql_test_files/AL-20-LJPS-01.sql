@@ -37,6 +37,11 @@ CREATE TABLE IF NOT EXISTS `skills_courses` (
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO skills_courses (skill_id, course_id) VALUES
+(1, 'FIN003'),
+(2, 'FIN002'),
+(3, 'COR001');
+
 CREATE TABLE IF NOT EXISTS `registration` (
   `reg_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL,
