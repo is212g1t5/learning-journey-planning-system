@@ -236,7 +236,7 @@ def update_role(role_id):
         except:
             return jsonify({
                 "code": 500,
-                "message": "An error occurred while updating the role."
+                "message": "Role with the same name already exists."
             }), 500
 
     else:
