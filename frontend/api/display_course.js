@@ -49,26 +49,25 @@ const display_courses = Vue.createApp({
         }
     },
     computed: {
-        finalCourseList(){
-            for(course of this.course_list){
-                var course_id = course.course_id;
-                var skill_names= [];
-                var skill_ids = [];
-                for(skills_courses of this.skills_courses_list){
-                    if(course_id == skills_courses.course_id){
-                        skill_ids.push(skills_courses.skill_id);
-                        }
-                    }
-                for(skill of this.skill_list){
-                    for(id in skill_ids){
-                        if(skill.skill_id == skill_ids[id]){
-                            skill_names.push(skill.skill_name)
-                        }
-                    }
-                    course.skill_names = skill_names;
-                }
-            }
-        },
+        // finalCourseList(){
+        //     for(course of this.course_list){
+        //         var course_id = course.course_id;
+        //         var skill_names= [];
+        //         var skill_ids = [];
+        //         for(skills_courses of this.skills_courses_list){
+        //             if(course_id == skills_courses.course_id){
+        //                 skill_ids.push(skills_courses.skill_id);
+        //                 }
+        //             }
+        //         for(skill of this.skill_list){
+        //             if(skill_id == skill.skill_id){
+        //                 skill_name = skill.skill_name;
+        //                 course.skill_name = skill_name;
+        //             }
+        //             course.skill_names = skill_names;
+        //         }
+        //     }
+        // },
         checkedSkills () {
             return this.filter_list.filter(item => item.checked).map(skill_name => skill_name.skill_name)
          },

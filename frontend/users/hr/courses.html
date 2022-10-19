@@ -113,7 +113,7 @@
                             <th @click="sort('course_name')" data-field="course"  data-sortable="true" scope="col">Course <i :class="sortIcon.course_name"></i></th>
                             <th @click="sort('course_category')" data-field="category"  data-sortable="true" scope="col">Category<i :class="sortIcon.course_category"></i></th>
                             <th @click="sort('course_status')" data-field="active"  data-sortable="true" scope="col">Is Active<i :class="sortIcon.course_status"></i></th>
-                            <th @click="sort('skill_name')" data-field="active"  data-sortable="true" scope="col">Skills<i :class="sortIcon.skill_name"></i></th>
+                            <th @click="sort('skill_value')" data-field="active"  data-sortable="true" scope="col">Skill<i :class="sortIcon.skill_name"></i></th>
                             <th data-field="actions"  data-sortable="true" scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -123,9 +123,9 @@
                           <td>{{course.course_name}}</td>
                           <td>{{course.course_category}}</td>
                           
-                          <td v-if="course.course_status == 1">true</td>
-                            <td v-else>false</td>
-                          <td>{{course.skill_names}}</td>
+                          <td v-if="course.course_status == 1">Active</td>
+                            <td v-else>Retired</td>
+                          <td>{{course.skill_value}}</td>
                           <td>
                             <button type="button" class="btn btn-success btn-sm mx-1" @click="mapSkill(course.course_id)"><i class="fa fa-pencil"></i> Map Skill</button>
                               <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
