@@ -1,14 +1,15 @@
-const display_skills = Vue.createApp({
+const display_roles = Vue.createApp({
     data() {
         return {
-            skill_list: [],
+            role_list: [],
             emptyText: "",
             searchQuery: null,
             fields: [
-                { key: 'skill_name', label: 'Skill Name', sortable: true, sortDirection: 'desc' },
-                { key: 'skill_category', label: 'Skill Category', sortable: true },
+                { key: 'role_name', label: 'Role', sortable: true, sortDirection: 'desc' },
+                { key: 'role_sector', label: 'Role Sector', sortable: true },
+                { key: 'role_track', label: 'Role Track', sortable: true },
                 {
-                  key: 'skill_status',
+                  key: 'role_status',
                   label: 'Is Active',
                   formatter: (value, key, item) => {
                     return value ? 'Yes' : 'No'
@@ -29,18 +30,19 @@ const display_skills = Vue.createApp({
               sortBy: '',
               sortDesc: false,
               sortDirection: 'asc',
-              currentSort:'skill_name',
+              currentSort:'role_name',
               currentSortDir:'asc',
               sortIcon: {
-                'skill_name': 'mx-2 fa fa-xs fa-sort',
-                'skill_category': 'mx-2 fa fa-xs fa-sort',
-                'skill_status': 'mx-2 fa fa-xs fa-sort',
+                'role_name': 'mx-2 fa fa-xs fa-sort',
+                'role_sector': 'mx-2 fa fa-xs fa-sort',
+                'role_track': 'mx-2 fa fa-xs fa-sort',
+                'role_status': 'mx-2 fa fa-xs fa-sort',
               },
               pageItemIcon: {
                 'false': 'page-item',
                 'true': 'page-item active'
               },
-              createSkillLink: "create_skill.html"
+              createRoleLink: "create_role.html"
         }
     },
     computed: {
@@ -55,14 +57,14 @@ const display_skills = Vue.createApp({
         },
         resultQuery() {
           if (this.searchQuery) {
-            return this.skill_list.filter(item => {
+            return this.role_list.filter(item => {
               return this.searchQuery
                 .toLowerCase()
                 .split(" ")
-                .every(v => item.skill_name.toLowerCase().includes(v));
+                .every(v => item.role_name.toLowerCase().includes(v));
               });
           } else {
-            return this.skill_list;
+            return this.role_list;
           }
         },
         paginatedQuery(){
@@ -77,11 +79,11 @@ const display_skills = Vue.createApp({
           }
         },
     methods:{
-          updateSkill(id) {
-            window.location.href = 'update_skill.html?id=' + id;
+          updateRole(id) {
+            window.location.href = 'update_role.html?id=' + id;
           },
-          deleteSkill(id) {
-            window.location.href = 'delete_skill.html?id=' + id;
+          deleteRole(id) {
+            window.location.href = 'delete_role.html?id=' + id;
           },
           sort(s) {
             //if s == current sort, reverse
@@ -127,19 +129,19 @@ const display_skills = Vue.createApp({
       },
     mounted() {
         axios
-            .get("http://localhost:5001/skills")
+            .get("http://localhost:5002/roles")
             .then((response) => {
                 if(response.data.code == 404){
-                  this.emptyText= "There are no skills recorded. Please create new skill."
+                  this.emptyText= "There are no roles recorded. Please create new role."
                   return
                 }else{
-                  var skill_list = response.data.data.skills;
-                  this.skill_list= skill_list
+                  var role_list = response.data.data.roles;
+                  this.role_list= role_list
                   
                   // Set the initial number of items
-                  this.totalRows = this.skill_list.length;
+                  this.totalRows = this.role_list.length;
                   this.pageSize = Math.ceil(this.totalRows/this.perPage);
-                  console.log(skill_list)
+                  console.log(role_list)
                 }
                
             })
@@ -149,4 +151,4 @@ const display_skills = Vue.createApp({
     },
 })
 
-display_skills.mount("#display_skills");
+display_roles.mount("#display_roles");

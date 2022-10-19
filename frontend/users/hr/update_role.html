@@ -33,7 +33,7 @@
         <div class="rounded-3 bg-light p-5" id="update">
             <!-- Alerts -->
             <div v-if="alerts.showAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>❌ Update Unsuccessful. </strong>
+                <strong>❌ Update Unsuccessful! </strong>
                 {{alerts.alertMsg}}
             </div>
             <div v-if="alerts.showSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -241,7 +241,7 @@
     <!-- vue.js -->
     <script src="https://unpkg.com/vue@next"></script>
     <!-- external js -->
-    <script src="../../components/navbar.js"></script>
+    <script src="../../components/hr_navbar.js"></script>
     <script src="../../api/update_role.js"></script>
 </body>
 

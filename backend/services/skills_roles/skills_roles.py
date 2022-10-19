@@ -5,6 +5,7 @@ from flask_cors import CORS  # enable CORS
 
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -95,4 +96,4 @@ def delete_skills_roles(skill_id, role_id):
     ), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5005, debug=True)
+    app.run(host='0.0.0.0', port=5006, debug=True)

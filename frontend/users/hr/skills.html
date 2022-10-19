@@ -2,239 +2,153 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Skills Management</title>
-  <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-  <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+  <!-- bootstrap 5 css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
   <!-- custom css -->
   <link rel="stylesheet" href="../../style/style.css" />
 
-  <!-- Bootstrap Vue-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
-  <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
-  <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+  <!--jquery-->
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
   <!-- axios -->
-  <script src="https://unpkg.com/axios@0.25.0/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!--icons-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+    integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
+<div id="navbar">
+  <navbar></navbar>
+</div>
 
-<body>
-  <div id="navbar">
-    <navbar></navbar>
-  </div>
-
-  <div class="container">
-    <h2 class="mt-5">Skills Management</h2>
-    <div id="skillstable">
-      <b-container class="mt-3" fluid>
-        <b-row>
-          <b-col class="second col-lg-6 col-md-6 col-sm-4 col-xs-2">
-            <b-form-group label="Sort" label-for="sort-by-select" label-cols-sm="3" label-align-sm="right"
-              label-size="md" class="mb-0" v-slot="{ ariaDescribedby }">
-              <b-input-group size="sm">
-                <b-form-select id="sort-by-select" v-model="sortBy" :options="sortOptions"
-                  :aria-describedby="ariaDescribedby" class="w-75">
-                  <template #first>
-                    <option value="">None</option>
-                  </template>
-                </b-form-select>
-
-                <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby" size="sm"
-                  class="w-25">
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
-                </b-form-select>
-              </b-input-group>
-            </b-form-group>
-          </b-col>
-          <b-col class="third col-lg-3 col-md-3 col-sm-2 col-xs-2">
-            <b-form-group label="Initial sort" label-for="initial-sort-select" label-cols-md="6" label-align-sm="right"
-              label-size="md" class="mb-0">
-              <b-form-select id="initial-sort-select" v-model="sortDirection" :options="['asc', 'desc', 'last']"
-                size="sm"></b-form-select>
-            </b-form-group>
-          </b-col>
-          <b-col class="col-lg-3 col-md-3 col-sm-6 col-xs-8">
-            <!-- <label>Create a New Skill</label><br> -->
-            <b-button class="btn-skill" button-size="md" variant="primary" href="create_skill.html">Create New Skill
-            </b-button>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col lg="6" class="my-2">
-            <b-form-group label="Filter" label-for="filter-input" label-cols-sm="3" label-align-sm="right"
-              label-size="md" class="mb-5">
-              <b-input-group size="sm">
-                <b-form-input id="filter-input" v-model="filter" type="search" placeholder="Type to Search">
-                </b-form-input>
-
-                <b-input-group-append>
-                  <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-                </b-input-group-append>
-              </b-input-group>
-            </b-form-group>
-          </b-col>
-
-          <b-col lg="6">
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col sm="5" md="6" class="mt-3">
-            Per Page
-            <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm"></b-form-select>
-            </b-form-group>
-          </b-col>
-
-          <b-col sm="7" md="6" class="my-2">
-            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" size="sm"
-              class="my-0"></b-pagination>
-          </b-col>
-        </b-row>
-        <b-table id="display_skills_table" :items="skill_list" :fields="fields" :current-page="currentPage"
-          hover="hover" bordered="bordered" head-variant="light" :per-page="perPage" :filter="filter"
-          :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
-          :sort-direction="sortDirection" stacked="md" show-empty small @filtered="onFiltered" striped responsive="sm"
-          empty-text="There are no recorded skills. Please create a new skill.">
-
-          <template #cell(actions)="row">
-            <b-button name="show_details" size="sm" @click="row.toggleDetails">
-              {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-            </b-button>
-            <b-button variant="success" size="sm" @click="updateSkill(row.item.skill_id)" class="mr-1">
-              Edit
-            </b-button>
-            <b-button variant="danger" size="sm" @click="deleteSkill(row.item.skill_id)" class="mr-1">
-              Delete
-            </b-button>
-          </template>
-
-
-          <template #row-details="row">
-            <b-card>
-              <div class="container pr-5">
-                <strong>Skill Details</strong>
-
-                <b-table-simple id="single_skill_table" table-variant="table-info" hover small responsive bordered>
-                  <b-tr v-for="(value, key) in row.item " v-if="key!= '_showDetails'" :primary-key="row.item.skill_id"
-                    :key="row.item.skill_id">
-                    <b-td variant="secondary" style="width: 15%  ">
-                      {{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}}
-                      {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}
-                    </b-td>
-                    <b-td style="width: 75%">{{value}}</b-td>
-                  </b-tr>
-                </b-table-simple>
+<div class="container" id="display_skills">
+  <h2 class="mt-5">Skills Management</h2>
+  <div class="container mt-3">
+    <div class="row">
+      <div class="second col-lg-9">
+        <div class="column my-4 col-lg-6">
+          <div class="form-group mb-0">
+            <label for="filter-input">Filter</label>
+            <div class="input-group mb-3" id="filter-input" type="search">
+              <input type="text" class="form-control" v-model="searchQuery" placeholder="Search Skill Name">
+              <div class="input-group-append">
+                <span class="input-group-text" :disabled="!searchQuery" @click="searchQuery = ''">Clear</span>
               </div>
-
-            </b-card>
-          </template>
-          </template>
-
-        </b-table>
-
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="first column col-lg-3 col-md-3 col-sm-6 col-xs-8">
+        <a class="btn btn-primary btn-md btn-skill" :href="createSkillLink" role="button">Create New Skill</a>
+      </div>
     </div>
 
+
+    <div class="row">
+      <div class="column col-lg-9 col-md-6 col-sm-5">
+        Per page
+        <select class="form-control form-control-sm w-25" id="per-page-select" v-model="perPage">
+          <option v-for="page in pageOptions">{{page}}</option>
+        </select>
+      </div>
+
+      <div class="column col-lg-3 col-md-6 col-sm-7">
+        <nav aria-label="Page navigation example" class="mt-3">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" @click="prevPage" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li v-for="page in pageSize" :class="pageItemIcon[page==currentPage]"><a class="page-link"
+                @click="currentPageFn(page)">{{page}}</a></li>
+            <li class="page-item">
+              <a class="page-link" @click="nextPage" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="row">
+      <table id="display_skills_table" class="table table-hover table-striped table-bordered table-responsive">
+        <thead class="thead-dark">
+          <tr>
+            <th @click="sort('skill_name')" data-field="skill" data-sortable="true" scope="col">Skill <i
+                :class="sortIcon.skill_name"></i></th>
+            <th @click="sort('skill_category')" data-field="category" data-sortable="true" scope="col">Category<i
+                :class="sortIcon.skill_category"></i></th>
+            <th @click="sort('skill_status')" data-field="active" data-sortable="true" scope="col">Is Active<i
+                :class="sortIcon.skill_status"></i></th>
+            <th data-field="actions" data-sortable="true" scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-if="emptyText==''" v-for="skill in paginatedQuery">
+            <tr>
+              <td>{{skill.skill_name}}</td>
+              <td>{{skill.skill_category}}</td>
+              <td>{{skill.skill_status}}</td>
+              <td>
+                <button name="show_details" type="button" class="btn btn-secondary btn-sm mx-1"
+                  data-bs-toggle="collapse" :data-bs-target="`#collapse-${skill.skill_id}`">
+                  View Details
+                </button>
+                <button type="button" class="btn btn-success btn-sm mx-1" @click="updateSkill(skill.skill_id)"><i
+                    class="fa fa-pencil"></i> Edit</button>
+                <button type="button" class="btn btn-danger btn-sm mx-1" @click="deleteSkill(skill.skill_id)"><i
+                    class="fa fa-trash"></i> Delete</button>
+              </td>
+            </tr>
+            <tr class="collapse" :id="`collapse-${skill.skill_id}`">
+              <td colspan="5">
+                <div class="container pr-5">
+                  <strong>Skill Details</strong>
+                  <table id="single_skill_table" class="table table-hover table-bordered">
+                    <tr v-for="(value,key) in skill" v-if="key!= '_showDetails'">
+                      <td width="10%" class="table-secondary">{{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}}
+                        {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}</td>
+                      <td>{{value}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          </template>
+          <tr v-else>
+            <td class="text-center" colspan="5">
+              {{emptyText}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+    </div>
   </div>
+</div>
 
 
-</body>
-
-<script>
-  console.clear()
-
-  new Vue({
-    el: "#skillstable",
-    data() {
-      return {
-        skill_list: [],
-        fields: [
-          { key: 'skill_name', label: 'Skill', sortable: true, sortDirection: 'desc' },
-          { key: 'skill_category', label: 'Category', sortable: true },
-          {
-            key: 'skill_status',
-            label: 'Is Active',
-            formatter: (value, key, item) => {
-              return value ? 'Yes' : 'No'
-            },
-            sortable: true,
-            sortByFormatted: true,
-            filterByFormatted: true
-          },
-          { key: 'actions', label: 'Actions' }
-        ],
-        totalRows: 1,
-        currentPage: 1,
-        perPage: 10,
-        pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
-        sortBy: '',
-        sortDesc: false,
-        sortDirection: 'asc',
-        filter: null,
-        filterOn: [],
-        createSkillLink: '/users/hr/create_skill.html'
-      }
-    },
-    computed: {
-      sortOptions() {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      }
-    },
-    mounted() {
-      // Set the initial number of items
-      this.totalRows = this.skill_list.length;
-      this.getSkillList();
-    },
-    methods: {
-      onFiltered(filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
-      },
-      updateSkill(id) {
-        window.location.href = 'update_skill.html?id=' + id;
-      },
-      deleteSkill(id) {
-        window.location.href = 'delete_skill.html?id=' + id;
-      },
-      getSkillList() {
-        path = "http://localhost:5001/skills"
-        axios.get(path).then(
-          (response) => {
-            this.skill_list = response.data.data.skills;
-            console.log(response.data);
-          },
-          (error) => {
-            console.log(error);
-          }
-        )
-      }
-    },
-  },
-  )
-</script>
-
+<!-- bootstrap js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 <!-- vue.js -->
 <script src="https://unpkg.com/vue@next"></script>
-
 <!-- external js -->
-<script src="../../components/navbar.js"></script>
+<script src="../../components/hr_navbar.js"></script>
+<script src="../../api/display_skill.js"></script>
+
+</body>
 
 </html>

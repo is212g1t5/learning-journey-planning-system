@@ -206,7 +206,7 @@ def update_skill(skill_id):
         except:
             return jsonify({
                 "code": 500,
-                "message": "An error occurred while updating the skill."
+                "message": "Skill with the same name already exists."
             }), 500
 
     else:

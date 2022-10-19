@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
+from flask_cors import CORS  # enable CORS
 
 app = Flask(__name__)
+cors = CORS(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -70,4 +72,4 @@ def find_by_group(group):
     ), 404
         
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5010, debug=True)
+    app.run(host='0.0.0.0', port=5011, debug=True)

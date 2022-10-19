@@ -177,14 +177,13 @@ def create_role():
     ), 201
 
 
-# AL-3 & AL-18 Update --
 @app.route("/roles/<int:role_id>")
 def get_role(role_id):
     role = Role.query.filter_by(role_id=role_id).first()
     if role:
         return jsonify(role.json())
 
-
+# AL-3 & AL-18 Update --
 @app.route("/roles/update/<int:role_id>", methods=['PUT', 'GET'])
 def update_role(role_id):
     data = request.get_json()
@@ -237,7 +236,7 @@ def update_role(role_id):
         except:
             return jsonify({
                 "code": 500,
-                "message": "An error occurred while updating the role."
+                "message": "Role with the same name already exists."
             }), 500
 
     else:

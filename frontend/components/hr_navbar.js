@@ -35,32 +35,6 @@ app.component("navbar", {
             learnerLink: "../learners",
           };
         }
-      } else {
-        if (window.location.href.includes("learner")) {
-          return {
-            roleLink: "",
-            skillLink: "./skills",
-            courseLink: "./courses",
-            hrLink: "../hr",
-            learnerLink: "./",
-          };
-        } else if (window.location.href.includes("skill")) {
-          return {
-            roleLink: "./",
-            skillLink: "",
-            courseLink: "./courses",
-            hrLink: "../hr",
-            learnerLink: "./",
-          };
-        } else {
-          return {
-            roleLink: "./",
-            skillLink: "./skills",
-            courseLink: "",
-            hrLink: "../hr",
-            learnerLink: "./",
-          };
-        }
       }
     },
   },
