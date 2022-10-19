@@ -50,20 +50,20 @@ const display_courses = Vue.createApp({
         finalCourseList(){
             for(course of this.course_list){
                 var course_id = course.course_id;
-                var skill_name = "";
-                var skill_id = "";
+                var skill_names= [];
+                var skill_ids = [];
                 for(skills_courses of this.skills_courses_list){
                     if(course_id == skills_courses.course_id){
-                        skill_id = skills_courses.skill_id;
+                        skill_ids.push(skills_courses.skill_id);
                         }
                     }
                 for(skill of this.skill_list){
-                    if(skill_id == skill.skill_id){
-                        skill_name = skill.skill_name;
-                        course.skill_name = skill_name;
-                        
+                    for(id in skill_ids){
+                        if(skill.skill_id == skill_ids[id]){
+                            skill_names.push(skill.skill_name)
+                        }
                     }
-                    
+                    course.skill_names = skill_names;
                 }
             }
         },
@@ -140,7 +140,7 @@ const display_courses = Vue.createApp({
         },
         getAllSkillsCourses(){
            axios
-                .get("http://localhost:5004/skills_courses/all")
+                .get("http://localhost:5005/skills_courses/all")
                 .then((response) => {
                     if (response.data.code == 404) {
                         return
