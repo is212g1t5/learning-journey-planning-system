@@ -179,7 +179,7 @@ const display_courses = Vue.createApp({
         },
         getAllSkillsCourses(){
            axios
-                .get("http://localhost:5004/skills_courses/all")
+                .get("http://localhost:5005/skills_courses/all")
                 .then((response) => {
                     if (response.data.code == 404) {
                         return
