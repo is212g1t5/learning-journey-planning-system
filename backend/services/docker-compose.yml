@@ -179,7 +179,7 @@ services:
         environment:
             dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
         ports:
-            - "5008:5008"
+            - "5009:5009"
 
     ###############################
     # Learning Journey Roles : Learning Journey Roles service (CRUD) #
@@ -197,7 +197,7 @@ services:
         environment:
             dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
         ports:
-            - "5009:5009"
+            - "5008:5008"
 
     ###############################
     # groups : groups service (CRUD) #
