@@ -41,6 +41,12 @@
                               <span class="input-group-text" :disabled="!searchQuery" @click="searchQuery = ''">Clear</span>
                           </div>
                       </div>
+                      <div class="input-group mb-3" id="filter-input" type="search">
+                          <input type="text" class="form-control"  v-model="categoryQuery" placeholder="Search Skill Category">
+                          <div class="input-group-append">
+                              <span class="input-group-text" :disabled="!categoryQuery" @click="categoryQuery = ''">Clear</span>
+                          </div>
+                        </div>
                   </div>
                 </div>
               </div>
