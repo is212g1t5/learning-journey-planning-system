@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `skills_courses` (
 INSERT INTO skills_courses (skill_id, course_id) VALUES
 (1, 'FIN003'),
 (2, 'FIN002'),
-(3, 'COR001');
+(3, 'COR001'),
+(2, 'FIN003');
 
 CREATE TABLE IF NOT EXISTS `lj_skills` (
   `learning_journey_id` int NOT NULL,

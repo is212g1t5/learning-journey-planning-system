@@ -125,7 +125,7 @@
                           
                           <td v-if="course.course_status == 1">Active</td>
                             <td v-else>Retired</td>
-                          <td>{{course.skill_value}}</td>
+                          <td>{{course.skill_values}}</td>
                           <td>
                             <button type="button" class="btn btn-success btn-sm mx-1" @click="mapSkill(course.course_id)"><i class="fa fa-pencil"></i> Map Skill</button>
                               <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
