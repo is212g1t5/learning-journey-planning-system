@@ -7,7 +7,7 @@ from flask_cors import CORS  # enable CORS
 app = Flask(__name__)
 cors = CORS(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/ljps'
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -22,7 +22,29 @@ class SkillsCourses(db.Model):
         self.course_id = course_id
 
     def json(self):
-        return {"skills_id": self.skill_id, "course_id": self.course_id}
+        return {"skill_id": self.skill_id, "course_id": self.course_id}
+
+# --view all skills --
+@app.route("/skills_courses/all")
+def get_all():
+    skills_courses_list = SkillsCourses.query.all()
+    if len(skills_courses_list):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "skills_courses": [skills_courses.json() for skills_courses in skills_courses_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "code": 404,
+            "message": "No data found."
+        }
+    ), 404
+
+    
 
 # -- view all skills_courses by course_id -- 
 @app.route("/skills_courses/course/<string:course_id>")
