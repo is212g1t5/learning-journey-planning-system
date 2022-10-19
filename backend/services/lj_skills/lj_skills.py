@@ -109,4 +109,4 @@ def delete_lj_skill(learning_journey_id, skill_id, role_id):
     ), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5006, debug=True)
+    app.run(host='0.0.0.0', port=5007, debug=True)
