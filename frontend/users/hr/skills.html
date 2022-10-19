@@ -29,32 +29,25 @@
   <navbar></navbar>
 </div>
 
-    <div class="container" id="display_skills">
-        <h2 class="mt-5">Skills Management</h2>
-        <div class="container mt-3">
-            <div class="row">
-              <div class="second col-lg-9">
-                <div class="column my-4 col-lg-6" >
-                  <div class="form-group mb-0" >
-                      <label for="filter-input">Filter</label>
-                      <div class="input-group mb-3" id="filter-input" type="search">
-                          <input type="text" class="form-control"  v-model="searchQuery" placeholder="Search Skill Name">
-                          <div class="input-group-append">
-                              <span class="input-group-text" :disabled="!searchQuery" @click="searchQuery = ''">Clear</span>
-                          </div>
-                      </div>
-                      <div class="input-group mb-3" id="filter-input" type="search">
-                          <input type="text" class="form-control"  v-model="categoryQuery" placeholder="Search Skill Category">
-                          <div class="input-group-append">
-                              <span class="input-group-text" :disabled="!categoryQuery" @click="categoryQuery = ''">Clear</span>
-                          </div>
-                        </div>
-                  </div>
+<div class="container" id="display_skills">
+  <h2 class="mt-5">Skills Management</h2>
+  <div class="container mt-3">
+    <div class="row">
+      <div class="second col-lg-9">
+        <div class="column my-4 col-lg-6">
+          <div class="form-group mb-0">
+            <label for="filter-input">Filter</label>
+            <div class="input-group mb-3" id="filter-input" type="search">
+              <input type="text" class="form-control" v-model="searchQuery" placeholder="Search Skill Name">
+              <div class="input-group-append">
+                <span class="input-group-text" :disabled="!searchQuery" @click="searchQuery = ''">Clear</span>
+              </div>
+            </div>
+            <div class="input-group mb-3" id="filter-input" type="search">
+                <input type="text" class="form-control"  v-model="categoryQuery" placeholder="Search Skill Category">
+                <div class="input-group-append">
+                    <span class="input-group-text" :disabled="!categoryQuery" @click="categoryQuery = ''">Clear</span>
                 </div>
-              </div>
-              <div class="first column col-lg-3 col-md-3 col-sm-6 col-xs-8">
-                <a class="btn btn-primary btn-md btn-skill" :href="createSkillLink" role="button">Create New Skill</a>
-              </div>
             </div>
           </div>
         </div>
