@@ -8,10 +8,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 #Run AL-21-LJPS-01.sql script
-
-expected_titles= ['Skill Category', "Skill Desc", "Skill Id", "Skill Name", "Skill Status"] 
-expected_values= ['Engineering Design Management', 'Generate 3D models using a variety of modelling software to represent characteristics of a real-world system', "3", "3D Modelling", "true"] 
-
 class PythonOrgSearch(unittest.TestCase):
 
     def setUp(self):
@@ -63,7 +59,7 @@ class PythonOrgSearch(unittest.TestCase):
 
         #assert that skill name is Creative Thinking
         expected_course="Business Continuity Planning"
-        expected_skill="Creative Thinking"
+        expected_skill='[ "Creative Thinking", "Front-End Engineering and Design" ]'
 
         actual_course= driver.find_element(By.XPATH,"//*[@id='display_course_table']/tbody/tr[1]/td[1]") 
         actual_skill= driver.find_element(By.XPATH,"//*[@id='display_course_table']/tbody/tr[1]/td[4]") 
