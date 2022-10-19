@@ -616,7 +616,7 @@ CREATE TABLE IF NOT EXISTS `skills` (
 INSERT INTO `skills` (`skill_id`, `skill_name`, `skill_category`, `skill_desc`, `skill_status`) VALUES
 (1, 'Creative Thinking', 'Thinking Critically', 'Adopt diverse perspectives in combining ideas or information and making connections between different fields to create different ideas, improvements and solutions', 1),
 (2, 'Front-End Engineering and Design', 'Engineering Design Management\r\n', 'Manage Front-End Engineering and Design for equipment, components and systems', 1),
-(3, '3D Modelling', 'Engineering Design Management', 'Generate 3D models using a variety of modelling software to represent characteristics of a real-world system', 1),
+(3, '3D Modelling', 'Engineering Design Management', 'Generate 3D models using a variety of modelling software to represent characteristics of a real-world system', 0),
 (4, 'Team Management', 'People Management', 'Manage and lead your team in an efficient and optimal way', 1),
 (5, 'Presentation Skills', 'Public Speaking', 'Deliver and present your ideas clearly to any audience', 1),
 (6, 'Python', 'Programming', 'Learn the one of the most popular and in-demand language for data analytics', 1),

@@ -120,7 +120,7 @@
                         <!-- assigned skills pills -->
                         <div class="mb-3">
                             <template v-for="skill in skillsList">
-                                <span class="badge rounded-pill bg-dark px-2 me-3" v-if="assignedSkills.includes(skill.skill_id) && !removedSkills.includes(skill.skill_id)">
+                                <span class="badge rounded-pill bg-dark px-2 me-3" v-if="assignedSkills.includes(skill.skill_id) && !removedSkills.includes(skill.skill_id) && skill.skill_status == 1">
                                     {{ skill.skill_name }}
                                     <button type="button" class="ps-1 text-secondary close-btn" @click="removedSkills.push(skill.skill_id)">
                                         &times;
@@ -168,7 +168,7 @@
                         <!-- available skill buttons -->
                         <div class="list-group skills-options-group">
                             <template v-for="skill in skillOptions">
-                                <button type="button" class="list-group-item list-group-item-action" @click="addedSkills.push(skill.skill_id)" v-if="skill.skill_name.toLowerCase().includes(skillSearch.toLowerCase())">
+                                <button type="button" class="list-group-item list-group-item-action" @click="addedSkills.push(skill.skill_id)" v-if="skill.skill_name.toLowerCase().includes(skillSearch.toLowerCase()) && skill.skill_status == 1">
                                     {{ skill.skill_name }}
                                 </button>
                             </template>

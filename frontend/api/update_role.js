@@ -39,6 +39,9 @@ const update = Vue.createApp({
   },
   methods: {
     updateRole() {
+      this.showAlert = false;
+      this.showSuccess = false;
+
       //if new skills to assign, assign added skills
       if (this.addedSkills.length > 0) {
         for (let id of this.addedSkills) {
@@ -78,6 +81,13 @@ const update = Vue.createApp({
         .then((response) => {
           this.alerts.showSuccess = true;
           this.alerts.successMsg = response.data.message;
+
+          //replace current role info with updated role info
+          this.currentRoleInfo.name = this.roleForm.name;  
+          this.currentRoleInfo.description = this.roleForm.description;
+          this.currentRoleInfo.status = this.roleForm.status;
+          this.currentRoleInfo.sector = this.roleForm.sector;
+          this.currentRoleInfo.track = this.roleForm.track;
         })
         .catch((error) => {
           if (error) {
