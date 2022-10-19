@@ -46,13 +46,13 @@ const createRole = Vue.createApp({
       "roleForm.name"(newValue) {
          if (newValue && newValue.trim().length > 0) {
          //check if skill name already exists
-         if (this.existingRoles.includes(newValue.toLowerCase())) {
-            this.errorMsgs.name = "Skill already exists";
+         if (this.existingRoles.includes(newValue.trim().toLowerCase())) {
+            this.errorMsgs.name = "Role already exists";
          } else {
             this.errorMsgs.name = "";
          }
          } else {
-            this.errorMsgs.name = "Skill name cannot be empty";
+            this.errorMsgs.name = "Role name cannot be empty";
          }
       },
       //validate whether sector is empty
@@ -113,10 +113,10 @@ const createRole = Vue.createApp({
                method: "post",
                url: this.role_api.create,
                data: {
-                  role_name: this.roleForm.name,
-                  role_sector: this.roleForm.sector,
-                  role_desc: this.roleForm.description,
-                  role_track: this.roleForm.track,
+                  role_name: this.roleForm.name.trim(),
+                  role_sector: this.roleForm.sector.trim(),
+                  role_desc: this.roleForm.description.trim(),
+                  role_track: this.roleForm.track.trim(),
                   role_status: this.roleForm.status
                },
             });
@@ -127,6 +127,7 @@ const createRole = Vue.createApp({
 
             this.alerts.successMsg = "New role '" + data.role_name + "' created successfully";
             this.alerts.showSuccess = true;
+            this.getAllRoleNames();
 
          //to be continued...
          //redirect to created skill details page

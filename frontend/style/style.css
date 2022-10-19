@@ -26,3 +26,17 @@ body {
   }
 }
 
+.bg-success {
+  background-color: #3CB371 !important;
+}
+
+/* update role styling */
+.list-group {
+  height: 18vh;
+  overflow: auto;
+}
+
+.close-btn {
+  background-color: transparent;
+  border: none;
+}
