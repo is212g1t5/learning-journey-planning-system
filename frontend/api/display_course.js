@@ -170,6 +170,7 @@ const display_courses = Vue.createApp({
                 
                         var skill_list = response.data.data.skills;
                         this.skill_list = skill_list
+                        this.getFilterList()
                     }
                 })
                 .catch((error) => {
@@ -263,7 +264,6 @@ const display_courses = Vue.createApp({
         await this.getAllCourses();
         await this.getAllSkills();
         await this.getAllSkillsCourses();
-        this.getFilterList();
     }
 })
 
