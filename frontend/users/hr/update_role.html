@@ -107,9 +107,9 @@
                         <!-- newly assigned skills -->
                         <div class="mb-3" v-if="addedSkills.length !== 0">
                             <template v-for="skill in skillsList">
-                                <span class="badge rounded-pill bg-success px-2 me-3" v-if="addedSkills.includes(skill.skill_id)">
+                                <span class="badge rounded-pill bg-success px-2 me-3" v-if="addedSkills.includes(skill.skill_id)" :style="statusStyle">
                                     {{ skill.skill_name }}
-                                    <button type="button" class="ps-1 text-dark close-btn" @click="addedSkills.splice(addedSkills.indexOf(skill.skill_id), 1)">
+                                    <button type="button" class="ps-1 text-dark close-btn" @click="addedSkills.splice(addedSkills.indexOf(skill.skill_id), 1)" :disabled="!roleForm.status">
                                         &times;
                                     </button>
                                 </span>
@@ -120,9 +120,9 @@
                         <!-- assigned skills pills -->
                         <div class="mb-3">
                             <template v-for="skill in skillsList">
-                                <span class="badge rounded-pill bg-dark px-2 me-3" v-if="assignedSkills.includes(skill.skill_id) && !removedSkills.includes(skill.skill_id) && skill.skill_status == 1">
+                                <span class="badge rounded-pill bg-dark px-2 me-3" v-if="assignedSkills.includes(skill.skill_id) && !removedSkills.includes(skill.skill_id) && skill.skill_status == 1" :style="statusStyle">
                                     {{ skill.skill_name }}
-                                    <button type="button" class="ps-1 text-secondary close-btn" @click="removedSkills.push(skill.skill_id)">
+                                    <button type="button" class="ps-1 text-secondary close-btn" @click="removedSkills.push(skill.skill_id)" :disabled="!roleForm.status">
                                         &times;
                                     </button>
                                 </span>
@@ -140,9 +140,9 @@
 
                             <div class="mb-3">
                                 <template v-for="skill in skillsList">
-                                    <span class="badge rounded-pill bg-danger px-2 me-3" v-if="removedSkills.includes(skill.skill_id)">
+                                    <span class="badge rounded-pill bg-danger px-2 me-3" v-if="removedSkills.includes(skill.skill_id)" :style="statusStyle">
                                         {{ skill.skill_name }}
-                                        <button type="button" class="ps-1 text-white close-btn" @click="removedSkills.splice(removedSkills.indexOf(skill.skill_id), 1)">
+                                        <button type="button" class="ps-1 text-white close-btn" @click="removedSkills.splice(removedSkills.indexOf(skill.skill_id), 1)" :disabled="!roleForm.status">
                                             +
                                         </button>
                                     </span>
@@ -159,7 +159,7 @@
                         
                         <!-- skill search -->
                         <div class="mb-2">
-                            <input type="search" name="search-skills" id="search-skills" placeholder="Type skill name here..." v-model="skillSearch" class="w-100 form-control"> 
+                            <input type="search" name="search-skills" id="search-skills" placeholder="Type skill name here..." v-model="skillSearch" class="w-100 form-control" :disabled="!roleForm.status"> 
                         </div>
 
                         <!-- skill category filtering -->
@@ -168,7 +168,7 @@
                         <!-- available skill buttons -->
                         <div class="list-group skills-options-group">
                             <template v-for="skill in skillOptions">
-                                <button type="button" class="list-group-item list-group-item-action" @click="addedSkills.push(skill.skill_id)" v-if="skill.skill_name.toLowerCase().includes(skillSearch.toLowerCase()) && skill.skill_status == 1">
+                                <button type="button" class="list-group-item list-group-item-action" @click="addedSkills.push(skill.skill_id)" v-if="skill.skill_name.toLowerCase().includes(skillSearch.toLowerCase()) && skill.skill_status == 1" :disabled="!roleForm.status">
                                     {{ skill.skill_name }}
                                 </button>
                             </template>

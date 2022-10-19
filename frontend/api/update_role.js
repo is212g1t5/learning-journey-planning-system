@@ -42,21 +42,23 @@ const update = Vue.createApp({
       this.showAlert = false;
       this.showSuccess = false;
 
-      //if new skills to assign, assign added skills
-      if (this.addedSkills.length > 0) {
-        for (let id of this.addedSkills) {
-          this.assignSkills(id);
+      //allow only changes to skills assigned if role is active
+      if (this.roleForm.status) {
+
+        //if new skills to assign, assign added skills
+        if (this.addedSkills.length > 0) {
+          for (let id of this.addedSkills) {
+            this.assignSkills(id);
+          }
+        }
+
+        //if skills to remove, remove skills
+        if (this.removedSkills.length > 0) {
+          for (let id of this.removedSkills) {
+            this.removeSkills(id);
+          }
         }
       }
-
-      //if skills to remove, remove skills
-      if (this.removedSkills.length > 0) {
-        for (let id of this.removedSkills) {
-          this.removeSkills(id);
-        }
-      }
-
-      console.log(this.hasChangesMade);
 
       //update role details
       if (this.hasChangesMade) {
@@ -118,7 +120,7 @@ const update = Vue.createApp({
     async getAssignedSkills() {
       try {
         const res = await axios({
-          url: "http://127.0.0.1:5005/skills_roles/" + this.id
+          url: "http://127.0.0.1:5006/skills_roles/" + this.id
         });
 
         data = res.data.data;
@@ -133,7 +135,7 @@ const update = Vue.createApp({
     async assignSkills(skillId){
       try {
         const res = await axios({
-          url: "http://127.0.0.1:5005/skills_roles",
+          url: "http://127.0.0.1:5006/skills_roles",
           method: 'post',
           data: {
             role_id: this.id,
@@ -160,7 +162,7 @@ const update = Vue.createApp({
     async removeSkills(skillId){
       try {
         const res = await axios({
-          url: "http://127.0.0.1:5005/skills_roles/" + skillId + "/" + this.id,
+          url: "http://127.0.0.1:5006/skills_roles/" + skillId + "/" + this.id,
           method: 'delete'
         });
 
@@ -339,6 +341,14 @@ const update = Vue.createApp({
         this.roleForm.sector !== this.currentRoleInfo.sector ||
         this.roleForm.track !== this.currentRoleInfo.track
       );
+    },
+    //return styling of skill pills based on role status
+    statusStyle() {
+      if (this.roleForm.status === false) {
+        return {
+          "background-color": "#dddddd !important"
+        };
+      } 
     }
   },
 });
