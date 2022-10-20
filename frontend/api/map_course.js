@@ -99,7 +99,8 @@ const update = Vue.createApp({
       .then((response) => {
         skills_courses = response.data.data;
         skills_courses.skills_courses.forEach(element => {
-          this.skillMapped.push(element.skills_id)
+          console.log(element)
+          this.skillMapped.push(element.skill_id)
         });
         
         // console.log(skills_courses.skills_courses)
