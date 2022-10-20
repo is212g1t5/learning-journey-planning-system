@@ -50,7 +50,7 @@ const create = Vue.createApp({
       "skillForm.name"(newValue) {
          if (newValue && newValue.trim().length > 0) {
          //check if skill name already exists
-         if (this.existingSkills.includes(newValue.toLowerCase())) {
+         if (this.existingSkills.includes(newValue.trim().toLowerCase())) {
             this.errorMsgs.name = "Skill already exists";
          } else {
             this.errorMsgs.name = "";
@@ -113,9 +113,9 @@ const create = Vue.createApp({
                method: "post",
                url: this.skill_api.create,
                data: {
-                  skill_name: this.skillForm.name,
-                  skill_category: this.skillForm.category,
-                  skill_desc: this.skillForm.description,
+                  skill_name: this.skillForm.name.trim(),
+                  skill_category: this.skillForm.category.trim(),
+                  skill_desc: this.skillForm.description.trim(),
                   skill_status: this.skillForm.status,
                },
             });
@@ -129,6 +129,7 @@ const create = Vue.createApp({
             this.viewSkillLink = `<a href="${this.skill_api.viewSpecific}${data.skill_id}">${data.skill_name}</a>`;
 
             this.alerts.showSuccess = true;
+            this.getAllSkillNames();
             //reset form
             this.skillForm = {
                name: "",

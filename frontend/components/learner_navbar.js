@@ -14,14 +14,14 @@ navbar.component("navbar", {
           return {
             roleLink: "./",
             ljLink: "./journeys",
-            hrLink: "../hr",
+            hrLink: "../hr/roles",
             learnerLink: "./",
           };
         } else {
           return {
             roleLink: "./",
             ljLink: "./journeys",
-            hrLink: "../hr",
+            hrLink: "../hr/roles",
             learnerLink: "./",
           };
         }

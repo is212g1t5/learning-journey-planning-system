@@ -49,49 +49,54 @@ const display_courses = Vue.createApp({
         }
     },
     computed: {
-        finalCourseList(){
-            for(course of this.course_list){
-                var course_id = course.course_id;
-                var skill_name = "";
-                var skill_id = "";
-                for(skills_courses of this.skills_courses_list){
-                    if(course_id == skills_courses.course_id){
-                        skill_id = skills_courses.skill_id;
-                        }
-                    }
-                for(skill of this.skill_list){
-                    if(skill_id == skill.skill_id){
-                        skill_name = skill.skill_name;
-                        course.skill_name = skill_name;
-                    }
-                    
-                }
-            }
-        },
+        // finalCourseList(){
+        //     for(course of this.course_list){
+        //         var course_id = course.course_id;
+        //         var skill_names= [];
+        //         var skill_ids = [];
+        //         for(skills_courses of this.skills_courses_list){
+        //             if(course_id == skills_courses.course_id){
+        //                 skill_ids.push(skills_courses.skill_id);
+        //                 }
+        //             }
+        //         for(skill of this.skill_list){
+        //             if(skill_id == skill.skill_id){
+        //                 skill_name = skill.skill_name;
+        //                 course.skill_name = skill_name;
+        //             }
+        //             course.skill_names = skill_names;
+        //         }
+        //     }
+        // },
         checkedSkills () {
             return this.filter_list.filter(item => item.checked).map(skill_name => skill_name.skill_name)
          },
         filteredCourseList(){
             for(course of this.course_list){
-                course.skill_name= "Unassigned"
-                course.skill_value= " "
+                course.skill_names= ["Unassigned"]
+                course.skill_values= []
+                course.skill_ids= []
                 var course_id = course.course_id;
-                var skill_id = "";
                 for(skills_courses of this.skills_courses_list){
                     if(course_id == skills_courses.course_id){
-                        skill_id = skills_courses.skill_id;
+                        course.skill_ids.push(skills_courses.skill_id);
                         }
                     }
                 for(skill of this.skill_list){
-                    if(skill_id == skill.skill_id){
+                    if(course.skill_ids.includes(skill.skill_id)){
                         skill_name = skill.skill_name;
-                        course.skill_name = skill_name;
-                        course.skill_value = skill_name;
+                        course.skill_names.push(skill_name);
+                        course.skill_values.push(skill_name);
                     }
                 }
+                if (course.skill_ids.length>0){
+                    course.skill_names.shift();
+                } else {
+                    course.skill_values= ""
+                }
             }
-            var selected_skills= this.checkedSkills
-            return this.course_list.filter(course => selected_skills.includes(course.skill_name))
+            return this.course_list.filter(course => this.checkedSkills.some(e => course.skill_names.includes(e)))
+
         },
         sortedResultQuery() {
             return this.resultQuery.sort((a, b) => {

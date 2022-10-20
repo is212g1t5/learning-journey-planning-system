@@ -4,7 +4,8 @@ from os import environ
 from flask_cors import CORS  # enable CORS
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app)  # enable CORS for all routes
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

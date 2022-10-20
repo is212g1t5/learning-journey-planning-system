@@ -12,7 +12,7 @@ app.component("navbar", {
       if (window.location.href.includes("hr")) {
         if (window.location.href.includes("role")) {
           return {
-            roleLink: "",
+            roleLink: "./roles",
             skillLink: "./skills",
             courseLink: "./courses",
             hrLink: "./",
@@ -20,17 +20,17 @@ app.component("navbar", {
           };
         } else if (window.location.href.includes("skill")) {
           return {
-            roleLink: "./",
-            skillLink: "",
+            roleLink: "./roles",
+            skillLink: "./skills",
             courseLink: "./courses",
             hrLink: "./",
             learnerLink: "../learners",
           };
         } else {
           return {
-            roleLink: "./",
+            roleLink: "./roles",
             skillLink: "./skills",
-            courseLink: "",
+            courseLink: "./courses",
             hrLink: "./",
             learnerLink: "../learners",
           };

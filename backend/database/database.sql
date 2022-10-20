@@ -590,7 +590,8 @@ CREATE TABLE IF NOT EXISTS `roles` (
 
 INSERT INTO `roles` (`role_id`, `role_name`, `role_desc`, `role_status`, `role_sector`, `role_track`) VALUES
 (1, 'Designer', 'The Designer (Engineering Design) develops technical drawings and models based on pre-defined specifications and engineering calculations. He/She interprets engineering calculations and uses design software and modelling methods for preparation of drawings and designs. He identifies relevant design data and highlights design issues where applicable. He also complies with Design for Safety (DfS) regulations and ensures compliance with industry standards and international conventions. He possesses high detail', 1, 'Engineering Services', 'Engineering Design'),
-(2, 'Chief Executive Officer/Managing Director/General Manager/Presid', 'The Chief Executive Officer/Chief Operating Officer/Managing Director/General Manager/President defines the long-term strategic direction to grow the business in line with the organisation’s overall vision, mission and values. He/She translates broad goals into achievable steps, anticipates and stays ahead of trends, and takes advantage of business opportunities. He represents the organisation with customers, investors, and business partners, and holds responsibility for fostering a culture of workplace saf', 1, 'Engineering Services ', 'General Management ');
+(2, 'Chief Executive Officer/Managing Director/General Manager/Presid', 'The Chief Executive Officer/Chief Operating Officer/Managing Director/General Manager/President defines the long-term strategic direction to grow the business in line with the organisation’s overall vision, mission and values. He/She translates broad goals into achievable steps, anticipates and stays ahead of trends, and takes advantage of business opportunities. He represents the organisation with customers, investors, and business partners, and holds responsibility for fostering a culture of workplace saf', 1, 'Engineering Services ', 'General Management '),
+(3, 'Customer Relations Manager', 'Manage external relations of clients by contacting and actively responding to clients managed', 0, 'Customer Relations', 'External Relations Management');
 
 -- --------------------------------------------------------
 
@@ -616,7 +617,11 @@ CREATE TABLE IF NOT EXISTS `skills` (
 INSERT INTO `skills` (`skill_id`, `skill_name`, `skill_category`, `skill_desc`, `skill_status`) VALUES
 (1, 'Creative Thinking', 'Thinking Critically', 'Adopt diverse perspectives in combining ideas or information and making connections between different fields to create different ideas, improvements and solutions', 1),
 (2, 'Front-End Engineering and Design', 'Engineering Design Management\r\n', 'Manage Front-End Engineering and Design for equipment, components and systems', 1),
-(3, '3D Modelling', 'Engineering Design Management', 'Generate 3D models using a variety of modelling software to represent characteristics of a real-world system', 1);
+(3, '3D Modelling', 'Engineering Design Management', 'Generate 3D models using a variety of modelling software to represent characteristics of a real-world system', 0),
+(4, 'Team Management', 'People Management', 'Manage and lead your team in an efficient and optimal way', 1),
+(5, 'Presentation Skills', 'Public Speaking', 'Deliver and present your ideas clearly to any audience', 1),
+(6, 'Python', 'Programming', 'Learn the one of the most popular and in-demand language for data analytics', 1),
+(7, 'React', 'Development Frameworks', 'Component-driven framework for modular development', 1);
 
 -- --------------------------------------------------------
 
@@ -631,6 +636,15 @@ CREATE TABLE IF NOT EXISTS `skills_courses` (
   PRIMARY KEY (`skill_id`,`course_id`),
   KEY `course_id` (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --
+-- -- dumping data for table `skils_courses`
+-- --
+INSERT INTO skills_courses (skill_id, course_id) VALUES
+(3,'FIN003'),
+(3,'COR001'),
+(2,'FIN002'),
+(1,'FIN003');
 
 -- --------------------------------------------------------
 
@@ -648,6 +662,15 @@ CREATE TABLE IF NOT EXISTS `skills_roles` (
 
 -- --------------------------------------------------------
 
+-- --
+-- -- dumping data for table `skills_roles`
+-- --
+INSERT INTO `skills_roles` (`skill_id`, `role_id`) VALUES
+(3, 1),
+(4, 1), 
+(2, 2),
+(4, 3),
+(5, 3);
 --
 -- Table structure for table `staffs`
 --
