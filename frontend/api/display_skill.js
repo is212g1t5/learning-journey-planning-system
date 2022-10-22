@@ -139,21 +139,18 @@ const display_skills = Vue.createApp({
         axios
             .get("http://localhost:5001/skills")
             .then((response) => {
-                if(response.data.code == 404){
-                  this.emptyText= "There are no skills recorded. Please create new skill."
-                  return
-                }else{
-                  var skill_list = response.data.data.skills;
-                  this.skill_list= skill_list
-                  
-                  // Set the initial number of items
-                  this.totalRows = this.skill_list.length;
-                  this.pageSize = Math.ceil(this.totalRows/this.perPage);
-                  console.log(skill_list)
-                }
-               
+                var skill_list = response.data.data.skills;
+                this.skill_list= skill_list
+                
+                // Set the initial number of items
+                this.totalRows = this.skill_list.length;
+                this.pageSize = Math.ceil(this.totalRows/this.perPage);
+                console.log(skill_list)
             })
             .catch((error) => {
+                if(error.response.data.code==404){
+                  this.emptyText= "There are no skills recorded. Please create new skill."
+                }
                 console.log(error);
             })
     },
