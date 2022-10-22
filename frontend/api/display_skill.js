@@ -4,6 +4,7 @@ const display_skills = Vue.createApp({
             skill_list: [],
             emptyText: "",
             searchQuery: null,
+            categoryQuery:null,
             fields: [
                 { key: 'skill_name', label: 'Skill Name', sortable: true, sortDirection: 'desc' },
                 { key: 'skill_category', label: 'Skill Category', sortable: true },
@@ -61,10 +62,19 @@ const display_skills = Vue.createApp({
                 .split(" ")
                 .every(v => item.skill_name.toLowerCase().includes(v));
               });
-          } else {
-            return this.skill_list;
           }
-        },
+        else if(this.categoryQuery) {
+            return this.skill_list.filter(item => {
+                return this.categoryQuery
+                    .toLowerCase()
+                    .split(" ")
+                    .every(v => item.skill_category.toLowerCase().includes(v));
+            });
+        } else{
+            return this.skill_list;
+        }
+            
+    },
         paginatedQuery(){
           return this.sortedResultQuery.slice(this.startRow, this.endRow)
         },
@@ -123,7 +133,7 @@ const display_skills = Vue.createApp({
             this.currentPage= page;
             this.endRow = parseInt(this.currentPage) * parseInt(this.perPage);
             this.startRow = parseInt(this.endRow) - parseInt(this.perPage); 
-          }    
+          },
       },
     mounted() {
         axios
