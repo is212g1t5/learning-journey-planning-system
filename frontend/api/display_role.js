@@ -131,10 +131,6 @@ const display_roles = Vue.createApp({
         axios
             .get("http://localhost:5002/roles")
             .then((response) => {
-                if(response.data.code == 404){
-                  this.emptyText= "There are no roles recorded. Please create new role."
-                  return
-                }else{
                   var role_list = response.data.data.roles;
                   this.role_list= role_list
                   
@@ -142,10 +138,11 @@ const display_roles = Vue.createApp({
                   this.totalRows = this.role_list.length;
                   this.pageSize = Math.ceil(this.totalRows/this.perPage);
                   console.log(role_list)
-                }
-               
             })
             .catch((error) => {
+                if(error.response.data.code==404){
+                  this.emptyText= "There are no roles recorded. Please create new role."
+                }
                 console.log(error);
             })
     },
