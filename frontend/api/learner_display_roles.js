@@ -118,6 +118,7 @@ const learner_display_roles = Vue.createApp({
                 for(role of role_list){
                     console.log(role.role_status)
                     if (role.role_status){
+                        role.role_status = "Active"
                         filteredList.push(role)
                     }
                 }
