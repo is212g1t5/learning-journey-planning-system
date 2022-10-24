@@ -40,3 +40,7 @@ body {
   background-color: transparent;
   border: none;
 }
+
+.badge {
+  font-size: 1rem !important;
+}
