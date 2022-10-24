@@ -4,6 +4,7 @@ const display_skills = Vue.createApp({
             skill_list: [],
             emptyText: "",
             searchQuery: null,
+            categoryQuery:null,
             fields: [
                 { key: 'skill_name', label: 'Skill Name', sortable: true, sortDirection: 'desc' },
                 { key: 'skill_category', label: 'Skill Category', sortable: true },
@@ -61,10 +62,19 @@ const display_skills = Vue.createApp({
                 .split(" ")
                 .every(v => item.skill_name.toLowerCase().includes(v));
               });
-          } else {
-            return this.skill_list;
           }
-        },
+        else if(this.categoryQuery) {
+            return this.skill_list.filter(item => {
+                return this.categoryQuery
+                    .toLowerCase()
+                    .split(" ")
+                    .every(v => item.skill_category.toLowerCase().includes(v));
+            });
+        } else{
+            return this.skill_list;
+        }
+            
+    },
         paginatedQuery(){
           return this.sortedResultQuery.slice(this.startRow, this.endRow)
         },
@@ -123,27 +133,24 @@ const display_skills = Vue.createApp({
             this.currentPage= page;
             this.endRow = parseInt(this.currentPage) * parseInt(this.perPage);
             this.startRow = parseInt(this.endRow) - parseInt(this.perPage); 
-          }    
+          },
       },
     mounted() {
         axios
             .get("http://localhost:5001/skills")
             .then((response) => {
-                if(response.data.code == 404){
-                  this.emptyText= "There are no skills recorded. Please create new skill."
-                  return
-                }else{
-                  var skill_list = response.data.data.skills;
-                  this.skill_list= skill_list
-                  
-                  // Set the initial number of items
-                  this.totalRows = this.skill_list.length;
-                  this.pageSize = Math.ceil(this.totalRows/this.perPage);
-                  console.log(skill_list)
-                }
-               
+                var skill_list = response.data.data.skills;
+                this.skill_list= skill_list
+                
+                // Set the initial number of items
+                this.totalRows = this.skill_list.length;
+                this.pageSize = Math.ceil(this.totalRows/this.perPage);
+                console.log(skill_list)
             })
             .catch((error) => {
+                if(error.response.data.code==404){
+                  this.emptyText= "There are no skills recorded. Please create new skill."
+                }
                 console.log(error);
             })
     },

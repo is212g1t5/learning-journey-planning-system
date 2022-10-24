@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Oct 07, 2022 at 09:52 PM
--- Server version: 8.0.21
--- PHP Version: 7.4.9
+-- Host: db
+-- Generation Time: Oct 22, 2022 at 03:22 PM
+-- Server version: 8.0.31
+-- PHP Version: 8.0.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,15 +30,13 @@ USE `ljps`;
 -- Table structure for table `courses`
 --
 
-DROP TABLE IF EXISTS `courses`;
-CREATE TABLE IF NOT EXISTS `courses` (
+CREATE TABLE `courses` (
   `course_id` varchar(20) NOT NULL,
   `course_name` varchar(50) NOT NULL,
   `course_desc` varchar(255) NOT NULL,
   `course_status` int NOT NULL,
   `course_type` varchar(10) NOT NULL,
-  `course_category` varchar(50) NOT NULL,
-  PRIMARY KEY (`course_id`)
+  `course_category` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -84,12 +82,9 @@ INSERT INTO `courses` (`course_id`, `course_name`, `course_desc`, `course_status
 -- Table structure for table `groups`
 --
 
-DROP TABLE IF EXISTS `groups`;
-CREATE TABLE IF NOT EXISTS `groups` (
+CREATE TABLE `groups` (
   `group_id` int NOT NULL,
-  `group_name` varchar(20) NOT NULL,
-  PRIMARY KEY (`group_id`),
-  UNIQUE KEY `group_name` (`group_name`)
+  `group_name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -106,17 +101,12 @@ INSERT INTO `groups` (`group_id`, `group_name`) VALUES
 -- Table structure for table `learning_journeys`
 --
 
-DROP TABLE IF EXISTS `learning_journeys`;
-CREATE TABLE IF NOT EXISTS `learning_journeys` (
-  `learning_journey_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `learning_journeys` (
+  `learning_journey_id` int NOT NULL,
   `learning_journey_name` varchar(50) NOT NULL,
   `staff_id` int NOT NULL,
   `role_id` int NOT NULL,
-  `role_name` varchar(64) NOT NULL,
-  PRIMARY KEY (`learning_journey_id`),
-  UNIQUE KEY `learning_journey_name` (`learning_journey_name`),
-  KEY `lj_fk1` (`staff_id`),
-  KEY `lj_fk2` (`role_id`)
+  `role_name` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -125,12 +115,9 @@ CREATE TABLE IF NOT EXISTS `learning_journeys` (
 -- Table structure for table `lj_courses`
 --
 
-DROP TABLE IF EXISTS `lj_courses`;
-CREATE TABLE IF NOT EXISTS `lj_courses` (
+CREATE TABLE `lj_courses` (
   `learning_journey_id` int NOT NULL,
-  `course_id` varchar(20) NOT NULL,
-  PRIMARY KEY (`learning_journey_id`,`course_id`),
-  KEY `lc_fk1` (`course_id`)
+  `course_id` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -139,12 +126,9 @@ CREATE TABLE IF NOT EXISTS `lj_courses` (
 -- Table structure for table `lj_roles`
 --
 
-DROP TABLE IF EXISTS `lj_roles`;
-CREATE TABLE IF NOT EXISTS `lj_roles` (
+CREATE TABLE `lj_roles` (
   `learning_journey_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  PRIMARY KEY (`learning_journey_id`,`role_id`),
-  KEY `lr_fk1` (`role_id`)
+  `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -153,14 +137,10 @@ CREATE TABLE IF NOT EXISTS `lj_roles` (
 -- Table structure for table `lj_skills`
 --
 
-DROP TABLE IF EXISTS `lj_skills`;
-CREATE TABLE IF NOT EXISTS `lj_skills` (
+CREATE TABLE `lj_skills` (
   `learning_journey_id` int NOT NULL,
   `skill_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  PRIMARY KEY (`learning_journey_id`,`skill_id`,`role_id`),
-  KEY `ls_fk1` (`skill_id`),
-  KEY `ls_fk2` (`role_id`)
+  `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -169,16 +149,12 @@ CREATE TABLE IF NOT EXISTS `lj_skills` (
 -- Table structure for table `registration`
 --
 
-DROP TABLE IF EXISTS `registration`;
-CREATE TABLE IF NOT EXISTS `registration` (
+CREATE TABLE `registration` (
   `reg_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL,
   `staff_id` int NOT NULL,
   `reg_status` varchar(11) NOT NULL,
-  `completion_status` varchar(20) NOT NULL,
-  PRIMARY KEY (`reg_id`),
-  KEY `course_id` (`course_id`),
-  KEY `staff_id` (`staff_id`)
+  `completion_status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -572,17 +548,14 @@ INSERT INTO `registration` (`reg_id`, `course_id`, `staff_id`, `reg_status`, `co
 -- Table structure for table `roles`
 --
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `role_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+  `role_id` int NOT NULL,
   `role_name` varchar(64) NOT NULL,
   `role_desc` varchar(512) NOT NULL,
   `role_status` tinyint(1) NOT NULL,
   `role_sector` varchar(64) NOT NULL,
-  `role_track` varchar(64) NOT NULL,
-  PRIMARY KEY (`role_id`),
-  UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `role_track` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `roles`
@@ -590,7 +563,10 @@ CREATE TABLE IF NOT EXISTS `roles` (
 
 INSERT INTO `roles` (`role_id`, `role_name`, `role_desc`, `role_status`, `role_sector`, `role_track`) VALUES
 (1, 'Designer', 'The Designer (Engineering Design) develops technical drawings and models based on pre-defined specifications and engineering calculations. He/She interprets engineering calculations and uses design software and modelling methods for preparation of drawings and designs. He identifies relevant design data and highlights design issues where applicable. He also complies with Design for Safety (DfS) regulations and ensures compliance with industry standards and international conventions. He possesses high detail', 1, 'Engineering Services', 'Engineering Design'),
-(2, 'Chief Executive Officer/Managing Director/General Manager/Presid', 'The Chief Executive Officer/Chief Operating Officer/Managing Director/General Manager/President defines the long-term strategic direction to grow the business in line with the organisation’s overall vision, mission and values. He/She translates broad goals into achievable steps, anticipates and stays ahead of trends, and takes advantage of business opportunities. He represents the organisation with customers, investors, and business partners, and holds responsibility for fostering a culture of workplace saf', 1, 'Engineering Services ', 'General Management ');
+(2, 'Chief Executive Officer/Managing Director/General Manager/Presid', 'The Chief Executive Officer/Chief Operating Officer/Managing Director/General Manager/President defines the long-term strategic direction to grow the business in line with the organisation’s overall vision, mission and values. He/She translates broad goals into achievable steps, anticipates and stays ahead of trends, and takes advantage of business opportunities. He represents the organisation with customers, investors, and business partners, and holds responsibility for fostering a culture of workplace saf', 1, 'Engineering Services ', 'General Management '),
+(11, 'Director', 'The Director (Project Financing) is responsible for spearheading the project\r\nfinancing activities while ensuring alignment with the organization\'s financing\r\ngoals. He drives direction and strategy for project financing scoping,\r\nvaluation analysis and delivery. He is responsible for origination of project\r\nfinancing, and maintains strong links to external stakeholders. He serves as\r\nan advisor to clients and stakeholders on project strategy and establishes\r\nstrong rapport to enhance customer satisfaction.', 1, 'Engineering Services', 'Project Financing'),
+(12, 'Manager', 'The Manager (Project Financing) is responsible for planning and leading the\r\nproject financing scoping, modelling and delivery. Drives project\r\nfinancing goals in line with organisational goals, collaborating with\r\nthe Project Development team to ensure feasibility and viability. Provide expert advice to internal and external stakeholders on the project financing process, managing negotiations to secure the best terms for project financing purposes.', 1, 'Engineering Services', 'Project Financing'),
+(13, 'Principal Engineer/Manager', 'The Principal Engineer/Manager (Commissioning) acts as a technical\r\nadvisor to provide problem-solving consultation and technical expertise for\r\ncommissioning projects. He/She leads commissioning activities, while\r\nmanaging key metrics for cost, time, quality, risk, safety and environmental\r\nimpact. He establishes strategic partnerships and collaborates with internal\r\nand external stakeholders to ensure that all equipment, components and\r\nsystems are fully functional and in optimal operating condition.', 1, 'Engineering Services', 'Engineering Construction and Commissioning');
 
 -- --------------------------------------------------------
 
@@ -598,25 +574,29 @@ INSERT INTO `roles` (`role_id`, `role_name`, `role_desc`, `role_status`, `role_s
 -- Table structure for table `skills`
 --
 
-DROP TABLE IF EXISTS `skills`;
-CREATE TABLE IF NOT EXISTS `skills` (
-  `skill_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `skills` (
+  `skill_id` int NOT NULL,
   `skill_name` varchar(64) NOT NULL,
   `skill_category` varchar(64) NOT NULL,
   `skill_desc` varchar(512) NOT NULL,
-  `skill_status` tinyint(1) NOT NULL,
-  PRIMARY KEY (`skill_id`),
-  UNIQUE KEY `skill_name` (`skill_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `skill_status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `skills`
 --
 
 INSERT INTO `skills` (`skill_id`, `skill_name`, `skill_category`, `skill_desc`, `skill_status`) VALUES
-(1, 'Creative Thinking', 'Thinking Critically', 'Adopt diverse perspectives in combining ideas or information and making connections between different fields to create different ideas, improvements and solutions', 1),
+(1, 'Creative Thinking', 'Thinking Critically', 'Adopt diverse perspectives in combining ideas or information and making connections between different fields to create different ideas, improvements and solutions', 0),
 (2, 'Front-End Engineering and Design', 'Engineering Design Management\r\n', 'Manage Front-End Engineering and Design for equipment, components and systems', 1),
-(3, '3D Modelling', 'Engineering Design Management', 'Generate 3D models using a variety of modelling software to represent characteristics of a real-world system', 1);
+(3, '3D Modelling', 'Engineering Design Management', 'Generate 3D models using a variety of modelling software to represent characteristics of a real-world system', 1),
+(4, 'Artificial Intelligence Application', 'Technology Road Mapping', 'Apply algorithmic, statistical and engineering knowledge to integrate artificial intelligence into engineering and maintenance processes', 1),
+(5, 'Data and Statistical Analytics', 'Technology Road Mapping', 'Identify data sets for the application of statistical techniques to analyse and interpret large complex data to uncover trends or patterns in order to locate and define new process\r\nimprovement opportunities', 1),
+(6, 'Internet of Things (IoT) Management', 'Technology Road Mapping', 'Interrelate computing devices, equipment and machines data in a networked environment to provide specific solutions', 0),
+(7, 'Robotic and Automation Technology Application', 'Technology Road Mapping', 'Integrate robotic and automation technologies in engineering services, including construction, operations and maintenance so as to enhance productivity and precision and to reduce\r\nreliance on manual tasks', 1),
+(8, 'Workplace Safety and Health Culture Development', 'Workplace Safety and Health (WSH) Management', 'Create and maintain a Workplace Safety and Health culture based on a common set of attitudes, behaviours, and competencies', 1),
+(9, 'Financial Analysis', 'Project Finance', 'Analyse the financial statements and data to provide insights about the financial performance and position of the organisation over time', 1),
+(10, 'Capital Expenditure and Investment Evaluation', 'Project Finance', 'Assess investments based on alignment with strategies, affordability, acceptable returns and prioritisation of options', 0);
 
 -- --------------------------------------------------------
 
@@ -624,13 +604,24 @@ INSERT INTO `skills` (`skill_id`, `skill_name`, `skill_category`, `skill_desc`, 
 -- Table structure for table `skills_courses`
 --
 
-DROP TABLE IF EXISTS `skills_courses`;
-CREATE TABLE IF NOT EXISTS `skills_courses` (
+CREATE TABLE `skills_courses` (
   `skill_id` int NOT NULL,
-  `course_id` varchar(20) NOT NULL,
-  PRIMARY KEY (`skill_id`,`course_id`),
-  KEY `course_id` (`course_id`)
+  `course_id` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `skills_courses`
+--
+
+INSERT INTO `skills_courses` (`skill_id`, `course_id`) VALUES
+(1, 'COR001'),
+(2, 'COR001'),
+(2, 'COR002'),
+(4, 'FIN001'),
+(9, 'FIN001'),
+(5, 'SAL001'),
+(9, 'SAL001'),
+(10, 'SAL001');
 
 -- --------------------------------------------------------
 
@@ -638,13 +629,27 @@ CREATE TABLE IF NOT EXISTS `skills_courses` (
 -- Table structure for table `skills_roles`
 --
 
-DROP TABLE IF EXISTS `skills_roles`;
-CREATE TABLE IF NOT EXISTS `skills_roles` (
+CREATE TABLE `skills_roles` (
   `skill_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  PRIMARY KEY (`skill_id`,`role_id`),
-  KEY `role_id` (`role_id`)
+  `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `skills_roles`
+--
+
+INSERT INTO `skills_roles` (`skill_id`, `role_id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(1, 2),
+(5, 2),
+(8, 2),
+(9, 2),
+(9, 11),
+(10, 11),
+(8, 12),
+(9, 12);
 
 -- --------------------------------------------------------
 
@@ -652,16 +657,13 @@ CREATE TABLE IF NOT EXISTS `skills_roles` (
 -- Table structure for table `staffs`
 --
 
-DROP TABLE IF EXISTS `staffs`;
-CREATE TABLE IF NOT EXISTS `staffs` (
+CREATE TABLE `staffs` (
   `staff_id` int NOT NULL,
   `staff_fname` varchar(50) NOT NULL,
   `staff_lname` varchar(50) NOT NULL,
   `dept` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `group` int NOT NULL,
-  PRIMARY KEY (`staff_id`),
-  KEY `group_FK` (`group`)
+  `group` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -812,6 +814,119 @@ INSERT INTO `staffs` (`staff_id`, `staff_fname`, `staff_lname`, `dept`, `email`,
 (170655, 'Samuel', 'Lee', 'Finance', 'Samuel.Lee@allinone.com.sg', 1),
 (170866, 'Susan', 'Lim', 'Finance', 'Susan.Lim@allinone.com.sg', 1),
 (171008, 'Janice', 'Heng', 'Finance', 'Janice.Heng@allinone.com.sg', 1);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `courses`
+--
+ALTER TABLE `courses`
+  ADD PRIMARY KEY (`course_id`);
+
+--
+-- Indexes for table `groups`
+--
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`group_id`),
+  ADD UNIQUE KEY `group_name` (`group_name`);
+
+--
+-- Indexes for table `learning_journeys`
+--
+ALTER TABLE `learning_journeys`
+  ADD PRIMARY KEY (`learning_journey_id`),
+  ADD UNIQUE KEY `learning_journey_name` (`learning_journey_name`),
+  ADD KEY `lj_fk1` (`staff_id`),
+  ADD KEY `lj_fk2` (`role_id`);
+
+--
+-- Indexes for table `lj_courses`
+--
+ALTER TABLE `lj_courses`
+  ADD PRIMARY KEY (`learning_journey_id`,`course_id`),
+  ADD KEY `lc_fk1` (`course_id`);
+
+--
+-- Indexes for table `lj_roles`
+--
+ALTER TABLE `lj_roles`
+  ADD PRIMARY KEY (`learning_journey_id`,`role_id`),
+  ADD KEY `lr_fk1` (`role_id`);
+
+--
+-- Indexes for table `lj_skills`
+--
+ALTER TABLE `lj_skills`
+  ADD PRIMARY KEY (`learning_journey_id`,`skill_id`,`role_id`),
+  ADD KEY `ls_fk1` (`skill_id`),
+  ADD KEY `ls_fk2` (`role_id`);
+
+--
+-- Indexes for table `registration`
+--
+ALTER TABLE `registration`
+  ADD PRIMARY KEY (`reg_id`),
+  ADD KEY `course_id` (`course_id`),
+  ADD KEY `staff_id` (`staff_id`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`role_id`),
+  ADD UNIQUE KEY `role_name` (`role_name`);
+
+--
+-- Indexes for table `skills`
+--
+ALTER TABLE `skills`
+  ADD PRIMARY KEY (`skill_id`),
+  ADD UNIQUE KEY `skill_name` (`skill_name`);
+
+--
+-- Indexes for table `skills_courses`
+--
+ALTER TABLE `skills_courses`
+  ADD PRIMARY KEY (`skill_id`,`course_id`),
+  ADD KEY `course_id` (`course_id`);
+
+--
+-- Indexes for table `skills_roles`
+--
+ALTER TABLE `skills_roles`
+  ADD PRIMARY KEY (`skill_id`,`role_id`),
+  ADD KEY `role_id` (`role_id`);
+
+--
+-- Indexes for table `staffs`
+--
+ALTER TABLE `staffs`
+  ADD PRIMARY KEY (`staff_id`),
+  ADD KEY `group_FK` (`group`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `learning_journeys`
+--
+ALTER TABLE `learning_journeys`
+  MODIFY `learning_journey_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `role_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `skills`
+--
+ALTER TABLE `skills`
+  MODIFY `skill_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

@@ -148,19 +148,17 @@ const display_courses = Vue.createApp({
             axios
                 .get("http://localhost:5003/courses")
                 .then((response) => {
-                    if (response.data.code == 404) {
-                        this.emptyText += "There are no courses recorded. Please fetch data from LMS."
-                        return
-                    } else {
-                        var course_list = response.data.data.courses;
-                        this.course_list = course_list
+                    var course_list = response.data.data.courses;
+                    this.course_list = course_list
 
-                        // Set the initial number of items
-                        this.totalRows = this.course_list.length;
-                        this.pageSize = Math.ceil(this.totalRows / this.perPage);
-                    }
+                    // Set the initial number of items
+                    this.totalRows = this.course_list.length;
+                    this.pageSize = Math.ceil(this.totalRows / this.perPage);
                 })
                 .catch((error) => {
+                    if(error.response.data.code==404){
+                        this.emptyText += "There are no courses recorded. Please fetch data from LMS."
+                      }
                     console.log(error);
                 })
         },
