@@ -52,7 +52,7 @@ class Role(db.Model):
     # get_role(role_id): Display only one role
     # update_role(role_id): Receive updated role details and reflect updated details in the db
     # soft_delete_role(role_id): Update role status to 0
-    # restore_role(role_id): Update role status to 1 [will be added in Sprint 3]
+    # restore_role(role_id): Update role status to 1
 
 # ====================
 
@@ -276,6 +276,35 @@ def soft_delete_role(role_id):
             "message": "Role does not exist in database."
         }), 404
 
+# AL-60 Restore --
+@app.route("/roles/restore/<string:role_id>", methods=['PUT'])
+def restore_role(role_id):
+    role = Role.query.filter_by(role_id=role_id).first() #find role from role id
+    if role:
+        if role.role_status  == 1:
+            return jsonify({
+                "code": 400,
+                "message": "Skill is already active."
+            }), 400
+        else:
+            role.role_status = 1
+        try:
+            db.session.commit()
+            return jsonify({
+                "code": 200,
+                "data": role.json(),
+                "message": "Role restored."
+            }), 200
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred while restoring the role."
+            }), 500
+    else:
+        return jsonify({
+            "code": 404,
+            "message": "Role does not exist in database."
+        }), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)
