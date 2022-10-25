@@ -67,7 +67,7 @@ def find_by_group(group):
     return jsonify(
         {
             "code": 404,
-            "message": "Staff not found."
+            "message": "No staffs found."
         }
     ), 404
         

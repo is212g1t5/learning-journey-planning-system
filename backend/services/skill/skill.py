@@ -160,6 +160,13 @@ def get_skill(skill_id):
     if skill:
         return jsonify(skill.json())
 
+    return jsonify(
+        {
+            "code": 404,
+            "message": "No skill with this skill ID.",
+        }
+    ), 404
+
 
 @app.route("/skills/update/<string:skill_id>", methods=['PUT'])
 def update_skill(skill_id):

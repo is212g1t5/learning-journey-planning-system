@@ -117,7 +117,7 @@ def update_learning_journey(learning_journey_id):
         else:
             return jsonify(
                 {
-                    "code": 409,
+                    "code": 400,
                     "data": {
                         "learning_journey_name": data['learning_journey_name']
                     },
@@ -139,10 +139,10 @@ def update_learning_journey(learning_journey_id):
 
         return jsonify(
             {
-                "code": 201,
+                "code": 200,
                 "data": learning_journey.json()
             }
-        ),201
+        ),200
     return jsonify(
         {
             "code": 404,
@@ -171,12 +171,12 @@ def delete_learning_journey(learning_journey_id):
 
         return jsonify(
             {
-                "code": 202,
+                "code": 200,
                 "data": {
                     "learning_journey_id": learning_journey.learning_journey_id
                 }
             }
-        ),202
+        ),200
 
     return jsonify(
         {

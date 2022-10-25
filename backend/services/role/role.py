@@ -89,7 +89,7 @@ def create_role():
     if data['role_name'].lower() in role_names:
         return jsonify(
             {
-                "code": 409,
+                "code": 400,
                 "data": {
                     "role_name": data['role_name']
                 },
@@ -100,7 +100,7 @@ def create_role():
     if data['role_name'] == "":
         return jsonify(
             {
-                "code": 409,
+                "code": 400,
                 "data": {
                     "role_name": data['role_name']
                 },
@@ -111,7 +111,7 @@ def create_role():
     if data['role_desc'] == "":
         return jsonify(
             {
-                "code": 409,
+                "code": 400,
                 "data": {
                     "role_desc": data['role_desc']
                 },
@@ -122,7 +122,7 @@ def create_role():
     if data['role_status'] == "":
         return jsonify(
             {
-                "code": 409,
+                "code": 400,
                 "data": {
                     "role_status": data['role_status']
                 },
@@ -133,7 +133,7 @@ def create_role():
     if data['role_sector'] == "":
         return jsonify(
             {
-                "code": 409,
+                "code": 400,
                 "data": {
                     "role_sector": data['role_sector']
                 },
@@ -144,7 +144,7 @@ def create_role():
     if data['role_track'] == "":
         return jsonify(
             {
-                "code": 409,
+                "code": 400,
                 "data": {
                     "Role_track": data['role_track']
                 },
@@ -182,6 +182,13 @@ def get_role(role_id):
     role = Role.query.filter_by(role_id=role_id).first()
     if role:
         return jsonify(role.json())
+
+    return jsonify(
+        {
+            "code": 404,
+            "message": "No role with this role ID.",
+        }
+    ), 404
 
 # AL-3 & AL-18 Update --
 @app.route("/roles/update/<int:role_id>", methods=['PUT', 'GET'])
