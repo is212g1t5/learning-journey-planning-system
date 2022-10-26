@@ -2,6 +2,14 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 from flask_cors import CORS  # enable CORS
+import sys
+sys.path.append('../')
+from lj_skills.lj_skills import LjSkills
+from course.course import Course
+from skill.skill import Skills
+from learning_journey.learning_journey import LearningJourney
+from registration.registration import Registration
+
 
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
@@ -25,6 +33,51 @@ class LjCourses(db.Model):
     def json(self):
         return {"learning_journey_id": self.learning_journey_id, "course_id": self.course_id}
 
+##Get Course for a specific user journey
+@app.route("/lj_courses/details/<int:learning_journey_id>")
+def get_course_by_lj(learning_journey_id):
+    lj_course_list = LjCourses.query.filter_by(learning_journey_id=learning_journey_id)\
+        .join(Course, LjCourses.course_id == Course.course_id)\
+        .join(Registration, Course.course_id == Registration.course_id)\
+        .join(LearningJourney, LjCourses.learning_journey_id == LearningJourney.learning_journey_id)\
+        .join(LjSkills, LjCourses.learning_journey_id == LjSkills.learning_journey_id)\
+        .join(Skills, LjSkills.skill_id == Skills.skill_id)\
+        .add_columns(Course.course_id, Course.course_name)\
+        .add_columns(Registration.completion_status)\
+        .add_columns(LearningJourney.learning_journey_name)\
+        .add_columns(Skills.skill_name)\
+        .add_columns(Registration.staff_id)\
+        .add_columns(LearningJourney.staff_id)\
+        .all()
+    results = []
+    for lj_course in lj_course_list:
+        if lj_course[6] == lj_course[7]:
+            results.append(lj_course)
+    print(results)
+    if len(lj_course_list):
+        return jsonify(
+            {
+                "code": 200,
+                "data": [
+                    {
+                    "course_id": res[1],
+                    "course_name": res[2],
+                    "completion_status": res[3],
+                    "learning_journey_name": res[4],
+                    "skill_name": res[5],
+                    "staff_id": res[6],
+                    "lj_staff_id": res[7]
+                }for res in results
+                ]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "No course found."
+        }
+    ), 404
+    
 ## View all per learning_journey_id
 @app.route("/lj_courses/<int:learning_journey_id>")
 def get_all_by_lj(learning_journey_id):

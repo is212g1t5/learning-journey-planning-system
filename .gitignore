@@ -16,3 +16,9 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+backend/services/learning_journey/__pycache__/learning_journey.cpython-39.pyc
+backend/services/lj_skills/__pycache__/lj_skills.cpython-39.pyc
+backend/services/registration/__pycache__/registration.cpython-39.pyc
+backend/services/staff/__pycache__/staff.cpython-39.pyc
+.gitignore
+backend/services/skill/__pycache__/skill.cpython-39.pyc
