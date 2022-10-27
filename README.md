@@ -16,7 +16,7 @@ We will be using Scrum approach where weekly sprints and daily stand ups will be
 - SQL
 
 ## Testing Integrations
-**Testing Tools
+**Testing Tools**
 - Selenium
 - Pytest
 - Unittest Test
@@ -25,14 +25,14 @@ We will be using Scrum approach where weekly sprints and daily stand ups will be
 ## Files
 ### Frontend
 
-**Human Resource
+**Human Resource**
 
-**Learners
+**Learners**
 
 
 ### Backend
 
-**Python
+**Python**
 
 
 ### Database
