@@ -103,13 +103,13 @@
                             <div v-for="(skill,key) in skill_list" class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        :data-bs-target="`#flush-${key}`" aria-expanded="false"
+                                        :data-bs-target="`#flush-${key}`" aria-expanded="true"
                                         :aria-controls="`flush-${key}`">
                                         {{skill.skill_name}}
                                     </button>
                                 </h2>
-                                <div :id="`flush-${key}`" class="accordion-collapse collapse"
-                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div :id="`flush-${key}`" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingOne">
                                     <div class="accordion-body">
                                         <div class="mb-5">
                                             <h5>Skill Description</h5>
@@ -123,10 +123,34 @@
                 </div>
 
                 <!-- submit button; only able to submit when required inputs are valid -->
-                <button type="button" class="btn btn-success my-3 w-100 p-3" @click="selectCourses"
-                    :disabled="isFormValid">
-                    Next
+                <button type="button" class="btn btn-success my-3 w-100 p-3" @click="updateCourse"
+                    :disabled="isFormValid" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Create
                 </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to create this learning journey?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary my-3" @click="updateJourney()"
+                                    data-bs-dismiss="modal">
+                                    Create
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 </form>
                 <!-- Create role form END -->
