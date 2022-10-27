@@ -6,7 +6,7 @@ This is a project aimed to allow its users to plan their career progression. The
 - https://www.notion.so/IS212-Software-Project-management-e737406fca444cdc8f9f2cd92a0c0d60
 
 ## Development Approach
-We will be using Scrum approach where weekly sprints and daily stand ups will be conducted/
+We will be using Scrum approach where weekly sprints and daily stand ups will be conducted.
 
 ## Tech Stack
 
