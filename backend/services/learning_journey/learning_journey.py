@@ -52,6 +52,24 @@ def get_all_by_staff(staff_id):
         }
     ), 404
 
+#-- View single learning journey-
+@app.route("/learning_journeys/single_journey/<int:learning_journey_id>")
+def get_single_journey(learning_journey_id):
+    learning_journey = LearningJourney.query.filter_by(learning_journey_id=learning_journey_id).first()
+    if learning_journey:
+        return jsonify(
+            {
+                "code": 200,
+                "data": learning_journey.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Learning journey not found."
+        }
+    ), 404
+
 
 #--Create new learning_journey --
 @app.route("/learning_journeys/create", methods=['POST','GET'])

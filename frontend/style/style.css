@@ -10,24 +10,24 @@ body {
 }
 
 @media (min-width: 0px) {
-  .btn-skill{
+  .btn-skill {
     margin-top: 25px;
-    font-size:14px;
+    font-size: 14px;
   }
-} 
+}
 
 @media (min-width: 1200px) {
-  .btn-skill{
+  .btn-skill {
     margin-top: 25px;
     margin-left: 70px;
     font-size: 16px;
-    padding-left:20px;
-    padding-right:20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 
 .bg-success {
-  background-color: #3CB371 !important;
+  background-color: #3cb371 !important;
 }
 
 /* update role styling */
@@ -41,6 +41,19 @@ body {
   border: none;
 }
 
-.badge {
-  font-size: 1rem !important;
+/* create journey styling */
+.skill-description {
+  color: #545b62;
+}
+
+.course-title {
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: large;
+  color: #545b62;
+}
+.select-course-checkbox {
+  min-height: 2em;
+  min-width: 2em;
+  margin-bottom: 0;
 }
