@@ -277,14 +277,14 @@ def soft_delete_role(role_id):
         }), 404
 
 # AL-60 Restore --
-@app.route("/roles/restore/<string:role_id>", methods=['PUT'])
+@app.route("/roles/restore/<int:role_id>", methods=['PUT'])
 def restore_role(role_id):
     role = Role.query.filter_by(role_id=role_id).first() #find role from role id
     if role:
-        if role.role_status  == 1:
+        if role.role_status == 1:
             return jsonify({
                 "code": 400,
-                "message": "Skill is already active."
+                "message": "Role is already active."
             }), 400
         else:
             role.role_status = 1
