@@ -88,62 +88,62 @@ def update_course(course_id):
         else:
             return jsonify(
                 {
-                    "code": 409,
+                    "code": 400,
                     "data": {
                         "course_name": data['course_name']
                     },
                     "message": "Course name cannot be empty."
                 }
-            ), 409
+            ), 400
         if data['course_desc'] != '':
             course.course_desc = data['course_desc']
         else:
             return jsonify(
                 {
-                    "code": 409,
+                    "code": 400,
                     "data": {
                         "course_desc": data['course_desc']
                     },
                     "message": "Course description cannot be empty." 
                 }
-            ), 409
+            ), 400
         if data['course_status'] != '':
 
             course.course_status = data['course_status']
         else:
             return jsonify(
                 {
-                    "code": 409,
+                    "code": 400,
                     "data": {
                         "course_status": data['course_status']
                     },
                     "message": "Course status cannot be empty."
                 }
-            ), 409
+            ), 400
         if data['course_type'] != '':
             course.course_type = data['course_type']
         else:
             return jsonify(
                 {
-                    "code": 409,
+                    "code": 400,
                     "data": {
                         "course_type": data['course_type']
                     },
                     "message": "Course type cannot be empty."
                 }
-            ), 409
+            ), 400
         if data['course_category'] != '':
             course.course_category = data['course_category']
         else:
             return jsonify(
                 {
-                    "code": 409,
+                    "code": 400,
                     "data": {
                         "course_category": data['course_category']
                     },
                     "message": "Course category cannot be empty."
                 }
-            ), 409
+            ), 400
         try:
             db.session.commit()
         except:

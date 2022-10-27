@@ -6,12 +6,12 @@ from flask_cors import CORS  # enable CORS
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/ljps'
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class registration(db.Model):
+class Registration(db.Model):
     __tablename__ = 'registration'
 
     reg_id = db.Column(db.Integer(), primary_key=True)
@@ -33,7 +33,7 @@ class registration(db.Model):
 # View Registration Details
 @app.route("/registration")
 def get_all():
-    registration_list = registration.query.all()
+    registration_list = Registration.query.all()
     if len(registration_list):
         return jsonify(
             {
@@ -53,7 +53,7 @@ def get_all():
 # View Registration Details by staff_id
 @app.route("/registration/<int:staff_id>")
 def find_by_staff_id(staff_id):
-    registration_list = registration.query.filter_by(staff_id=staff_id)
+    registration_list = Registration.query.filter_by(staff_id=staff_id)
     if registration_list:
         return jsonify(
             {
