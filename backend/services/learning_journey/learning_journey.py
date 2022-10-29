@@ -18,19 +18,17 @@ class LearningJourney(db.Model):
     learning_journey_name = db.Column(db.String(50), nullable=False)
     staff_id = db.Column(db.Integer(), primary_key=True)
     role_id = db.Column(db.Integer(), primary_key=True)
-    role_name = db.Column(db.String(64), nullable=False)
 
 
-    def __init__(self, learning_journey_id, learning_journey_name, staff_id, role_id,role_name):
+    def __init__(self, learning_journey_id, learning_journey_name, staff_id, role_id):
         self.learning_journey_id = learning_journey_id
         self.learning_journey_name = learning_journey_name
         self.staff_id = staff_id
         self.role_id = role_id
-        self.role_name = role_name
 
 
     def json(self):
-        return {"learning_journey_id": self.learning_journey_id, "learning_journey_name": self.learning_journey_name, "staff_id": self.staff_id, "role_id": self.role_id, "role_name": self.role_name}
+        return {"learning_journey_id": self.learning_journey_id, "learning_journey_name": self.learning_journey_name, "staff_id": self.staff_id, "role_id": self.role_id}
 
 #-- View all per staff_id --
 @app.route("/learning_journeys/<int:staff_id>")
