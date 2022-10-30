@@ -3,12 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 from os import environ
 from flask_cors import CORS  # enable CORS
 
+import requests
+from invokes import invoke_http
+
 app = Flask(__name__)
 cors = CORS(app)  # enable CORS for all routes
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/ljps'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+role_URL = "http://role:5002/"
+lj_skill_URL = "http://lj_role_skill:5007/"
+skill_URL = "http://skill:5001/"
+lj_courses_URL = "http://lj_courses:5009/"
+registration_URL = "http://registration:5012/"
 
 class LearningJourney(db.Model):
     
@@ -50,6 +59,99 @@ def get_all_by_staff(staff_id):
         }
     ), 404
 
+#-- Get ALL details for a learning_journey id --
+@app.route("/learning_journeys/id/<int:learning_journey_id>")
+def get_all_lj_details(learning_journey_id):
+    # Get LJ name, staff_id, role_id
+    learning_journey = LearningJourney.query.filter_by(learning_journey_id=learning_journey_id).first()
+    id = learning_journey.learning_journey_id
+    name = learning_journey.learning_journey_name
+    staff_id = learning_journey.staff_id
+    role_id = learning_journey.role_id
+
+    # Get LJ role details from role_id above
+    individual_role_URL = role_URL + "roles/" + str(role_id)
+    role_result = invoke_http(individual_role_URL, method='GET', json=None)
+    role_name = role_result["role_name"]
+    role_desc = role_result["role_desc"]
+    role_status = role_result["role_status"]
+    role_sector = role_result["role_sector"]
+    role_track = role_result["role_track"]
+
+    # Get LJ skills
+    individual_lj_skill_URL = lj_skill_URL + "lj_skills/" + str(id)
+    lj_role_skill_result = invoke_http(individual_lj_skill_URL, method="GET", json=None)
+    
+    skills = {}
+    for row in lj_role_skill_result["data"]["lj_skills"]:
+        row_skill_id = row["skill_id"]
+        individual_skill_URL = skill_URL + "skills/" + str(row_skill_id)
+        skill_result = invoke_http(individual_skill_URL, method="GET", json=None)
+        skills[row_skill_id] = skill_result
+
+    # Get LJ course mapped to these skills
+    individual_lj_courses_URL = lj_courses_URL + "lj_courses/" + str(id)
+    lj_courses_result = invoke_http(individual_lj_courses_URL, method="GET", json=None)
+
+    courses = {}
+
+    # Get whether im enrolled into the courses
+    individual_staff_registration_URL = registration_URL + "registration/" + str(staff_id)
+    staff_registration_result = invoke_http(individual_staff_registration_URL, method="GET", json=None)
+    list_of_registration = staff_registration_result["data"]["registration"]
+
+    for row in lj_courses_result["data"]["lj_courses"]:
+        course_id = row["course_id"]
+        status = ""
+
+        for d in list_of_registration:
+            if d.get('course_id') == course_id :
+                status = d['completion_status']
+
+        courses[course_id] = {
+            "status": status
+        }
+
+    response = {
+        "learning_journey_id": id,
+        "learning_journey_name": name,
+        "staff_id": staff_id,
+        "role": {
+            "role_id": role_id,
+            "role_name": role_name,
+            "role_desc": role_desc,
+            "role_status": role_status, 
+            "role_sector": role_sector,
+            "role_track": role_track
+        },
+        "skills": skills,
+        "courses": courses,
+        "curr_result": staff_registration_result
+    }
+    
+    # if len(learning_journey_list):
+    #     return jsonify(
+    #         {
+    #             "code": 200,
+    #             "data": {
+    #                 "learning_journeys": [learning_journey.json() for learning_journey in learning_journey_list]
+    #             }
+    #         }
+    #     )
+    # return jsonify(
+    #     {
+    #         "code": 404,
+    #         "message": "There are no learning_journeys for this staff"
+    #     }
+    # ), 404
+    return jsonify(
+        {
+            "code": 200,
+            "data": {
+                "learning_journey": response
+            }
+        }
+    ), 200
 
 #--Create new learning_journey --
 @app.route("/learning_journeys/create", methods=['POST','GET'])
