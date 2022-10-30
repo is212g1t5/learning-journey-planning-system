@@ -82,7 +82,9 @@ const create_journey = Vue.createApp({
         await axios
           .get("http://127.0.0.1:5001/skills/" + skill_roles.skills_id)
           .then((response) => {
-            this.skill_list.push(response.data);
+            if (response.data.skill_status == true) {
+              this.skill_list.push(response.data);
+            }
           })
           .catch((error) => {
             console.log(error);
@@ -97,8 +99,11 @@ const create_journey = Vue.createApp({
     axios
       .get("http://127.0.0.1:5002/roles")
       .then((response) => {
-        console.log(response.data.data.roles);
-        this.role_list = response.data.data.roles;
+        for (role of response.data.data.roles) {
+          if (role.role_status == true) {
+            this.role_list.push(role);
+          }
+        }
       })
       .catch((error) => {
         console.log(error);
