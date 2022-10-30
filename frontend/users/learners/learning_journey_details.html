@@ -29,27 +29,24 @@
   <navbar></navbar>
 </div>
 <div class="container" id="learning_journey_details">
-  <h2 class="mt-5">{{learning_journey_name}}</h2>
+  <h2 class="mt-5">{{lj_name}}</h2>
   <div class="container mt-3">
-
+    
 
     <div class="row">
-      <table id="display_roles_table" class="table table-hover table-striped table-bordered table-responsive">
+      <table id="display_learning_journey_details" class="table table-hover table-striped table-bordered table-responsive">
         <thead class="thead-dark">
           <tr>
-            <th @click="sort('course_name')" data-field="course_name" data-sortable="true" scope="col">Course Name <i
-                :class="sortIcon.course_name"></i></th>
-            <th @click="sort('course_progress')" data-field="course_progress" data-sortable="true" scope="col">Course Progress<i
-                :class="sortIcon.course_progress"></i></th>
-            <th @click="sort('skill_name')" data-field="skill_name" data-sortable="true" scope="col">Skills<i
-                :class="sortIcon.skill_name"></i></th>
-            <th data-field="actions" data-sortable="true" scope="col">Actions</th>
+            <th  scope="col">Course Name </th>
+            <th scope="col">Course Progress</th>
+            <th scope="col">Skills</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <template v-if="emptyText==''" v-for="role in paginatedQuery">
+          <template v-if="emptyText==''" v-for="lj_course in learning_journey_details">
             <tr>
-              <td>{{lj_course.course_name}}</td>
+              <td>{{lj_course.course_id}}</td>
               <td>{{lj_course.course_progress}}</td>
               <td>{{lj_course.skill_name}}</td>
               <td>
@@ -77,7 +74,7 @@
 <script src="https://unpkg.com/vue@next"></script>
 <!-- external js -->
 <script src="../../components/hr_navbar.js"></script>
-<script src="../../api/learner_display_roles.js"></script>
+<script src="../../api/learning_journey_details.js"></script>
 
 </body>
 
