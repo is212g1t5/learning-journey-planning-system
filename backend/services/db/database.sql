@@ -188,7 +188,7 @@ INSERT INTO `registration` (`reg_id`, `course_id`, `staff_id`, `reg_status`, `co
 (6, 'COR002', 140008, 'Registered', 'OnGoing'),
 (7, 'COR002', 140025, 'Registered', 'OnGoing'),
 (8, 'COR002', 140036, 'Waitlist', ''),
-(9, 'COR002', 140078, 'Waitlist', ''),
+(9, 'COR001', 140078, 'Registered', 'Completed'),
 (10, 'COR002', 140102, 'Registered', ''),
 (11, 'COR002', 140103, 'Registered', ''),
 (12, 'COR002', 140108, 'Registered', ''),
