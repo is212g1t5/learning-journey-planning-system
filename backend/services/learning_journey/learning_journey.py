@@ -32,6 +32,24 @@ class LearningJourney(db.Model):
     def json(self):
         return {"learning_journey_id": self.learning_journey_id, "learning_journey_name": self.learning_journey_name, "staff_id": self.staff_id, "role_id": self.role_id, "role_name": self.role_name}
 
+#-- Get learning journey by id --
+@app.route("/learning_journey/lj/<int:learning_journey_id>")
+def get_learning_journey_by_id(learning_journey_id):
+    learning_journey = LearningJourney.query.filter_by(learning_journey_id=learning_journey_id).first()
+    if learning_journey:
+        return jsonify(
+            {
+                "code": 200,
+                "data": learning_journey.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Learning Journey not found."
+        }
+    ), 404
+
 #-- View all per staff_id --
 @app.route("/learning_journeys/<int:staff_id>")
 def get_all_by_staff(staff_id):
