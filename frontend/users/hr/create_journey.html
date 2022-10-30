@@ -85,7 +85,7 @@
                                         {{errorMsgs.role}}
                                     </small>
                                     <datalist id="datalistOptions">
-                                        <option v-for="role in role_list" :key="role.id">
+                                        <option v-for="role in role_list" :key="role.id" selected="selected_role">
                                             {{role.role_name}}
                                         </option>
                                     </datalist>
@@ -112,52 +112,60 @@
                                     aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
                                         <div class="mb-5">
-                                            <h3>Skill Description</h3>
-                                            {{skill.skill_desc}}
+                                            <h5>Skill Description</h5>
+                                            <p class="skill-description">{{skill.skill_desc}}</p>
                                         </div>
-                                        <h3>Available Courses</h3>
+                                        <h5>Available Courses</h5>
                                         <div  v-for="(course,key) in course_list">
-                                            <div class="row">
-                                                <div v-if="skill.skill_id== course[0].skill_id" class="col-8">
-                                                    {{course_list[key]}}
+
+                                            <div class="row mb-3"  v-if="skill.skill_id== course[0].skill_id" v-for="course in course_list[key]">
+                                                <!--Course Title and Tags-->
+                                                <div class="col-lg-9 col-12">
+                                                    <p class="m-0 course-title">{{course_dict[course.course_id]["course_name"]}}</p>
+                                                    <span class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course.course_id]["course_category"]}}</span>
+                                                    <span class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course.course_id]["course_type"]}}</span>
                                                 </div>
+                                        
+                                                <!--View Course Detail Button-->
+                                                <button type="button" class="btn btn-secondary mx-1 my-2 col-lg-2 col-10" 
+                                                    data-bs-toggle="modal" :data-bs-target="'#'+ course.course_id + course.skill_id">
+                                                    Course Details
+                                                </button>
 
-                                                <div v-if="skill.skill_id== course[0].skill_id" class="col-2">
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                        Details
-                                                    </button>
+                                                  <!--Select Course Checkbox-->
+                                                <input class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" type="checkbox" :value="course.course_id" 
+                                                aria-label="Checkbox for following text input">
 
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div
-                                                            class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Modal
-                                                                        title</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    ...
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                </div>
+                                                <!--View Course Detail Modal-->
+                                                <div class="modal fade" :id="course.course_id+ course.skill_id" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div
+                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div style="background-color:#dee2e6" class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                                    {{course_dict[course.course_id]["course_name"]}}
+                                                                </h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <strong>{{course.course_id}}</strong><br>
+                                                                <strong>Course Description</strong><br>
+                                                                {{course_dict[course.course_id]["course_desc"]}}
+                                                                <br><br>
+                                                                <strong>Course Category</strong><br>
+                                                                {{course_dict[course.course_id]["course_category"]}}
+                                                                <br><br>
+                                                                <strong>Course Type</strong><br>
+                                                                {{course_dict[course.course_id]["course_type"]}}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div v-if="skill.skill_id== course[0].skill_id" class="col-2">
-                                                    <input class="form-check-input mt-0" type="checkbox" value=""
-                                                        aria-label="Checkbox for following text input">
-
-                                                </div>
+                                           
                                             </div>
                                         </div>
                                     </div>

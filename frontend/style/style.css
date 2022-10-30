@@ -42,5 +42,22 @@ body {
 }
 
 .badge {
-  font-size: 1rem !important;
+  font-size: 1rem !important; 
+}
+
+/* create journey styling */
+.skill-description{
+  color:#545b62;
+}
+
+.course-title{
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: large;
+  color:#545b62;
+}
+.select-course-checkbox {
+  min-height:2em;
+  min-width:2em; 
+  margin-bottom: 0; 
 }
