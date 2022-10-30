@@ -16,6 +16,8 @@ const display_learning_journey_details = Vue.createApp({
                     information = response.data.data
                     for (res of information){
                         this.learning_journey_details.push(res)
+                        console.log(res)
+                        this.lj_name = res.learning_journey_name
                     }
                     if (this.learning_journey_details.length == 0) {
                         this.emptyText = "No learning journey details found"
