@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import environ
 from flask_cors import CORS  # enable CORS
 
-import requests
+from os import environ
 from invokes import invoke_http
 
 app = Flask(__name__)
@@ -13,12 +13,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-role_URL = "http://role:5002/"
-lj_skill_URL = "http://lj_role_skill:5007/"
-skill_URL = "http://skill:5001/"
-lj_courses_URL = "http://lj_courses:5009/"
-registration_URL = "http://registration:5012/"
-skills_courses_URL = "http://skills_courses:5005/"
+role_URL = environ.get("role_URL") or "http://localhost:5002/"
+lj_skill_URL = environ.get("lj_skill_URL") or "http://localhost:5007/"
+skill_URL = environ.get("skill_URL") or "http://localhost:5001/"
+lj_courses_URL = environ.get("lj_courses_URL") or "http://localhost:5009/"
+registration_URL = environ.get("registration_URL") or "http://localhost:5012/"
+skills_courses_URL = environ.get("skills_courses_URL") or "http://localhost:5005/"
 
 class LearningJourney(db.Model):
     
@@ -65,6 +65,15 @@ def get_all_by_staff(staff_id):
 def get_all_lj_details(learning_journey_id):
     # Get LJ name, staff_id, role_id
     learning_journey = LearningJourney.query.filter_by(learning_journey_id=learning_journey_id).first()
+
+    if not learning_journey:
+        return jsonify(
+            {
+                "code": 404,
+                "message": "There are no learning journeys with this learning journey ID."
+            }
+        ), 404
+
     id = learning_journey.learning_journey_id
     name = learning_journey.learning_journey_name
     staff_id = learning_journey.staff_id
@@ -135,24 +144,7 @@ def get_all_lj_details(learning_journey_id):
         "skills": skills,
         "courses": courses
     }
-    
 
-
-    # if len(learning_journey_list):
-    #     return jsonify(
-    #         {
-    #             "code": 200,
-    #             "data": {
-    #                 "learning_journeys": [learning_journey.json() for learning_journey in learning_journey_list]
-    #             }
-    #         }
-    #     )
-    # return jsonify(
-    #     {
-    #         "code": 404,
-    #         "message": "There are no learning_journeys for this staff"
-    #     }
-    # ), 404
     return jsonify(
         {
             "code": 200,
