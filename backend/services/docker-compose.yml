@@ -106,6 +106,12 @@ services:
             - db
         environment:
             dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+            skill_URL: http://skill:5001/
+            role_URL: http://role:5002/
+            skills_courses_URL: http://skills_courses:5005/
+            lj_skill_URL: http://lj_role_skill:5007/
+            lj_courses_URL: http://lj_courses:5009/
+            registration_URL: http://registration:5012/
         ports:
             - "5004:5004"
 
