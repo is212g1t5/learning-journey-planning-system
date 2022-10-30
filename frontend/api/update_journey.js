@@ -8,6 +8,7 @@ const create_journey = Vue.createApp({
       skill_list: [],
       course_list: [],
       skills_roles_list: [],
+      existing_names: [],
       course_dict: {},
       alerts: {
         showAlert: false,
@@ -25,6 +26,7 @@ const create_journey = Vue.createApp({
     isFormValid() {
       return (
         !this.name.trim() ||
+        this.name != this.name ||
         !this.role.trim() ||
         Object.values(this.errorMsgs).some((error) => {
           return error !== "";
@@ -36,14 +38,13 @@ const create_journey = Vue.createApp({
     name(newValue) {
       if (newValue && newValue.trim().length > 0) {
         this.errorMsgs.name = "";
-        if (newValue && newValue.trim().length > 64) {
-          this.errorMsgs.name =
-            "Learning journey name cannot be more than 64 characters";
+        if (newValue && this.existing_names.includes(newValue)) {
+          this.errorMsgs.name = "Learning journey name already exists.";
         } else {
           this.errorMsgs.name = "";
         }
       } else {
-        this.errorMsgs.name = "Learning journey cannot be empty";
+        this.errorMsgs.name = "Learning journey name cannot be empty";
       }
     },
   },
@@ -59,6 +60,13 @@ const create_journey = Vue.createApp({
       }
     },
     async loadData() {
+      await axios
+        .get("http://127.0.0.1:5004/learning_journeys/" + this.staff_id)
+        .then((response) => {
+          for (lj_names of response.data.data.learning_journeys) {
+            this.existing_names.push(lj_names.learning_journey_name);
+          }
+        });
       await axios
         .get("http://127.0.0.1:5006/skills_roles/" + this.role_id)
         .then((response) => {
@@ -116,7 +124,12 @@ const create_journey = Vue.createApp({
           {}
         )
         .then((response) => {
-          console.log(response);
+          this.alerts.showSuccess = true;
+          this.alerts.successMsg = "Learning journey updated successfully.";
+        })
+        .catch((error) => {
+          this.alerts.showAlert = true;
+          this.alerts.alertMsg = "Error updating learning journey.";
         });
     },
   },
@@ -134,6 +147,7 @@ const create_journey = Vue.createApp({
         this.name = response.data.data.learning_journey_name;
         this.role_id = response.data.data.role_id;
         this.role = response.data.data.role_name;
+        this.staff_id = response.data.data.staff_id;
         this.loadData();
       })
       .catch((error) => {
