@@ -79,7 +79,9 @@
                                     <label for="sector-input" class="form-label">
                                         Related Role
                                     </label>
-                                    <input class="form-control" @input="input($event)" @change="change($event)"
+                                    <input v-if="selected_role" class="form-control" @input="input($event)"
+                                        list="datalistOptions" :placeholder="selected_role" disabled>
+                                    <input v-else class="form-control" @input="input($event)" @change="change($event)"
                                         list="datalistOptions" placeholder="View all available roles ...">
                                     <small class="text-danger">
                                         {{errorMsgs.role}}

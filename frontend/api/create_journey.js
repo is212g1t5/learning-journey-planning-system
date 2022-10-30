@@ -96,18 +96,29 @@ const create_journey = Vue.createApp({
     },
   },
   mounted() {
-    axios
-      .get("http://127.0.0.1:5002/roles")
-      .then((response) => {
-        for (role of response.data.data.roles) {
-          if (role.role_status == true) {
-            this.role_list.push(role);
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("id")) {
+      this.role_id = urlParams.get("id");
+      axios
+        .get("http://127.0.0.1:5002/roles/" + this.role_id)
+        .then((response) => {
+          this.selected_role = response.data.role_name;
+          this.loadData();
+        });
+    } else {
+      axios
+        .get("http://127.0.0.1:5002/roles")
+        .then((response) => {
+          for (role of response.data.data.roles) {
+            if (role.role_status == true) {
+              this.role_list.push(role);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
 });
 
