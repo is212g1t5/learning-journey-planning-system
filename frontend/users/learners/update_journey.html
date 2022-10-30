@@ -101,7 +101,7 @@
                                         {{skill.skill_name}}
                                     </button>
                                 </h2>
-                                <div :id="`flush-${key}`" class="accordion-collapse collapse"
+                                <div :id="`flush-${key}`" class="accordion-collapse collapse show"
                                     aria-labelledby="flush-headingOne">
                                     <div class="accordion-body">
                                         <div class="mb-5">
@@ -179,7 +179,7 @@
                 </div>
 
                 <!-- submit button; only able to submit when required inputs are valid -->
-                <button type="button" class="btn btn-success my-3 w-100 p-3" @click="updateCourse"
+                <button type="button" class="btn btn-primary my-3 w-100 p-3" @click="updateCourse"
                     :disabled="isFormValid" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     Update
                 </button>

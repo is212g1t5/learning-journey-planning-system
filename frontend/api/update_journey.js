@@ -108,6 +108,16 @@ const create_journey = Vue.createApp({
     updateJourney() {
       this.alerts.showAlert = false;
       this.alerts.showSuccess = false;
+
+      axios
+        .put(
+          "http://127.0.0.1:5004/learning_journeys/update/" + this.learning_id,
+          { learning_journey_name: this.name },
+          {}
+        )
+        .then((response) => {
+          console.log(response);
+        });
     },
   },
   mounted() {
