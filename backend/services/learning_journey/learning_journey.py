@@ -18,6 +18,7 @@ lj_skill_URL = "http://lj_role_skill:5007/"
 skill_URL = "http://skill:5001/"
 lj_courses_URL = "http://lj_courses:5009/"
 registration_URL = "http://registration:5012/"
+skills_courses_URL = "http://skills_courses:5005/"
 
 class LearningJourney(db.Model):
     
@@ -88,6 +89,10 @@ def get_all_lj_details(learning_journey_id):
         individual_skill_URL = skill_URL + "skills/" + str(row_skill_id)
         skill_result = invoke_http(individual_skill_URL, method="GET", json=None)
         skills[row_skill_id] = skill_result
+        # Get course_skill mapping
+        lj_skills_courses_URL = skills_courses_URL + "skills_courses/skill/" + str(row_skill_id)
+        skills_courses_result = invoke_http(lj_skills_courses_URL, method="GET", json=None)
+        skills[row_skill_id]["mapping"] = [d["course_id"] for d in skills_courses_result["data"]["skills_courses"]]  if skills_courses_result["code"] in range(200,300) else []
 
     # Get LJ course mapped to these skills
     individual_lj_courses_URL = lj_courses_URL + "lj_courses/" + str(id)
@@ -107,10 +112,13 @@ def get_all_lj_details(learning_journey_id):
         for d in list_of_registration:
             if d.get('course_id') == course_id :
                 status = d['completion_status']
+                break
 
         courses[course_id] = {
             "status": status
         }
+
+    # code_results = [role_result["code"], lj_role_skill_result["code"], skill_result["code"], skills_courses_result["code"], lj_courses_result["code"], staff_registration_result["code"]]
 
     response = {
         "learning_journey_id": id,
@@ -125,10 +133,11 @@ def get_all_lj_details(learning_journey_id):
             "role_track": role_track
         },
         "skills": skills,
-        "courses": courses,
-        "curr_result": staff_registration_result
+        "courses": courses
     }
     
+
+
     # if len(learning_journey_list):
     #     return jsonify(
     #         {
