@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 22, 2022 at 03:22 PM
+-- Generation Time: Oct 30, 2022 at 08:21 AM
 -- Server version: 8.0.31
--- PHP Version: 8.0.24
+-- PHP Version: 8.0.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `ljps`
 --
-DROP DATABASE IF EXISTS `ljps`;
 CREATE DATABASE IF NOT EXISTS `ljps` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `ljps`;
 
@@ -30,6 +29,7 @@ USE `ljps`;
 -- Table structure for table `courses`
 --
 
+DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `course_id` varchar(20) NOT NULL,
   `course_name` varchar(50) NOT NULL,
@@ -82,6 +82,7 @@ INSERT INTO `courses` (`course_id`, `course_name`, `course_desc`, `course_status
 -- Table structure for table `groups`
 --
 
+DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `group_id` int NOT NULL,
   `group_name` varchar(20) NOT NULL
@@ -101,13 +102,20 @@ INSERT INTO `groups` (`group_id`, `group_name`) VALUES
 -- Table structure for table `learning_journeys`
 --
 
+DROP TABLE IF EXISTS `learning_journeys`;
 CREATE TABLE `learning_journeys` (
   `learning_journey_id` int NOT NULL,
   `learning_journey_name` varchar(50) NOT NULL,
   `staff_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  `role_name` varchar(64) NOT NULL
+  `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `learning_journeys`
+--
+
+INSERT INTO `learning_journeys` (`learning_journey_id`, `learning_journey_name`, `staff_id`, `role_id`) VALUES
+(1, 'My LJ to become CEO', 140078, 2);
 
 -- --------------------------------------------------------
 
@@ -115,33 +123,42 @@ CREATE TABLE `learning_journeys` (
 -- Table structure for table `lj_courses`
 --
 
+DROP TABLE IF EXISTS `lj_courses`;
 CREATE TABLE `lj_courses` (
   `learning_journey_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `lj_courses`
+--
+
+INSERT INTO `lj_courses` (`learning_journey_id`, `course_id`) VALUES
+(1, 'COR001'),
+(1, 'SAL001');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lj_roles`
+-- Table structure for table `lj_role_skill`
 --
 
-CREATE TABLE `lj_roles` (
-  `learning_journey_id` int NOT NULL,
-  `role_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lj_skills`
---
-
-CREATE TABLE `lj_skills` (
+DROP TABLE IF EXISTS `lj_role_skill`;
+CREATE TABLE `lj_role_skill` (
   `learning_journey_id` int NOT NULL,
   `skill_id` int NOT NULL,
   `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `lj_role_skill`
+--
+
+INSERT INTO `lj_role_skill` (`learning_journey_id`, `skill_id`, `role_id`) VALUES
+(1, 1, 2),
+(1, 5, 2),
+(1, 8, 2),
+(1, 9, 2);
 
 -- --------------------------------------------------------
 
@@ -149,6 +166,7 @@ CREATE TABLE `lj_skills` (
 -- Table structure for table `registration`
 --
 
+DROP TABLE IF EXISTS `registration`;
 CREATE TABLE `registration` (
   `reg_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL,
@@ -548,6 +566,7 @@ INSERT INTO `registration` (`reg_id`, `course_id`, `staff_id`, `reg_status`, `co
 -- Table structure for table `roles`
 --
 
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `role_id` int NOT NULL,
   `role_name` varchar(64) NOT NULL,
@@ -574,6 +593,7 @@ INSERT INTO `roles` (`role_id`, `role_name`, `role_desc`, `role_status`, `role_s
 -- Table structure for table `skills`
 --
 
+DROP TABLE IF EXISTS `skills`;
 CREATE TABLE `skills` (
   `skill_id` int NOT NULL,
   `skill_name` varchar(64) NOT NULL,
@@ -604,6 +624,7 @@ INSERT INTO `skills` (`skill_id`, `skill_name`, `skill_category`, `skill_desc`, 
 -- Table structure for table `skills_courses`
 --
 
+DROP TABLE IF EXISTS `skills_courses`;
 CREATE TABLE `skills_courses` (
   `skill_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL
@@ -629,6 +650,7 @@ INSERT INTO `skills_courses` (`skill_id`, `course_id`) VALUES
 -- Table structure for table `skills_roles`
 --
 
+DROP TABLE IF EXISTS `skills_roles`;
 CREATE TABLE `skills_roles` (
   `skill_id` int NOT NULL,
   `role_id` int NOT NULL
@@ -657,6 +679,7 @@ INSERT INTO `skills_roles` (`skill_id`, `role_id`) VALUES
 -- Table structure for table `staffs`
 --
 
+DROP TABLE IF EXISTS `staffs`;
 CREATE TABLE `staffs` (
   `staff_id` int NOT NULL,
   `staff_fname` varchar(50) NOT NULL,
@@ -849,16 +872,9 @@ ALTER TABLE `lj_courses`
   ADD KEY `lc_fk1` (`course_id`);
 
 --
--- Indexes for table `lj_roles`
+-- Indexes for table `lj_role_skill`
 --
-ALTER TABLE `lj_roles`
-  ADD PRIMARY KEY (`learning_journey_id`,`role_id`),
-  ADD KEY `lr_fk1` (`role_id`);
-
---
--- Indexes for table `lj_skills`
---
-ALTER TABLE `lj_skills`
+ALTER TABLE `lj_role_skill`
   ADD PRIMARY KEY (`learning_journey_id`,`skill_id`,`role_id`),
   ADD KEY `ls_fk1` (`skill_id`),
   ADD KEY `ls_fk2` (`role_id`);
@@ -914,7 +930,7 @@ ALTER TABLE `staffs`
 -- AUTO_INCREMENT for table `learning_journeys`
 --
 ALTER TABLE `learning_journeys`
-  MODIFY `learning_journey_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `learning_journey_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -944,22 +960,15 @@ ALTER TABLE `learning_journeys`
 --
 ALTER TABLE `lj_courses`
   ADD CONSTRAINT `lc_fk1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  ADD CONSTRAINT `lc_fk2` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`);
+  ADD CONSTRAINT `lc_fk2` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
--- Constraints for table `lj_roles`
+-- Constraints for table `lj_role_skill`
 --
-ALTER TABLE `lj_roles`
-  ADD CONSTRAINT `lr_fk1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
-  ADD CONSTRAINT `lr_fk2` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`);
-
---
--- Constraints for table `lj_skills`
---
-ALTER TABLE `lj_skills`
+ALTER TABLE `lj_role_skill`
   ADD CONSTRAINT `ls_fk1` FOREIGN KEY (`skill_id`) REFERENCES `skills` (`skill_id`),
   ADD CONSTRAINT `ls_fk2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
-  ADD CONSTRAINT `ls_fk3` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`);
+  ADD CONSTRAINT `ls_fk3` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `registration`
