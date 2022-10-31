@@ -30,4 +30,4 @@ jobs:
     - name: Run integration tests
       run: |
         cd backend/tests
-        python AL-64_integration_tests.py
+        python integration_test.py
