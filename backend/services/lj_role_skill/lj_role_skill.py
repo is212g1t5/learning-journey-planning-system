@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 class LjSkills(db.Model):
     
-    __tablename__ = 'lj_skills'
+    __tablename__ = 'lj_role_skill'
 
     learning_journey_id = db.Column(db.Integer(), primary_key=True)
     skill_id = db.Column(db.Integer(), primary_key=True)

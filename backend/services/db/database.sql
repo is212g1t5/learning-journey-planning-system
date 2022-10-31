@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 22, 2022 at 03:22 PM
+-- Generation Time: Oct 30, 2022 at 08:21 AM
 -- Server version: 8.0.31
--- PHP Version: 8.0.24
+-- PHP Version: 8.0.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `ljps`
 --
-DROP DATABASE IF EXISTS `ljps`;
 CREATE DATABASE IF NOT EXISTS `ljps` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `ljps`;
 
@@ -30,6 +29,7 @@ USE `ljps`;
 -- Table structure for table `courses`
 --
 
+DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `course_id` varchar(20) NOT NULL,
   `course_name` varchar(50) NOT NULL,
@@ -82,6 +82,7 @@ INSERT INTO `courses` (`course_id`, `course_name`, `course_desc`, `course_status
 -- Table structure for table `groups`
 --
 
+DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `group_id` int NOT NULL,
   `group_name` varchar(20) NOT NULL
@@ -101,13 +102,20 @@ INSERT INTO `groups` (`group_id`, `group_name`) VALUES
 -- Table structure for table `learning_journeys`
 --
 
+DROP TABLE IF EXISTS `learning_journeys`;
 CREATE TABLE `learning_journeys` (
   `learning_journey_id` int NOT NULL,
   `learning_journey_name` varchar(50) NOT NULL,
   `staff_id` int NOT NULL,
-  `role_id` int NOT NULL,
-  `role_name` varchar(64) NOT NULL
+  `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `learning_journeys`
+--
+
+INSERT INTO `learning_journeys` (`learning_journey_id`, `learning_journey_name`, `staff_id`, `role_id`) VALUES
+(1, 'My LJ to become CEO', 140078, 2);
 
 -- --------------------------------------------------------
 
@@ -115,33 +123,42 @@ CREATE TABLE `learning_journeys` (
 -- Table structure for table `lj_courses`
 --
 
+DROP TABLE IF EXISTS `lj_courses`;
 CREATE TABLE `lj_courses` (
   `learning_journey_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `lj_courses`
+--
+
+INSERT INTO `lj_courses` (`learning_journey_id`, `course_id`) VALUES
+(1, 'COR001'),
+(1, 'SAL001');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lj_roles`
+-- Table structure for table `lj_role_skill`
 --
 
-CREATE TABLE `lj_roles` (
-  `learning_journey_id` int NOT NULL,
-  `role_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lj_skills`
---
-
-CREATE TABLE `lj_skills` (
+DROP TABLE IF EXISTS `lj_role_skill`;
+CREATE TABLE `lj_role_skill` (
   `learning_journey_id` int NOT NULL,
   `skill_id` int NOT NULL,
   `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `lj_role_skill`
+--
+
+INSERT INTO `lj_role_skill` (`learning_journey_id`, `skill_id`, `role_id`) VALUES
+(1, 1, 2),
+(1, 5, 2),
+(1, 8, 2),
+(1, 9, 2);
 
 -- --------------------------------------------------------
 
@@ -149,6 +166,7 @@ CREATE TABLE `lj_skills` (
 -- Table structure for table `registration`
 --
 
+DROP TABLE IF EXISTS `registration`;
 CREATE TABLE `registration` (
   `reg_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL,
@@ -170,7 +188,7 @@ INSERT INTO `registration` (`reg_id`, `course_id`, `staff_id`, `reg_status`, `co
 (6, 'COR002', 140008, 'Registered', 'OnGoing'),
 (7, 'COR002', 140025, 'Registered', 'OnGoing'),
 (8, 'COR002', 140036, 'Waitlist', ''),
-(9, 'COR002', 140078, 'Waitlist', ''),
+(9, 'COR001', 140078, 'Registered', 'Completed'),
 (10, 'COR002', 140102, 'Registered', ''),
 (11, 'COR002', 140103, 'Registered', ''),
 (12, 'COR002', 140108, 'Registered', ''),
@@ -548,6 +566,7 @@ INSERT INTO `registration` (`reg_id`, `course_id`, `staff_id`, `reg_status`, `co
 -- Table structure for table `roles`
 --
 
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `role_id` int NOT NULL,
   `role_name` varchar(64) NOT NULL,
@@ -563,7 +582,7 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`role_id`, `role_name`, `role_desc`, `role_status`, `role_sector`, `role_track`) VALUES
 (1, 'Designer', 'The Designer (Engineering Design) develops technical drawings and models based on pre-defined specifications and engineering calculations. He/She interprets engineering calculations and uses design software and modelling methods for preparation of drawings and designs. He identifies relevant design data and highlights design issues where applicable. He also complies with Design for Safety (DfS) regulations and ensures compliance with industry standards and international conventions. He possesses high detail', 1, 'Engineering Services', 'Engineering Design'),
-(2, 'Chief Executive Officer/Managing Director/General Manager/Presid', 'The Chief Executive Officer/Chief Operating Officer/Managing Director/General Manager/President defines the long-term strategic direction to grow the business in line with the organisation’s overall vision, mission and values. He/She translates broad goals into achievable steps, anticipates and stays ahead of trends, and takes advantage of business opportunities. He represents the organisation with customers, investors, and business partners, and holds responsibility for fostering a culture of workplace saf', 1, 'Engineering Services ', 'General Management '),
+(2, 'Chief Executive Officer/Managing Director/General Manager', 'The Chief Executive Officer/Chief Operating Officer/Managing Director/General Manager defines the long-term strategic direction to grow the business in line with the organisation’s overall vision, mission and values. He/She translates broad goals into achievable steps, anticipates and stays ahead of trends, and takes advantage of business opportunities. He represents the organisation with customers, investors, and business partners, and holds responsibility for fostering a culture of workplace safety', 1, 'Engineering Services ', 'General Management '),
 (11, 'Director', 'The Director (Project Financing) is responsible for spearheading the project\r\nfinancing activities while ensuring alignment with the organization\'s financing\r\ngoals. He drives direction and strategy for project financing scoping,\r\nvaluation analysis and delivery. He is responsible for origination of project\r\nfinancing, and maintains strong links to external stakeholders. He serves as\r\nan advisor to clients and stakeholders on project strategy and establishes\r\nstrong rapport to enhance customer satisfaction.', 1, 'Engineering Services', 'Project Financing'),
 (12, 'Manager', 'The Manager (Project Financing) is responsible for planning and leading the\r\nproject financing scoping, modelling and delivery. Drives project\r\nfinancing goals in line with organisational goals, collaborating with\r\nthe Project Development team to ensure feasibility and viability. Provide expert advice to internal and external stakeholders on the project financing process, managing negotiations to secure the best terms for project financing purposes.', 1, 'Engineering Services', 'Project Financing'),
 (13, 'Principal Engineer/Manager', 'The Principal Engineer/Manager (Commissioning) acts as a technical\r\nadvisor to provide problem-solving consultation and technical expertise for\r\ncommissioning projects. He/She leads commissioning activities, while\r\nmanaging key metrics for cost, time, quality, risk, safety and environmental\r\nimpact. He establishes strategic partnerships and collaborates with internal\r\nand external stakeholders to ensure that all equipment, components and\r\nsystems are fully functional and in optimal operating condition.', 1, 'Engineering Services', 'Engineering Construction and Commissioning');
@@ -574,6 +593,7 @@ INSERT INTO `roles` (`role_id`, `role_name`, `role_desc`, `role_status`, `role_s
 -- Table structure for table `skills`
 --
 
+DROP TABLE IF EXISTS `skills`;
 CREATE TABLE `skills` (
   `skill_id` int NOT NULL,
   `skill_name` varchar(64) NOT NULL,
@@ -604,6 +624,7 @@ INSERT INTO `skills` (`skill_id`, `skill_name`, `skill_category`, `skill_desc`, 
 -- Table structure for table `skills_courses`
 --
 
+DROP TABLE IF EXISTS `skills_courses`;
 CREATE TABLE `skills_courses` (
   `skill_id` int NOT NULL,
   `course_id` varchar(20) NOT NULL
@@ -629,6 +650,7 @@ INSERT INTO `skills_courses` (`skill_id`, `course_id`) VALUES
 -- Table structure for table `skills_roles`
 --
 
+DROP TABLE IF EXISTS `skills_roles`;
 CREATE TABLE `skills_roles` (
   `skill_id` int NOT NULL,
   `role_id` int NOT NULL
@@ -657,6 +679,7 @@ INSERT INTO `skills_roles` (`skill_id`, `role_id`) VALUES
 -- Table structure for table `staffs`
 --
 
+DROP TABLE IF EXISTS `staffs`;
 CREATE TABLE `staffs` (
   `staff_id` int NOT NULL,
   `staff_fname` varchar(50) NOT NULL,
@@ -849,16 +872,9 @@ ALTER TABLE `lj_courses`
   ADD KEY `lc_fk1` (`course_id`);
 
 --
--- Indexes for table `lj_roles`
+-- Indexes for table `lj_role_skill`
 --
-ALTER TABLE `lj_roles`
-  ADD PRIMARY KEY (`learning_journey_id`,`role_id`),
-  ADD KEY `lr_fk1` (`role_id`);
-
---
--- Indexes for table `lj_skills`
---
-ALTER TABLE `lj_skills`
+ALTER TABLE `lj_role_skill`
   ADD PRIMARY KEY (`learning_journey_id`,`skill_id`,`role_id`),
   ADD KEY `ls_fk1` (`skill_id`),
   ADD KEY `ls_fk2` (`role_id`);
@@ -914,7 +930,7 @@ ALTER TABLE `staffs`
 -- AUTO_INCREMENT for table `learning_journeys`
 --
 ALTER TABLE `learning_journeys`
-  MODIFY `learning_journey_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `learning_journey_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -944,22 +960,15 @@ ALTER TABLE `learning_journeys`
 --
 ALTER TABLE `lj_courses`
   ADD CONSTRAINT `lc_fk1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  ADD CONSTRAINT `lc_fk2` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`);
+  ADD CONSTRAINT `lc_fk2` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
--- Constraints for table `lj_roles`
+-- Constraints for table `lj_role_skill`
 --
-ALTER TABLE `lj_roles`
-  ADD CONSTRAINT `lr_fk1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
-  ADD CONSTRAINT `lr_fk2` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`);
-
---
--- Constraints for table `lj_skills`
---
-ALTER TABLE `lj_skills`
+ALTER TABLE `lj_role_skill`
   ADD CONSTRAINT `ls_fk1` FOREIGN KEY (`skill_id`) REFERENCES `skills` (`skill_id`),
   ADD CONSTRAINT `ls_fk2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
-  ADD CONSTRAINT `ls_fk3` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`);
+  ADD CONSTRAINT `ls_fk3` FOREIGN KEY (`learning_journey_id`) REFERENCES `learning_journeys` (`learning_journey_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `registration`
