@@ -106,6 +106,12 @@ services:
             - db
         environment:
             dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+            skill_URL: http://skill:5001/
+            role_URL: http://role:5002/
+            skills_courses_URL: http://skills_courses:5005/
+            lj_skill_URL: http://lj_role_skill:5007/
+            lj_courses_URL: http://lj_courses:5009/
+            registration_URL: http://registration:5012/
         ports:
             - "5004:5004"
 
@@ -148,11 +154,11 @@ services:
     ###############################
     # Learning Journey Skills : Learning Journey Skills  service (CRUD) #
     ###############################
-    lj_skills:
+    lj_role_skill:
         build: 
             context: ./
-            dockerfile: ./lj_skills/Dockerfile
-        image: 212/lj_skills:1.0
+            dockerfile: ./lj_role_skill/Dockerfile
+        image: 212/lj_role_skill:1.0
         restart: always
         networks:
             - ljps-net
@@ -181,23 +187,24 @@ services:
         ports:
             - "5009:5009"
 
-    ###############################
-    # Learning Journey Roles : Learning Journey Roles service (CRUD) #
-    ###############################
-    lj_roles:
-        build: 
-            context: ./
-            dockerfile: ./lj_roles/Dockerfile
-        image: 212/lj_roles:1.0
-        restart: always
-        networks:
-            - ljps-net
-        depends_on:
-            - db
-        environment:
-            dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
-        ports:
-            - "5008:5008"
+    # Not needed no db
+    # ###############################
+    # # Learning Journey Roles : Learning Journey Roles service (CRUD) #
+    # ###############################
+    # lj_roles:
+    #     build: 
+    #         context: ./
+    #         dockerfile: ./lj_roles/Dockerfile
+    #     image: 212/lj_roles:1.0
+    #     restart: always
+    #     networks:
+    #         - ljps-net
+    #     depends_on:
+    #         - db
+    #     environment:
+    #         dbURL: mysql+mysqlconnector://root:root@db:3306/ljps
+    #     ports:
+    #         - "5008:5008"
 
     ###############################
     # groups : groups service (CRUD) #
