@@ -88,27 +88,10 @@ def get_all_lj_details(learning_journey_id):
     role_sector = role_result["role_sector"]
     role_track = role_result["role_track"]
 
-    # Get LJ skills
-    individual_lj_skill_URL = lj_skill_URL + "lj_skills/" + str(id)
-    lj_role_skill_result = invoke_http(individual_lj_skill_URL, method="GET", json=None)
-    
-    print(lj_role_skill_result)
-
-    skills = {}
-    if lj_role_skill_result["code"] in range(200, 300):
-        for row in lj_role_skill_result["data"]["lj_skills"]:
-            row_skill_id = row["skill_id"]
-            individual_skill_URL = skill_URL + "skills/" + str(row_skill_id)
-            skill_result = invoke_http(individual_skill_URL, method="GET", json=None)
-            skills[row_skill_id] = skill_result
-            # Get course_skill mapping
-            lj_skills_courses_URL = skills_courses_URL + "skills_courses/skill/" + str(row_skill_id)
-            skills_courses_result = invoke_http(lj_skills_courses_URL, method="GET", json=None)
-            skills[row_skill_id]["mapping"] = [d["course_id"] for d in skills_courses_result["data"]["skills_courses"]]  if skills_courses_result["code"] in range(200,300) else []
-
     # Get LJ course mapped to these skills
     individual_lj_courses_URL = lj_courses_URL + "lj_courses/" + str(id)
     lj_courses_result = invoke_http(individual_lj_courses_URL, method="GET", json=None)
+    list_of_courses = [row["course_id"] for row in lj_courses_result["data"]["lj_courses"]] if lj_courses_result["code"] in range(200, 300) else []
 
     courses = {}
 
@@ -130,6 +113,26 @@ def get_all_lj_details(learning_journey_id):
             courses[course_id] = {
                 "status": status
             }
+
+    # Get LJ skills
+    individual_lj_skill_URL = lj_skill_URL + "lj_skills/" + str(id)
+    lj_role_skill_result = invoke_http(individual_lj_skill_URL, method="GET", json=None)
+    
+    print(lj_role_skill_result)
+
+    skills = {}
+    if lj_role_skill_result["code"] in range(200, 300):
+        for row in lj_role_skill_result["data"]["lj_skills"]:
+            row_skill_id = row["skill_id"]
+            individual_skill_URL = skill_URL + "skills/" + str(row_skill_id)
+            skill_result = invoke_http(individual_skill_URL, method="GET", json=None)
+            skills[row_skill_id] = skill_result
+            # Get course_skill mapping
+            lj_skills_courses_URL = skills_courses_URL + "skills_courses/skill/" + str(row_skill_id)
+            skills_courses_result = invoke_http(lj_skills_courses_URL, method="GET", json=None)
+            skills[row_skill_id]["mapping"] = [d["course_id"] for d in skills_courses_result["data"]["skills_courses"] if d["course_id"] in list_of_courses]  if skills_courses_result["code"] in range(200,300) else []
+
+    
 
     # code_results = [role_result["code"], lj_role_skill_result["code"], skill_result["code"], skills_courses_result["code"], lj_courses_result["code"], staff_registration_result["code"]]
 
