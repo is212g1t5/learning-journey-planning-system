@@ -40,5 +40,19 @@ class TestDeleteLearningJourney(TestApp):
             "learning_journey_id": 1
         })
 
+    def test_delete_invalid_learning_journey(self):
+
+        response = self.client.delete("/learning_journeys/delete/1")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json["message"], "Learning_Journey not found.")
+    
+    def test_delete_invalid_learning_journey(self):
+
+        response = self.client.delete("/learning_journeys/delete/1")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json["message"], "Learning_Journey not found.")
+
 if __name__ == '__main__':
     unittest.main()
