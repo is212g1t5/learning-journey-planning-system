@@ -1,7 +1,7 @@
-const navbar = Vue.createApp({});
+const app = Vue.createApp({});
 
 //navbar vue component
-navbar.component("navbar", {
+app.component("navbar", {
   data() {
     return {
       appName: "ljps",
@@ -9,22 +9,16 @@ navbar.component("navbar", {
   },
   computed: {
     links() {
-      if (window.location.href.includes("learners")) {
-        if (window.location.href.includes("journey")) {
-          return {
-            roleLink: "./",
-            ljLink: "./journeys",
-            hrLink: "../hr",
-            learnerLink: "./",
-          };
-        } else {
-          return {
-            roleLink: "./",
-            ljLink: "./journeys",
-            hrLink: "../hr",
-            learnerLink: "./",
-          };
-        }
+      if (window.location.href.includes("hr")) {
+        return {
+          hrLink: "./",
+          learnerLink: "../learners",
+        };
+      } else {
+        return {
+          hrLink: "../hr",
+          learnerLink: "./",
+        };
       }
     },
   },
@@ -35,17 +29,9 @@ navbar.component("navbar", {
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarScroll">
-      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" :href=links.roleLink>Roles</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" :href=links.ljLink>Learning Journey</a>
-        </li>
-      </ul>
       <span>
         <ul class="d-flex navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
-          <li class="nav-item dropdown dropstart">
+          <li class="nav-item dropdown">
             <a class="nav-link" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Switch User
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -64,4 +50,4 @@ navbar.component("navbar", {
   </div>
 </nav>`,
 });
-navbar.mount("#navbar");
+app.mount("#navbar");
