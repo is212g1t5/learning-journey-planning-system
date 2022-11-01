@@ -64,8 +64,8 @@ const display_journey = Vue.createApp({
         createJourney(){
             window.location.href = 'create_journey.html';
         },
-        viewJourneyDetails(learning_journey_id, staff_id){
-            window.location.href = 'learning_journey_details.html?id=' + learning_journey_id + '&staff_id=' + staff_id; // need to fix this staff_id
+        viewJourneyDetails(learning_journey_id){
+            window.location.href = 'learning_journey_details.html?id=' + learning_journey_id;
         },
         updateJourney(learning_journey_id){
             window.location.href = 'update_journey.html?id=' + learning_journey_id;
@@ -122,7 +122,7 @@ const display_journey = Vue.createApp({
     },
     mounted(){
         axios
-        .get("http://localhost:5004/learning_journeys/140078") // need to change this to .get("http://localhost:5004/learning_journeys" + this.staff_id) 
+        .get("http://localhost:5004/learning_journeys/" + this.id) 
         .then((response) => {
             var learning_journeys = response.data.data.learning_journeys;
             this.learning_journeys= learning_journeys;
