@@ -6,7 +6,7 @@ const create_journey = Vue.createApp({
       role_id: "",
       learning_id: "",
       skill_list: [],
-      course_list: [],
+      course_list: {},
       skills_roles_list: [],
       existing_names: [],
       course_dict: {},
@@ -51,10 +51,10 @@ const create_journey = Vue.createApp({
   methods: {
     change(event) {
       if (!this.errorMsgs.role) {
-        this.skills_roles_list = [];
-        this.skill_list = [];
-        this.course_list = [];
-        this.course_dict = {};
+        this.skills_roles_list = [];//list of skill_role objects based on role of learning journey
+        this.skill_list = [];       //list of skill objects associated with role of leearning journey
+        this.course_list = {};      //list of ids of courses mapped to learning journey
+        this.course_dict = {};      //list of course objects mapped to learning journey
         this.selectCourses = [];
         this.loadData();
       }
@@ -91,24 +91,28 @@ const create_journey = Vue.createApp({
         await axios
           .get("http://127.0.0.1:5005/skills_courses/skill/" + skill.skill_id)
           .then((response) => {
-            this.course_list.push(response.data.data.skills_courses);
+            this.course_list[skill.skill_id] = response.data.data.skills_courses.map(obj => {return obj.course_id});
           })
           .catch((error) => {
             console.log(error);
           });
       }
 
-      var course_flat_list = this.course_list.flat();
-      for (course of course_flat_list) {
-        await axios
-          .get("http://127.0.0.1:5003/courses/" + course.course_id)
+      for (courses of Object.values(this.course_list)) {
+        for (course_id of courses) {
+          await axios
+          .get("http://127.0.0.1:5003/courses/" + course_id)
           .then((response) => {
-            this.course_dict[course.course_id] = response.data.data;
+            this.course_dict[course_id] = response.data.data;
+            console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
           });
+        }
       }
+
+      console.log(this.course_dict);
 
       await new Promise((resolve, reject) => setTimeout(resolve, 3000));
       return;
