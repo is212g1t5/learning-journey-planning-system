@@ -65,12 +65,12 @@ const display_journey = Vue.createApp({
             window.location.href = 'create_journey.html';
         },
         viewJourneyDetails(learning_journey_id, staff_id){
-            window.location.href = 'learning_journey_details.html?id=' + learning_journey_id + '&staff_id=' + staff_id ;
+            window.location.href = 'learning_journey_details.html?id=' + learning_journey_id + '&staff_id=' + staff_id; // need to fix this staff_id
         },
-        updateJourney(id){
+        updateJourney(learning_journey_id){
             window.location.href = 'update_journey.html?id=' + learning_journey_id;
         },
-        deleteJourney(id){
+        deleteJourney(learning_journey_id){
             window.location.href = 'delete_journey.html?id=' + learning_journey_id;
         },
         sort(s) {
@@ -114,23 +114,27 @@ const display_journey = Vue.createApp({
             this.startRow = parseInt(this.endRow) - parseInt(this.perPage); 
         },
     },
+    created() {
+        let urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("staff_id")) {
+          this.id = urlParams.get("staff_id");
+        }
+    },
     mounted(){
         axios
-        .get("http://localhost:5004/learning_journeys/140078")
+        .get("http://localhost:5004/learning_journeys/140078") // need to change this to .get("http://localhost:5004/learning_journeys" + this.staff_id) 
         .then((response) => {
-            if(error.response.data.code == 404){
-                this.emptyText= "No learning journey recorded. Please create new learning journey.";
-            } else {
-                console.log(response.data);
-                var learning_journeys = response.data.data.learning_journeys;
-                this.learning_journeys= learning_journeys;
-                console.log(learning_journeys);
+            var learning_journeys = response.data.data.learning_journeys;
+            this.learning_journeys= learning_journeys;
+            console.log(learning_journeys);
 
-                // this.totalRows = this.learning_journeys.length;
-                // this.pageSize = Math.ceil(this.totalRows/this.perPage);
-            }
+            this.totalRows = this.learning_journeys.length;
+            this.pageSize = Math.ceil(this.totalRows/this.perPage);
         })
         .catch((error) => {
+            if(error.response.data.code == 404){
+                this.emptyText= "No learning journey recorded. Please create new learning journey.";
+            }
             console.log(error);
         })
     },
