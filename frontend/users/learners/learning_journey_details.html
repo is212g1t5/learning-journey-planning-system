@@ -44,13 +44,14 @@
           </tr>
         </thead>
         <tbody>
-          <template v-if="emptyText==''" v-for="lj_course in learning_journey_details">
+          <template v-if="emptyText==''" v-for="lj in learning_journey_details">
             <tr>
-              <td>{{lj_course.course_id}}</td>
-              <td>{{lj_course.course_progress}}</td>
-              <td>{{lj_course.skill_name}}</td>
+              <td>{{lj.course_code}}</td>
+              <td v-if="lj.status == ''">Unknown</td>
+              <td v-else>{{lj.status}}</td>
+              <td>{{lj.skills}}</td>
               <td>
-                <button type="button" class="btn btn-danger btn-sm mx-1" @click="deleteCourse(lj_course.course_id)"><i
+                <button type="button" class="btn btn-danger btn-sm mx-1" @click="deleteCourse(lj.course_code)"><i
                     class="fa fa-trash"></i> Delete</button>
               </td>
           </template>
