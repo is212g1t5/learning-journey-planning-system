@@ -53,7 +53,7 @@ def get_all():
 # View Registration Details by staff_id
 @app.route("/registration/<int:staff_id>")
 def find_by_staff_id(staff_id):
-    registration_list = Registration.query.filter_by(staff_id=staff_id)
+    registration_list = Registration.query.filter_by(staff_id=staff_id).all()
     if registration_list:
         return jsonify(
             {

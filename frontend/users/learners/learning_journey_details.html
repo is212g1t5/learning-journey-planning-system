@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Journey Progress</title>
+  <!-- bootstrap 5 css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+  <!-- custom css -->
+  <link rel="stylesheet" href="../../style/style.css" />
+
+  <!--jquery-->
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+  <!-- axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!--icons-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+    integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<div id="navbar">
+  <navbar></navbar>
+</div>
+<div class="container" id="display_learning_journey_details">
+  <h2 class="mt-5">{{lj_name}}</h2>
+  <div class="container mt-3">
+
+
+    <div class="row">
+      <table class="table table-hover table-striped table-bordered table-responsive">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Course Name </th>
+            <th scope="col">Course Progress</th>
+            <th scope="col">Skills</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-if="emptyText==''" v-for="lj in learning_journey_details">
+            <tr>
+              <td>{{lj.course_code}}</td>
+              <td v-if="lj.status == ''">Unknown</td>
+              <td v-else>{{lj.status}}</td>
+              <td>{{lj.skills}}</td>
+              <td>
+                <button type="button" class="btn btn-danger btn-sm mx-1" @click="deleteCourse(lj.course_code)"><i
+                    class="fa fa-trash"></i> Delete</button>
+              </td>
+          </template>
+          <tr v-else>
+            <td class="text-center" colspan="5">
+              {{emptyText}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+    </div>
+  </div>
+</div>
+
+
+<!-- bootstrap js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<!-- vue.js -->
+<script src="https://unpkg.com/vue@next"></script>
+<!-- external js -->
+<script src="../../components/learner_navbar.js"></script>
+<script src="../../api/learning_journey_details.js"></script>
+
+</body>
+
+</html>
