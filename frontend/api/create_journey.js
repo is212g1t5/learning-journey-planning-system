@@ -4,9 +4,13 @@ const create_journey = Vue.createApp({
         name: "",
         role: "",
         role_id: "",
+        current_ljs: [],
         skill_list: [],
+        skill_dict: {},
         course_list: [],
+        course_skills: {},
         selected_role: "",
+        selected_courses: [],
         role_list: [],
         skills_roles_list: [],
         course_dict: {},
@@ -17,8 +21,9 @@ const create_journey = Vue.createApp({
           successMsg: "",
         },
         errorMsgs: {
-          name: "",
-          role: "",
+          name: "Learning Journey cannot be empty",
+          role: "Role cannot be empty",
+          selected_courses: "Please select at least one course",
         },
       };
     },
@@ -27,11 +32,20 @@ const create_journey = Vue.createApp({
         return (
           !this.name.trim() ||
           !this.role.trim() ||
+          !this.selected_courses.length ||
           Object.values(this.errorMsgs).some((error) => {
             return error !== "";
           })
         );
       },
+      selected_skills() {
+        var all_skills= []
+        for(course of this.selected_courses){
+          all_skills.push(this.course_skills[course])
+        }
+        let selected_skills = [...new Set(all_skills.flat(1))];
+        return selected_skills
+      }
     },
     watch: {
       name(newValue) {
@@ -47,6 +61,15 @@ const create_journey = Vue.createApp({
           this.errorMsgs.name = "Learning journey cannot be empty";
         }
       },
+      selected_courses(newValue){
+        console.log(newValue.length)
+        if(!newValue.length){
+          this.errorMsgs.selected_courses =
+              "Please select at least one course";
+        }else{
+          this.errorMsgs.selected_courses = "";
+        }
+      }
     },
     methods: {
       input(event) {
@@ -63,6 +86,7 @@ const create_journey = Vue.createApp({
           this.skill_list = [];
           this.course_list=[];  
           this.course_dict= {};
+          this.selected_courses= [];
           this.selectCourses= [];
           this.role = event.target.value;
           for (role of this.role_list) {
@@ -92,6 +116,7 @@ const create_journey = Vue.createApp({
             .get("http://127.0.0.1:5001/skills/" + skill_roles.skills_id)
             .then((response) => {
               this.skill_list.push(response.data)
+              this.skill_dict[skill_roles.skills_id]= response.data;
               })
             .catch((error) => {
               console.log(error);
@@ -110,7 +135,14 @@ const create_journey = Vue.createApp({
         }
  
         var course_flat_list= this.course_list.flat()
+        console.log('course_flat_list')
+        console.log(course_flat_list)
         for(course of course_flat_list){
+          if(course.course_id in this.course_skills && !(course.skill_id in this.course_skills[course.course_id])){
+            this.course_skills[course.course_id].push(course.skill_id)
+          }else{
+            this.course_skills[course.course_id]=[course.skill_id]
+          }
           await axios
           .get("http://127.0.0.1:5003/courses/" + course.course_id)
           .then((response) => {
@@ -120,10 +152,9 @@ const create_journey = Vue.createApp({
             console.log(error);
           })
         }
-        
         await new Promise((resolve, reject) => setTimeout(resolve, 3000));
         return ;
-      }
+      },
   },
     mounted() {
       axios

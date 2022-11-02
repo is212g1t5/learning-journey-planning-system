@@ -56,8 +56,27 @@ body {
   font-size: large;
   color:#545b62;
 }
+
 .select-course-checkbox {
   min-height:2em;
   min-width:2em; 
   margin-bottom: 0; 
+}
+
+.selected-skill-checkbox {
+  min-height:1em;
+  min-width:1em; 
+  margin-bottom: 0; 
+  margin-right: 3px;
+}
+
+.lj_header {
+  font-size:20px;
+  font-weight: bold;
+  margin-bottom: 0; 
+
+}
+
+.lj_content {
+  font-size:18px;
 }
