@@ -127,8 +127,9 @@ def get_all_by_lj(learning_journey_id):
 @app.route("/lj_courses/create", methods=['POST','GET'])
 def create_lj_course():
     data = request.get_json()
-    lj_course_list = LjCourses.query.all()
-    if (len(lj_course_list)):
+    lj_course = LjCourses(**data)
+    existing_lj_course = LjCourses.query.filter_by(learning_journey_id=lj_course.learning_journey_id,course_id=lj_course.course_id).first()
+    if existing_lj_course:
         return jsonify(
             {
                 "code": 400,
@@ -137,7 +138,7 @@ def create_lj_course():
                 }
             }
         )
-    lj_course = LjCourses(**data)
+    
     try:
         db.session.add(lj_course)
         db.session.commit()
