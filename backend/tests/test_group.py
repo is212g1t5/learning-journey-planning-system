@@ -1,10 +1,10 @@
-
-import unittest
-from urllib import response
-import flask_testing
 import sys
+import flask_testing
+from urllib import response
+import unittest
 sys.path.insert(0, '../services/groups/')
 from groups import app, db, Groups
+
 
 class TestApp(flask_testing.TestCase):
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
@@ -22,7 +22,7 @@ class TestApp(flask_testing.TestCase):
         db.drop_all()
 
 
-class TestViewALl(TestApp):
+class TestGroups(TestApp):
     def test_view_all_groups(self):
         g1 = Groups(group_id=1, group_name="Group 1")
         g2 = Groups(group_id=2, group_name="Group 2")
@@ -33,18 +33,17 @@ class TestViewALl(TestApp):
         db.session.commit()
 
         response = self.client.get("/groups/1")
-        self.assertEqual(response.json,
-                         {
-                             "code": 200,
-                             "data": {
-                                 "groups": [
-                                     {
-                                         "group_id": 1,
-                                         "group_name": "Group 1"
-                                     }
-                                 ]
-                             }
-                         })
+        self.assertEqual(response.json, {
+            "code": 200,
+            "data": {
+                "groups": [
+                    {
+                        "group_id": 1,
+                        "group_name": "Group 1"
+                    }
+                ]
+            }
+        })
 
 
 if __name__ == '__main__':
