@@ -10,21 +10,12 @@ navbar.component("navbar", {
   computed: {
     links() {
       if (window.location.href.includes("learners")) {
-        if (window.location.href.includes("journey")) {
-          return {
-            roleLink: "./",
-            ljLink: "./journeys",
-            hrLink: "../hr",
-            learnerLink: "./",
-          };
-        } else {
-          return {
-            roleLink: "./",
-            ljLink: "./journeys",
-            hrLink: "../hr",
-            learnerLink: "./",
-          };
-        }
+        return {
+          roleLink: "./roles",
+          ljLink: "./journeys",
+          hrLink: "../hr",
+          learnerLink: "./",
+        };
       }
     },
   },
