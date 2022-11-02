@@ -22,19 +22,3 @@ We will be using Scrum approach where weekly sprints and daily stand ups will be
 - Unittest Test
 
 
-## Files
-### Frontend
-
-**Human Resource**
-
-**Learners**
-
-
-### Backend
-
-**Python**
-
-
-### Database
-
-

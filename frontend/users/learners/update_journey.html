@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../style/style.css">
+
+    <!-- Vue CDN -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>
+        Edit Learning Journey
+    </title>
+
+</head>
+
+<body>
+    <div id="navbar">
+        <navbar></navbar>
+    </div>
+
+    <div class="container">
+        <h2 class="my-5">Edit Learning Journey</h2>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="./roles.html">
+                        All Learning Journeys
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Edit Learning Journey
+                </li>
+            </ol>
+        </nav>
+        <div class="rounded-3 bg-light p-5">
+            <div id="update_journey">
+                <div>
+                    <!-- Failure, success alerts -->
+                    <div v-if="alerts.showAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>❌ Update Unsuccessful! </strong>
+                        {{alerts.alertMsg}}
+                    </div>
+                    <div v-if="alerts.showSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>✔️ Update Successful! </strong>
+                        {{alerts.successMsg}}
+                    </div>
+
+
+                    <!-- Edit learning journey form START -->
+                    <form>
+                        <div class="row">
+                            <!-- learning journey name input -->
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="name-input" class="form-label">
+                                        Learning Journey Name
+                                    </label>
+                                    <input type="text" class="form-control" id="name-input" v-model="name"
+                                        maxlength="64">
+                                    <small class="text-danger">
+                                        {{errorMsgs.name}}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- role input -->
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="sector-input" class="form-label">
+                                        Related Role
+                                    </label>
+                                    <input type="text" id="disabledTextInput" class="form-control" :placeholder="role"
+                                        v-model="role" disabled>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- skills input -->
+                        <div v-if="skill_list.length >0 " class="mb-3">
+                            <label for="sector-input" class="form-label">
+                                Skills Required
+                            </label>
+                        </div>
+
+                        <div class="accordion" id="accordionFlushExample">
+                            <div v-for="(skill,key) in skill_list" class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        :data-bs-target="`#flush-${key}`" aria-expanded="true"
+                                        :aria-controls="`flush-${key}`">
+                                        {{skill.skill_name}}
+                                        <span class="badge ms-3"
+                                        :class="{'bg-warning': !skill_course_count(skill.skill_id), 'bg-dark': skill_course_count(skill.skill_id) > 0}">
+                                            {{skill_course_count(skill.skill_id)}} Assigned
+                                        </span>
+                                    </button>
+                                </h2>
+                                
+                                <div :id="`flush-${key}`" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingOne">
+                                    <div class="accordion-body">
+                                        <div class="mb-5">
+                                            <h5>Skill Description</h5>
+                                            <p class="skill-description">
+                                                {{skill.skill_desc}}
+                                            </p>
+                                            
+                                        </div>
+
+                                        <!-- Courses Available under SKill START -->
+                                        <h5>Available Courses</h5>
+                                        <span v-if="!course_list[skill.skill_id]" class="text-secondary">
+                                            No courses available for this skill
+                                        </span>
+
+                                        <div class="row py-3" v-for="course_id in course_list[skill.skill_id]"
+                                        :class="{'removed-ljcourse': isRemovedCourse(course_id)}">
+                                            <!--Course Title and Tags-->
+                                            <div class="col-lg-9 col-12">
+                                                <div class="d-inline-block">
+                                                    <span class="m-0 course-title"
+                                                    :class="{'text-decoration-line-through': isRemovedCourse(course_id)}">
+                                                        {{course_dict[course_id]["course_name"]}}
+                                                    </span>
+
+                                                    <div class="d-inline-block ms-2">
+                                                        <!-- Remove/Keep Course Button -->
+                                                        <button v-if="isLjCourse(course_id)"
+                                                            type="button"
+                                                            class="btn btn-sm rounded-pill p-1 px-2"
+                                                            :class="{'btn-danger': !isRemovedCourse(course_id), 'btn-success': isRemovedCourse(course_id)}"
+                                                            @click="removeCourse(course_id)">
+                                                            <span v-if="isRemovedCourse(course_id)">
+                                                                Keep
+                                                            </span>
+                                                            <span v-else>
+                                                                Remove
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <br>
+                                                
+                                                <span
+                                                    class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course_id]["course_category"]}}</span>
+                                                <span
+                                                    class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course_id]["course_type"]}}</span>
+                                            </div>
+
+                                            <!-- View Course Detail Button -->
+                                            <button type="button"
+                                                class="btn btn-secondary mx-1 my-2 col-lg-2 col-10"
+                                                data-bs-toggle="modal"
+                                                :data-bs-target="'#'+ course_id + '-info'">
+                                                Course Details
+                                            </button>
+
+                                            <!-- Select Course Checkbox -->
+                                            <input v-if="!isLjCourse(course_id)"
+                                                class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox"
+                                                type="checkbox" :value="course_id"
+                                                aria-label="Checkbox for following text input"
+                                                v-model="checked_courses">
+
+                                            <!--View Course Detail Modal-->
+                                            <div class="modal fade" :id="course_id + '-info'"
+                                                tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                aria-hidden="true">
+                                                <div
+                                                    class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div style="background-color:#dee2e6" class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">
+                                                                {{course_dict[course_id]["course_name"]}}
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <strong>{{course_id}}</strong><br>
+                                                            <strong>Course Description</strong><br>
+                                                            {{course_dict[course_id]["course_desc"]}}
+                                                            <br><br>
+                                                            <strong>Course Category</strong><br>
+                                                            {{course_dict[course_id]["course_category"]}}
+                                                            <br><br>
+                                                            <strong>Course Type</strong><br>
+                                                            {{course_dict[course_id]["course_type"]}}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Courses Available under SKill END -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                <!-- submit button; only able to submit when required inputs are valid -->
+                <button type="button" class="btn btn-primary my-3 w-100 p-3" :disabled="isFormValid"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Update
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to update this learning journey?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary my-3" @click="updateJourney()"
+                                    data-bs-dismiss="modal">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+                <!-- Create role form END -->
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+
+    <!-- Vue Script -->
+    <script src="../../api/update_journey.js"></script>
+    <script src="../../components/learner_navbar.js"></script>
+
+
+</body>
+
+</html>

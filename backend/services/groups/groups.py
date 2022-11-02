@@ -43,4 +43,5 @@ def get_all_by_group(group_id):
         }
     ), 404
 
-app.run(host='0.0.0.0', port=5010, debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5010, debug=True)

@@ -152,12 +152,19 @@ def create_role():
             }
         ), 400
 
-    role_id= role_list[-1].role_id +1
-    role = Role(role_id=role_id, role_name=data['role_name'], role_desc=data['role_desc'], role_status=data['role_status'], role_sector=data['role_sector'], role_track=data['role_track'])
+    # role_id= role_list[-1].role_id +1
+    # role_id=role_id, 
+    role = Role(**data)
 
     try:
         db.session.add(role)
         db.session.commit()
+        return jsonify(
+            {
+                "code": 201,
+                "data": f"{data['role_name']} has been created."
+            }
+            ), 201
     except:
         return jsonify(
             {
@@ -169,12 +176,7 @@ def create_role():
             }
         ), 500
 
-    return jsonify(
-        {
-            "code": 201,
-            "data": role.json()
-        }
-    ), 201
+    
 
 
 @app.route("/roles/<int:role_id>")
