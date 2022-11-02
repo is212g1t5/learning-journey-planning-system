@@ -39,7 +39,7 @@ class TestDeleteLearningJourney(TestApp):
         self.assertEqual(response.json["data"], {
             "learning_journey_id": 1
         })
-    
+
     def test_delete_invalid_learning_journey(self):
 
         response = self.client.delete("/learning_journeys/delete/1")
