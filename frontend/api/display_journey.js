@@ -6,6 +6,7 @@ const display_journey = Vue.createApp({
             searchQuery: null,
             fields: [
                 { key: 'learning_journey_name', label: 'Learning Journey Name', sortable: true, sortDirection: 'desc' },
+                { key: 'progress', label: 'Progress', sortable: true},
                 { key: 'actions', label: 'Actions' }
                 ],
                 totalRows: 1,
@@ -20,11 +21,17 @@ const display_journey = Vue.createApp({
                 sortDirection: 'asc',
                 currentSort:'learning_journey_name',
                 currentSortDir:'asc',
-                sortIcon: {'learning_journey_name': 'mx-2 fa fa-xs fa-sort'},
+                sortIcon: {
+                    'learning_journey_name': 'mx-2 fa fa-xs fa-sort',
+                    'progress': 'mx-2 fa fa-xs fa-sort',
+                },
                 pageItemIcon: {
                 'false': 'page-item',
                 'true': 'page-item active'
                 },
+            course_completion:[],
+            progress_list: [],
+            show: false,
         }
     },
     computed: {
@@ -50,7 +57,8 @@ const display_journey = Vue.createApp({
             }
         },
         paginatedQuery(){
-          return this.sortedResultQuery.slice(this.startRow, this.endRow)
+            console.log(this.sortedResultQuery.slice(this.startRow, this.endRow))
+            return this.sortedResultQuery.slice(this.startRow, this.endRow)
         },
     },
     watch: {
@@ -103,9 +111,9 @@ const display_journey = Vue.createApp({
         },
         prevPage() {
             if(this.currentPage > 1){
-              this.endRow= parseInt(this.startRow);
-              this.startRow= parseInt(this.endRow)- parseInt(this.perPage);
-              this.currentPage--;
+                this.endRow= parseInt(this.startRow);
+                this.startRow= parseInt(this.endRow)- parseInt(this.perPage);
+                this.currentPage--;
             }
         },
         currentPageFn(page){
@@ -117,10 +125,12 @@ const display_journey = Vue.createApp({
     created() {
         let urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has("staff_id")) {
-          this.id = urlParams.get("staff_id");
+            this.id = urlParams.get("staff_id");
         }
     },
     mounted(){
+        // var learning_journey_list = [];
+
         axios
         .get("http://localhost:5004/learning_journeys/" + this.id) 
         .then((response) => {
@@ -129,7 +139,42 @@ const display_journey = Vue.createApp({
             console.log(learning_journeys);
 
             this.totalRows = this.learning_journeys.length;
-            this.pageSize = Math.ceil(this.totalRows/this.perPage);
+            this.pageSize = Math.ceil(this.totalRows/this.perPage);  
+
+            for (key in learning_journeys){
+                var value = learning_journeys[key];
+                var learning_journey_id = value['learning_journey_id'];
+
+                axios
+                .get("http://localhost:5004/learning_journeys/id/" + learning_journey_id)
+                .then((response) => {
+                    var course_completion = response.data.data.learning_journey.courses;
+                    console.log(course_completion)
+                    var total_course = (Object.keys(course_completion).length);
+                    if (total_course > 0){
+                        this.show = true;
+                        var completed = 0;
+                        for(const [course, status] of Object.entries(course_completion)){
+                            if (status['status'] == "Completed"){
+                                completed += 1;
+                            }
+                            else{
+                                completed += 0;
+                            }
+                        }
+                        this.progress_list.push((completed / total_course) * 100);
+                    }
+                    else {
+                        this.progress_list.push(0);
+                    }
+                })
+                .catch((error) => {
+                    if (error) {
+                        console.log(error);
+                        this.error = true;
+                    }
+                })
+            }
         })
         .catch((error) => {
             if(error.response.data.code == 404){
