@@ -217,7 +217,7 @@
                                 <ol>
                                     <div style="margin-bottom: 10px;" :course_list v-for="selected_course in selected_courses">
                                         <li class="lj_content">{{course_dict[selected_course].course_name}}</li>
-                                        <span class="badge bg-primary my-1 mx-1" :course_skills :skill_dict v-for="skill_id in course_skills[course_dict[selected_course].course_id]">{{skill_dict[skill_id]["skill_name"]}}</span>
+                                        <span class="badge bg-primary my-1 mx-1" v-for="skill_id in course_skills[selected_course]">{{skill_dict[skill_id]["skill_name"]}}</span>
                                     </div>
                                 </ol>
 
