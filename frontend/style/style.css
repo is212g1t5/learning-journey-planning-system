@@ -57,3 +57,8 @@ body {
   min-width: 2em;
   margin-bottom: 0;
 }
+
+/* update/edit learning journey styling */
+.removed-ljcourse {
+  background-color: lightgray;
+}

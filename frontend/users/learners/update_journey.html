@@ -100,82 +100,113 @@
                                         :data-bs-target="`#flush-${key}`" aria-expanded="true"
                                         :aria-controls="`flush-${key}`">
                                         {{skill.skill_name}}
+                                        <span class="badge ms-3"
+                                        :class="{'bg-warning': !skill_course_count(skill.skill_id), 'bg-dark': skill_course_count(skill.skill_id) > 0}">
+                                            {{skill_course_count(skill.skill_id)}} Assigned
+                                        </span>
                                     </button>
                                 </h2>
+                                
                                 <div :id="`flush-${key}`" class="accordion-collapse collapse show"
                                     aria-labelledby="flush-headingOne">
                                     <div class="accordion-body">
                                         <div class="mb-5">
                                             <h5>Skill Description</h5>
-                                            <p class="skill-description">{{skill.skill_desc}}</p>
+                                            <p class="skill-description">
+                                                {{skill.skill_desc}}
+                                            </p>
+                                            
                                         </div>
 
                                         <!-- Courses Available under SKill START -->
                                         <h5>Available Courses</h5>
-                                        <!-- <span v-if="!course_list.skill_id.length">
+                                        <span v-if="!course_list[skill.skill_id]" class="text-secondary">
                                             No courses available for this skill
-                                        </span> -->
+                                        </span>
 
-                                            <div class="row mb-3" v-for="course_id in course_list[skill.skill_id]">
-                                                <!--Course Title and Tags-->
-                                                <div class="col-lg-9 col-12">
-                                                    <p class="m-0 course-title">
+                                        <div class="row py-3" v-for="course_id in course_list[skill.skill_id]"
+                                        :class="{'removed-ljcourse': isRemovedCourse(course_id)}">
+                                            <!--Course Title and Tags-->
+                                            <div class="col-lg-9 col-12">
+                                                <div class="d-inline-block">
+                                                    <span class="m-0 course-title"
+                                                    :class="{'text-decoration-line-through': isRemovedCourse(course_id)}">
                                                         {{course_dict[course_id]["course_name"]}}
-                                                    </p>
-                                                    <span
-                                                        class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course_id]["course_category"]}}</span>
-                                                    <span
-                                                        class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course_id]["course_type"]}}</span>
+                                                    </span>
+
+                                                    <div class="d-inline-block ms-2">
+                                                        <!-- Remove/Keep Course Button -->
+                                                        <button v-if="isLjCourse(course_id)"
+                                                            type="button"
+                                                            class="btn btn-sm rounded-pill p-1 px-2"
+                                                            :class="{'btn-danger': !isRemovedCourse(course_id), 'btn-success': isRemovedCourse(course_id)}"
+                                                            @click="removeCourse(course_id)">
+                                                            <span v-if="isRemovedCourse(course_id)">
+                                                                Keep
+                                                            </span>
+                                                            <span v-else>
+                                                                Remove
+                                                            </span>
+                                                        </button>
+                                                    </div>
                                                 </div>
+                                                
+                                                <br>
+                                                
+                                                <span
+                                                    class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course_id]["course_category"]}}</span>
+                                                <span
+                                                    class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course_id]["course_type"]}}</span>
+                                            </div>
 
-                                                <!-- View Course Detail Button -->
-                                                <button type="button"
-                                                    class="btn btn-secondary mx-1 my-2 col-lg-2 col-10"
-                                                    data-bs-toggle="modal"
-                                                    :data-bs-target="'#'+ course_id + '-info'">
-                                                    Course Details
-                                                </button>
+                                            <!-- View Course Detail Button -->
+                                            <button type="button"
+                                                class="btn btn-secondary mx-1 my-2 col-lg-2 col-10"
+                                                data-bs-toggle="modal"
+                                                :data-bs-target="'#'+ course_id + '-info'">
+                                                Course Details
+                                            </button>
 
-                                                <!--Select Course Checkbox-->
-                                                <input
-                                                    class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox"
-                                                    type="checkbox" :value="course_id"
-                                                    aria-label="Checkbox for following text input">
+                                            <!-- Select Course Checkbox -->
+                                            <input v-if="!isLjCourse(course_id)"
+                                                class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox"
+                                                type="checkbox" :value="course_id"
+                                                aria-label="Checkbox for following text input"
+                                                v-model="checked_courses">
 
-                                                <!--View Course Detail Modal-->
-                                                <div class="modal fade" :id="course_id + '-info'"
-                                                    tabindex="-1" aria-labelledby="exampleModalLabel"
-                                                    aria-hidden="true">
-                                                    <div
-                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                        <div class="modal-content">
-                                                            <div style="background-color:#dee2e6" class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">
-                                                                    {{course_dict[course_id]["course_name"]}}
-                                                                </h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <strong>{{course_id}}</strong><br>
-                                                                <strong>Course Description</strong><br>
-                                                                {{course_dict[course_id]["course_desc"]}}
-                                                                <br><br>
-                                                                <strong>Course Category</strong><br>
-                                                                {{course_dict[course_id]["course_category"]}}
-                                                                <br><br>
-                                                                <strong>Course Type</strong><br>
-                                                                {{course_dict[course_id]["course_type"]}}
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
-                                                            </div>
+                                            <!--View Course Detail Modal-->
+                                            <div class="modal fade" :id="course_id + '-info'"
+                                                tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                aria-hidden="true">
+                                                <div
+                                                    class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div style="background-color:#dee2e6" class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">
+                                                                {{course_dict[course_id]["course_name"]}}
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <strong>{{course_id}}</strong><br>
+                                                            <strong>Course Description</strong><br>
+                                                            {{course_dict[course_id]["course_desc"]}}
+                                                            <br><br>
+                                                            <strong>Course Category</strong><br>
+                                                            {{course_dict[course_id]["course_category"]}}
+                                                            <br><br>
+                                                            <strong>Course Type</strong><br>
+                                                            {{course_dict[course_id]["course_type"]}}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
+                                        </div>
                                         <!-- Courses Available under SKill END -->
 
                                     </div>

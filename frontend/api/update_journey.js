@@ -2,6 +2,7 @@ const create_journey = Vue.createApp({
   data() {
     return {
       name: "",
+      current_name: "",
       role: "",
       role_id: "",
       learning_id: "",
@@ -10,6 +11,9 @@ const create_journey = Vue.createApp({
       skills_roles_list: [],
       existing_names: [],
       course_dict: {},
+      lj_courses: [],
+      checked_courses: [],
+      removed_courses: [],
       alerts: {
         showAlert: false,
         alertMsg: "",
@@ -26,8 +30,8 @@ const create_journey = Vue.createApp({
     isFormValid() {
       return (
         !this.name.trim() ||
-        this.name != this.name ||
         !this.role.trim() ||
+        this.current_name.trim().toLowerCase() === this.name.trim().toLowerCase() ||
         Object.values(this.errorMsgs).some((error) => {
           return error !== "";
         })
@@ -38,7 +42,7 @@ const create_journey = Vue.createApp({
     name(newValue) {
       if (newValue && newValue.trim().length > 0) {
         this.errorMsgs.name = "";
-        if (newValue && this.existing_names.includes(newValue)) {
+        if (newValue && this.existing_names.includes(newValue.trim().toLowerCase())) {
           this.errorMsgs.name = "Learning journey name already exists.";
         } else {
           this.errorMsgs.name = "";
@@ -53,20 +57,41 @@ const create_journey = Vue.createApp({
       if (!this.errorMsgs.role) {
         this.skills_roles_list = [];//list of skill_role objects based on role of learning journey
         this.skill_list = [];       //list of skill objects associated with role of leearning journey
-        this.course_list = {};      //list of ids of courses mapped to learning journey
+        this.course_list = {};      //list of ids of skill(key): list of course ids(value) of learning journey
         this.course_dict = {};      //list of course objects mapped to learning journey
         this.selectCourses = [];
         this.loadData();
       }
+    },
+    //returns boolean whether course is already added to learning journey
+    isLjCourse(id) {
+      return this.lj_courses.includes(id);
+    },
+    //returns boolean whether course is already added to removed array
+    isRemovedCourse(id) {
+      return this.removed_courses.includes(id);
+    },
+    //remove course or undo remove depending on whether course is already in removed array
+    removeCourse(id) {
+      if (this.removed_courses.includes(id)) {
+        this.removed_courses.splice(this.removed_courses.indexOf(id), 1);
+      } else {
+        this.removed_courses.push(id);
+      }
+    },
+    //number of courses assigned in this skill
+    skill_course_count(sid) {
+      return this.course_list[sid] ? this.course_list[sid].length : 0;
     },
     async loadData() {
       await axios
         .get("http://127.0.0.1:5004/learning_journeys/" + this.staff_id)
         .then((response) => {
           for (lj_names of response.data.data.learning_journeys) {
-            this.existing_names.push(lj_names.learning_journey_name);
+            this.existing_names.push(lj_names.learning_journey_name.toLowerCase());
           }
         });
+
       await axios
         .get("http://127.0.0.1:5006/skills_roles/" + this.role_id)
         .then((response) => {
@@ -104,7 +129,6 @@ const create_journey = Vue.createApp({
           .get("http://127.0.0.1:5003/courses/" + course_id)
           .then((response) => {
             this.course_dict[course_id] = response.data.data;
-            console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
@@ -112,10 +136,25 @@ const create_journey = Vue.createApp({
         }
       }
 
-      console.log(this.course_dict);
+      //get courses mapped to learning journey
+      await axios
+        .get("http://127.0.0.1:5009/lj_courses/" + this.learning_id)
+        .then((response) => {
+          this.lj_courses = response.data.data.lj_courses.map(obj => {return obj.course_id});
+        });
 
       await new Promise((resolve, reject) => setTimeout(resolve, 3000));
       return;
+    },
+    refreshData() {
+      //reset updated data variables
+      this.skills_roles_list = [];
+      this.skill_list = [];
+      this.course_list = {};
+      this.course_dict = {};
+      this.existing_names = [];
+
+      this.loadData();
     },
     updateJourney() {
       this.alerts.showAlert = false;
@@ -130,12 +169,20 @@ const create_journey = Vue.createApp({
         .then((response) => {
           this.alerts.showSuccess = true;
           this.alerts.successMsg = "Learning journey updated successfully.";
+
+          this.current_name = this.name;
+
+          this.refreshData();
         })
         .catch((error) => {
           this.alerts.showAlert = true;
           this.alerts.alertMsg = "Error updating learning journey.";
         });
     },
+    //update courses tied to learning journey
+    // updateCourses() {
+
+    // }
   },
   mounted() {
     let urlParams = new URLSearchParams(window.location.search);
@@ -149,14 +196,26 @@ const create_journey = Vue.createApp({
       )
       .then((response) => {
         this.name = response.data.data.learning_journey_name;
+        this.current_name = response.data.data.learning_journey_name;
         this.role_id = response.data.data.role_id;
-        this.role = response.data.data.role_name;
         this.staff_id = response.data.data.staff_id;
+        //get role name from role table
+        axios
+          .get("http://127.0.0.1:5002/roles/" + this.role_id)
+          .then((response) => {
+            this.role = response.data.role_name;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
         this.loadData();
       })
       .catch((error) => {
         console.log(error);
       });
+
+    
   },
 });
 
