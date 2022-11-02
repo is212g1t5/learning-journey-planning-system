@@ -27,16 +27,28 @@ const create_journey = Vue.createApp({
     };
   },
   computed: {
-    isFormValid() {
+    isFormInvalid() {
       return (
         !this.name.trim() ||
         !this.role.trim() ||
-        this.current_name.trim().toLowerCase() === this.name.trim().toLowerCase() ||
+        this.hasNoCourses ||
+        !this.hasChanges ||
         Object.values(this.errorMsgs).some((error) => {
           return error !== "";
         })
       );
     },
+    hasNoCourses() {
+      //return true if no new courses getting added and all existing courses being removed
+      return this.checked_courses.length === 0 && this.lj_courses.length === this.removed_courses.length;
+    },
+    hasChanges() {
+      return (
+        this.current_name.trim().toLowerCase() !== this.name.trim().toLowerCase() ||
+        this.removed_courses.length > 0 ||
+        this.checked_courses.length > 0
+      );
+    }
   },
   watch: {
     name(newValue) {
@@ -156,6 +168,42 @@ const create_journey = Vue.createApp({
 
       this.loadData();
     },
+    //update courses tied to learning journey
+    async updateCourses() {
+      //add new courses
+      for (cid of this.checked_courses) {
+        await axios
+          .post("http://127.0.0.1:5009/lj_courses/create",
+          {
+            learning_journey_id: this.learning_id,
+            course_id: cid,
+          })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      //remove courses
+      for (cid of this.removed_courses) {
+        await axios
+          .delete("http://127.0.0.1:5009/lj_courses/delete/"
+          + this.learning_id + "/"
+          + cid
+          )
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      this.removed_courses = [];
+      this.checked_courses = [];
+    },
     updateJourney() {
       this.alerts.showAlert = false;
       this.alerts.showSuccess = false;
@@ -178,11 +226,12 @@ const create_journey = Vue.createApp({
           this.alerts.showAlert = true;
           this.alerts.alertMsg = "Error updating learning journey.";
         });
-    },
-    //update courses tied to learning journey
-    // updateCourses() {
-
-    // }
+      
+      //update courses if any changes to assigned courses
+      if (this.checked_courses.length > 0 || this.removed_courses.length > 0) {
+        this.updateCourses();
+      }
+    },    
   },
   mounted() {
     let urlParams = new URLSearchParams(window.location.search);
