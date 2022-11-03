@@ -47,7 +47,7 @@
           <template v-if="emptyText==''" v-for="lj in learning_journey_details">
             <tr>
               <td>{{lj.course_code}}</td>
-              <td v-if="lj.status == ''">Unknown</td>
+              <td v-if="lj.status == ''">Not Enrolled/Registration Rejected</td>
               <td v-else>{{lj.status}}</td>
               <td>{{lj.skills}}</td>
               <td>

@@ -27,6 +27,7 @@ const display_learning_journey_details = Vue.createApp({
                             var course_items = {}
                             course_items['course_code'] = course
                             course_items['status'] = courses[course]['status']
+                            console.log(courses)
                             course_items['skills'] = ''
                             for (skill of skill_list) {
                                 var skill_info = skills[skill]
@@ -35,10 +36,7 @@ const display_learning_journey_details = Vue.createApp({
                                 if (course_codes.includes(course)) {
                                     console.log(course)
                                     console.log(skill_info['skill_status'])
-                                    if (skill_info['skill_status']) {
-                                        console.log(skill_info['skill_name'])
-                                        course_items['skills'] += skill_info['skill_name'] + ', '
-                                    }
+                                    course_items['skills'] += skill_info['skill_name'] + ', '
                                 }
                             }
                             results.push(course_items)
