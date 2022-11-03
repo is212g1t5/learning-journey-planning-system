@@ -16,6 +16,9 @@ const create_journey = Vue.createApp({
         staff_id: "",
         new_lj_id: "",
         existing_lj_names: [],
+        registered_courses:[],
+        completed_courses: [],
+        ongoing_courses: [],
         course_dict: {},
         alerts: {
           showAlert: false,
@@ -125,6 +128,12 @@ const create_journey = Vue.createApp({
         window.location.href =
           "select_courses.html?role_id=" + this.role_id + "&name=" + this.name;
       },
+      isCompleted(course){
+        return Object.values(this.completed_courses).includes(course);
+      },
+      isOngoing(course){
+        return Object.values(this.ongoing_courses).includes(course);
+      },
       async loadData(){
         await axios
           .get("http://127.0.0.1:5006/skills_roles/" + this.role_id)
@@ -211,6 +220,32 @@ const create_journey = Vue.createApp({
           console.log(error);
         });
       },
+      async getAllRegisteredCourses(){
+        await axios
+        .get("http://127.0.0.1:5012/registration/" + this.staff_id)
+        .then((response) => {
+          this.registered_courses = response.data.data.registration;
+          for (const [key, value] of Object.entries(this.registered_courses)) {
+            console.log("value")
+            if(value["completion_status"] == "Completed"){
+              this.completed_courses.push(value["course_id"])
+            }
+            else if (value["completion_status"] == "Ongoing"){
+              this.ongoing_courses.push(value["course_id"])
+            }
+          }
+          console.log("registered courses")
+          console.log(this.registered_courses)
+          console.log(this.completed_courses)
+          console.log(this.ongoing_courses)
+        })
+        .catch((error) => {
+          if (error.response.data.code == 404){
+            this.registered_courses= [];
+          }
+          console.log(error);
+        });
+      },
       async createNewLJ() {
         try{
             await axios 
@@ -277,6 +312,8 @@ const create_journey = Vue.createApp({
         .catch((error) => {
           console.log(error);
         });
+
+        this.getAllRegisteredCourses();
      
     },
     created() {

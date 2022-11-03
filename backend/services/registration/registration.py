@@ -70,5 +70,25 @@ def find_by_staff_id(staff_id):
         }
     ), 404
 
+# View Registration Details by staff_id
+@app.route("/registration/<int:staff_id>")
+def find_by_staff_id(staff_id):
+    registration_list = Registration.query.filter_by(staff_id=staff_id)
+    if registration_list:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "registration": [registration.json() for registration in registration_list]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Registration not found."
+        }
+    ), 404
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5012, debug=True)

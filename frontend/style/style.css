@@ -55,6 +55,7 @@ body {
   margin-bottom: auto;
   font-size: large;
   color:#545b62;
+  display:inline;
 }
 
 .select-course-checkbox {

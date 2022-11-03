@@ -127,6 +127,9 @@
                                                 <!--Course Title and Tags-->
                                                 <div class="col-lg-9 col-12">
                                                     <p class="m-0 course-title">{{course_dict[course.course_id]["course_name"]}}</p>
+                                                    <span class="badge bg-warning mx-2"  v-if="isOngoing(course.course_id)">Ongoing</span>
+                                                    <span class="badge bg-success mx-2"  v-if="isCompleted(course.course_id)">Completed</span>
+                                                    <br>
                                                     <span class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course.course_id]["course_category"]}}</span>
                                                     <span class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course.course_id]["course_type"]}}</span>
                                                 </div>
@@ -139,7 +142,10 @@
 
                                                   <!--Select Course Checkbox-->
                                                 <input class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" v-model="selected_courses" type="checkbox" :value="course.course_id" 
-                                                aria-label="Checkbox for following text input">
+                                                aria-label="Checkbox for following text input" v-if="!isCompleted(course.course_id)">
+
+                                                <input style="background-color:grey;" checked class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" disabled="true" v-model="selected_courses" type="checkbox" :value="course.course_id" 
+                                                aria-label="Checkbox for following text input" v-if="isCompleted(course.course_id)|| isOngoing(course.course_id)">
 
                                                 <!--View Course Detail Modal-->
                                                 <div class="modal fade" :id="course.course_id+ course.skill_id" tabindex="-1"
