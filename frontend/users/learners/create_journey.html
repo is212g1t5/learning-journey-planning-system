@@ -17,6 +17,9 @@
     <!-- axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <!--icons-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <title>
         Create Learning Journey
     </title>
@@ -79,6 +82,7 @@
                                     <label for="sector-input" class="form-label">
                                         Related Role
                                     </label>
+                                    
                                     <input v-if="selected_role" class="form-control" @input="input($event)"
                                         list="datalistOptions" :placeholder="selected_role" disabled>
                                     <input v-else class="form-control" @input="input($event)" @change="change($event)"
@@ -91,15 +95,22 @@
                                             {{role.role_name}}
                                         </option>
                                     </datalist>
+                                   
                                 </div>
                             </div>
                         </div>
-
+                       
+                        <i class="float-start text-danger material-icons "  v-if="errorMsgs.no_skills!=''">error</i>
+                        <p class="text-danger  " v-if="errorMsgs.no_skills!=''">{{errorMsgs.no_skills}}</p>
+                       
                         <!-- skills input -->
                         <div v-if="skill_list.length >0 " class="mb-3">
                             <label for="sector-input" class="form-label">
                                 Skills Required
-                            </label>
+                            </label><br>
+                            <small class="text-danger">
+                                {{errorMsgs.selected_courses}}
+                            </small>
                         </div>
                         <div class="accordion" id="accordionFlushExample">
                             <div v-for="(skill,key) in skill_list" class="accordion-item">
@@ -110,14 +121,76 @@
                                         {{skill.skill_name}}
                                     </button>
                                 </h2>
-                                <div :id="`flush-${key}`" class="accordion-collapse collapse show"
-                                    aria-labelledby="flush-headingOne">
+                                <div :id="`flush-${key}`" class="accordion-collapse collapse"
+                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
                                         <div class="mb-5">
                                             <h5>Skill Description</h5>
                                             <p class="skill-description">{{skill.skill_desc}}</p>
+                                            <h5>Skill Category</h5>
+                                            <p class="skill-description">{{skill.skill_category}}</p>
                                         </div>
                                         <h5>Available Courses</h5>
+                                        <i class="float-start text-danger material-icons " v-if="!(skills_with_courses.includes(skill.skill_id))">error</i>
+                                        <p class="text-danger" v-if="!(skills_with_courses.includes(skill.skill_id))">No available courses for this skill yet.</p>
+
+                                        <div  v-for="(course,key) in course_list">
+                                            <div class="row mb-3"  v-if="skill.skill_id== course[0].skill_id" v-for="course in course_list[key]">
+                                                <!--Course Title and Tags-->
+                                                <div class="col-lg-9 col-12">
+                                                    <p class="m-0 course-title">{{course_dict[course.course_id]["course_name"]}}</p>
+                                                    <span class="badge bg-warning mx-2"  v-if="isOngoing(course.course_id)">Ongoing</span>
+                                                    <span class="badge bg-success mx-2"  v-if="isCompleted(course.course_id)">Completed</span>
+                                                    <br>
+                                                    <span class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course.course_id]["course_category"]}}</span>
+                                                    <span class="badge rounded-pill bg-primary my-0 mx-1">{{course_dict[course.course_id]["course_type"]}}</span>
+                                                </div>
+                                        
+                                                <!--View Course Detail Button-->
+                                                <button type="button" class="btn btn-secondary mx-1 my-2 col-lg-2 col-10" 
+                                                    data-bs-toggle="modal" :data-bs-target="'#'+ course.course_id + course.skill_id">
+                                                    Course Details
+                                                </button>
+
+                                                  <!--Select Course Checkbox-->
+                                                <input class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" v-model="selected_courses" type="checkbox" :value="course.course_id" 
+                                                aria-label="Checkbox for following text input" v-if="!isCompleted(course.course_id)">
+
+                                                <input style="background-color:grey;" checked class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" disabled="true" v-model="selected_courses" type="checkbox" :value="course.course_id" 
+                                                aria-label="Checkbox for following text input" v-if="isCompleted(course.course_id)|| isOngoing(course.course_id)">
+
+                                                <!--View Course Detail Modal-->
+                                                <div class="modal fade" :id="course.course_id+ course.skill_id" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div
+                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div style="background-color:#dee2e6" class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                                    {{course_dict[course.course_id]["course_name"]}}
+                                                                </h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <strong>{{course.course_id}}</strong><br>
+                                                                <strong>Course Description</strong><br>
+                                                                {{course_dict[course.course_id]["course_desc"]}}
+                                                                <br><br>
+                                                                <strong>Course Category</strong><br>
+                                                                {{course_dict[course.course_id]["course_category"]}}
+                                                                <br><br>
+                                                                <strong>Course Type</strong><br>
+                                                                {{course_dict[course.course_id]["course_type"]}}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                           
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -125,40 +198,15 @@
                 </div>
 
                 <!-- submit button; only able to submit when required inputs are valid -->
-                <button type="button" class="btn btn-success my-3 w-100 p-3" :disabled="isFormValid"
-                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Create
+                <button type="button" class="btn btn-success my-3 w-100 p-3" 
+                data-bs-toggle="modal" data-bs-target="#lj_modal"
+                    :disabled="isFormValid">
+                    Create Learning Journey
                 </button>
-
-                <!-- Modal -->
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to create this learning journey?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary my-3" @click="createJourney()"
-                                    data-bs-dismiss="modal">
-                                    Create
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 </form>
                 <!-- Create role form END -->
-
             </div>
-
+           
         </div>
     </div>
 

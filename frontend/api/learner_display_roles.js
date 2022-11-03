@@ -2,6 +2,7 @@ const learner_display_roles = Vue.createApp({
   data() {
     return {
       role_list: [],
+      staff_id: "",
       emptyText: "",
       searchQuery: null,
       fields: [
@@ -113,8 +114,14 @@ const learner_display_roles = Vue.createApp({
       this.startRow = parseInt(this.endRow) - parseInt(this.perPage);
     },
     createJourney(role_id) {
-      window.location.href = "create_journey.html?id=" + role_id;
+      window.location.href = "create_journey.html?staff_id=" + this.staff_id + "&id=" + role_id;
     },
+  },
+  created() {
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("staff_id")) {
+      this.staff_id = urlParams.get("staff_id");
+    }
   },
   async mounted() {
     await axios
