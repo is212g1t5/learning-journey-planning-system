@@ -45,7 +45,7 @@ class TestDisplayLearningJourneys(TestApp):
     def test_display_invalid_staff_learning_journeys(self):
         response = self.client.get("learning_journeys/140882")
 
-        self.assetEqual(response.json, {
+        self.assertEqual(response.json, {
             {
                 "code": 404,
                 "message": "There are no learning_journeys for this staff"
