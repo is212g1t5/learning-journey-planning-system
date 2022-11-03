@@ -50,7 +50,7 @@ def get_all_by_lj(learning_journey_id):
 def create_lj_course():
     data = request.get_json()
     lj_course_list = LjCourses.query.all()
-    if (len(lj_course_list)):
+    if data in lj_course_list:
         return jsonify(
             {
                 "code": 400,
