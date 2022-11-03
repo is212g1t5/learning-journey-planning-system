@@ -27,6 +27,75 @@ class TestApp(flask_testing.TestCase):
         db.session.remove()
         db.drop_all()
 
+class TestDisplayLearningJourneys(TestApp):
+    def test_display_valid_staff_learning_journeys(self):
+        lj1 = LearningJourney(learning_journey_id=1, learning_journey_name="My First Learning Journey", staff_id=140882, role_id=3)
+        db.session.add(lj1)
+        db.session.commit()
+
+        response = self.client.get("learning_journeys/140882")
+        
+        self.assertEqual(response.json, {
+            "code": 200,
+            "data": {
+                "learning_journeys": [learning_journey.json() for learning_journey in lj1]
+            }
+        })
+    
+    def test_display_invalid_staff_learning_journeys(self):
+        response = self.client.get("learning_journeys/140882")
+
+        self.assetEqual(response.json, {
+            {
+                "code": 404,
+                "message": "There are no learning_journeys for this staff"
+            }
+        })
+
+class TestAllLearningJourney(TestApp):
+    def test_get_all_lj_details1(self):
+        lj1 = LearningJourney(learning_journey_id=1, learning_journey_name="My First Learning Journey", staff_id=140882, role_id=3)
+        db.session.add(lj1)
+        db.session.commit()
+
+        response = self.client.get("/learning_journeys/id/1")
+        self.assertEqual(response.json, {
+            "code": 200,
+            "data": {
+                "learning_journey": response
+            }
+        })
+    
+    def test_get_all_lj_details2(self):
+        response = self.client.get("/learning_journeys/id/1")
+        self.assertEqual(response.json, {
+            "code": 404,
+            "message": "There are no learning journeys with this learning journey ID."
+        })
+
+#/learning_journeys/create
+class TestCreateLearningJourney(TestApp):
+    def test_create_lj1(self):
+        lj1 = LearningJourney(learning_journey_id=1, learning_journey_name="My First Learning Journey", staff_id=140882, role_id=3)
+        db.session.add(lj1)
+        db.session.commit()
+
+        response = self.client.get("/learning_journeys/id/1")
+        self.assertEqual(response.json, {
+            "code": 201,
+            "data": lj1.json()
+        })
+    
+    # def test_get_all_lj_details2(self):
+    #     response = self.client.get("/learning_journeys/id/1")
+    #     self.assertEqual(response.json, {
+    #             "code": 400,
+    #             "data": {
+    #                 "learning_journey_name": data['learning_journey_name']
+    #             },
+    #             "message": "A learning_journey with name '{}' already exists.".format(data['learning_journey_name'])
+    #     })
+
 class TestDeleteLearningJourney(TestApp):
     def test_delete_valid_learning_journey(self):
         lj1 = LearningJourney(learning_journey_id=1, learning_journey_name="My First Learning Journey", staff_id=140882, role_id=3)
