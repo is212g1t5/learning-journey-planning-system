@@ -58,6 +58,11 @@ const create_journey = Vue.createApp({
         }
         let selected_skills = [...new Set(all_skills.flat(1))];
         return selected_skills
+      },
+      skills_with_courses(){
+        all_skills= Object.values(this.course_skills)
+        let skills_with_courses = [...new Set(all_skills.flat(1))];
+        return skills_with_courses
       }
     },
     watch: {
@@ -190,6 +195,8 @@ const create_journey = Vue.createApp({
             console.log(error);
           })
         }
+        console.log("selected sills")
+        console.log(this.selected_skills)
         await new Promise((resolve, reject) => setTimeout(resolve, 3000));
         return ;
       },

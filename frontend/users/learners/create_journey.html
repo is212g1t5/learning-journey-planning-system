@@ -96,8 +96,8 @@
                                 </div>
                             </div>
                         </div>
-                 
-                        <i class="text-danger material-icons "  v-if="errorMsgs.no_skills!=''">error</i>
+                       
+                        <i class="float-start text-danger material-icons "  v-if="errorMsgs.no_skills!=''">error</i>
                         <p class="text-danger  " v-if="errorMsgs.no_skills!=''">{{errorMsgs.no_skills}}</p>
                        
                         <!-- skills input -->
@@ -128,11 +128,11 @@
                                             <p class="skill-description">{{skill.skill_category}}</p>
                                         </div>
                                         <h5>Available Courses</h5>
+                                        <i class="float-start text-danger material-icons " v-if="!(skills_with_courses.includes(skill.skill_id))">error</i>
+                                        <p class="text-danger" v-if="!(skills_with_courses.includes(skill.skill_id))">No available courses for this skill yet.</p>
 
                                         <div  v-for="(course,key) in course_list">
                                             <div class="row mb-3"  v-if="skill.skill_id== course[0].skill_id" v-for="course in course_list[key]">
-                                              
-                                                <p v-if="!(course.course_id in course_skills)">No Available Courses</p>
                                                 <!--Course Title and Tags-->
                                                 <div class="col-lg-9 col-12">
                                                     <p class="m-0 course-title">{{course_dict[course.course_id]["course_name"]}}</p>
