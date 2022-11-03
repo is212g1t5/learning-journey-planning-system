@@ -58,6 +58,7 @@ const create_journey = Vue.createApp({
     },
     watch: {
       name(newValue) {
+        console.log(this.existing_lj_names)
         if (newValue && newValue.trim().length > 0) {
           this.errorMsgs.name = "";
           if (newValue && newValue.trim().length > 64) {
@@ -106,6 +107,7 @@ const create_journey = Vue.createApp({
         this.role= "";
         this.role_id= "",
         this.getNewLJID();
+        this.getCurrentLJNames();
       },
       change(event) {
         if (!this.errorMsgs.role) {
@@ -179,21 +181,37 @@ const create_journey = Vue.createApp({
       },
       async getNewLJID(){
        await axios
-        .get("http://127.0.0.1:5004/learning_journeys/" + this.staff_id)
+        .get("http://127.0.0.1:5004/learning_journeys")
         .then((response) => {
           lj_list = response.data.data.learning_journeys;
           this.new_lj_id= lj_list[lj_list.length -1].learning_journey_id+1;
+        })
+        .catch((error) => {
+          if (error.response.data.code == 404){
+            this.new_lj_id= 1;
+          }
+          console.log(error);
+        });
+      },
+      async getCurrentLJNames(){
+        await axios
+        .get("http://127.0.0.1:5004/learning_journeys/" + this.staff_id)
+        .then((response) => {
+          lj_list = response.data.data.learning_journeys;
           for (const [key, value] of Object.entries(lj_list)) {
             this.existing_lj_names.push(value["learning_journey_name"])
           }
           console.log(this.existing_lj_names)
+          
         })
         .catch((error) => {
+          if (error.response.data.code == 404){
+            this.existing_lj_names= [];
+          }
           console.log(error);
         });
       },
       async createNewLJ() {
-
         try{
             await axios 
             .post(this.lj_api.create_lj, {
@@ -267,6 +285,7 @@ const create_journey = Vue.createApp({
         this.staff_id = urlParams.get("staff_id");
       }
       this.getNewLJID();
+      this.getCurrentLJNames();
     
     },
   });
