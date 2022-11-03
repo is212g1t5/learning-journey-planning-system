@@ -15,6 +15,7 @@ const create_journey = Vue.createApp({
         skills_roles_list: [],
         staff_id: "",
         new_lj_id: "",
+        existing_lj_names: [],
         course_dict: {},
         alerts: {
           showAlert: false,
@@ -61,12 +62,17 @@ const create_journey = Vue.createApp({
           this.errorMsgs.name = "";
           if (newValue && newValue.trim().length > 64) {
             this.errorMsgs.name =
-              "Learning journey name cannot be more than 64 characters";
-          } else {
+              "Learning Journey name cannot be more than 64 characters";
+          }
+          else if (Object.values(this.existing_lj_names).includes(newValue)) {
+            this.errorMsgs.name = "Learning Journey name already exists. Please use a unique name.";
+          }  
+          else {
             this.errorMsgs.name = "";
           }
-        } else {
-          this.errorMsgs.name = "Learning journey cannot be empty";
+        } 
+        else {
+          this.errorMsgs.name = "Learning Journey cannot be empty";
         }
       },
       selected_courses(newValue){
@@ -175,10 +181,12 @@ const create_journey = Vue.createApp({
        await axios
         .get("http://127.0.0.1:5004/learning_journeys/" + this.staff_id)
         .then((response) => {
-          console.log(response.data.data.learning_journeys[0])
           lj_list = response.data.data.learning_journeys;
           this.new_lj_id= lj_list[lj_list.length -1].learning_journey_id+1;
-          console.log(this.new_lj_id)
+          for (const [key, value] of Object.entries(lj_list)) {
+            this.existing_lj_names.push(value["learning_journey_name"])
+          }
+          console.log(this.existing_lj_names)
         })
         .catch((error) => {
           console.log(error);
