@@ -30,6 +30,7 @@ const create_journey = Vue.createApp({
           name: "Learning Journey cannot be empty",
           role: "Role cannot be empty",
           selected_courses: "Please select at least one course",
+          no_skills: "",
         },
         lj_api: {
           getAll: "http://127.0.0.1:5004/learning_journeys/create",
@@ -111,6 +112,7 @@ const create_journey = Vue.createApp({
         this.role_id= "",
         this.getNewLJID();
         this.getCurrentLJNames();
+        this.errorMsgs.no_skills="";
       },
       change(event) {
         if (!this.errorMsgs.role) {
@@ -141,6 +143,9 @@ const create_journey = Vue.createApp({
             this.skills_roles_list= response.data.data.skills_roles
           })
           .catch((error) => {
+            if (error.response.data.code == 404){
+              this.errorMsgs.no_skills= "No courses available for this role yet. Please pick another role.";
+            }
             console.log(error);
           })
           

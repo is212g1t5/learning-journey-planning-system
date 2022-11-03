@@ -17,6 +17,8 @@
     <!-- axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <title>
         Create Learning Journey
     </title>
@@ -79,6 +81,7 @@
                                     <label for="sector-input" class="form-label">
                                         Related Role
                                     </label>
+                                    
                                     <input class="form-control" @input="input($event)" @change="change($event)"
                                         list="datalistOptions" placeholder="View all available roles ...">
                                     <small class="text-danger">
@@ -89,10 +92,14 @@
                                             {{role.role_name}}
                                         </option>
                                     </datalist>
+                                   
                                 </div>
                             </div>
                         </div>
-
+                 
+                        <i class="text-danger material-icons "  v-if="errorMsgs.no_skills!=''">error</i>
+                        <p class="text-danger  " v-if="errorMsgs.no_skills!=''">{{errorMsgs.no_skills}}</p>
+                       
                         <!-- skills input -->
                         <div v-if="skill_list.length >0 " class="mb-3">
                             <label for="sector-input" class="form-label">
@@ -121,9 +128,11 @@
                                             <p class="skill-description">{{skill.skill_category}}</p>
                                         </div>
                                         <h5>Available Courses</h5>
-                                        <p v-if="course_list.length==0">No Available Courses</p>
+
                                         <div  v-for="(course,key) in course_list">
                                             <div class="row mb-3"  v-if="skill.skill_id== course[0].skill_id" v-for="course in course_list[key]">
+                                              
+                                                <p v-if="!(course.course_id in course_skills)">No Available Courses</p>
                                                 <!--Course Title and Tags-->
                                                 <div class="col-lg-9 col-12">
                                                     <p class="m-0 course-title">{{course_dict[course.course_id]["course_name"]}}</p>
