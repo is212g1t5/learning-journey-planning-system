@@ -13,6 +13,8 @@ const create_journey = Vue.createApp({
         selected_courses: [],
         role_list: [],
         skills_roles_list: [],
+        staff_id: "",
+        new_lj_id: "",
         course_dict: {},
         alerts: {
           showAlert: false,
@@ -25,6 +27,12 @@ const create_journey = Vue.createApp({
           role: "Role cannot be empty",
           selected_courses: "Please select at least one course",
         },
+        lj_api: {
+          getAll: "http://127.0.0.1:5004/learning_journeys/create",
+          create_lj:"http://127.0.0.1:5004/learning_journeys/create" ,
+          create_role_skill: "http://127.0.0.1:5007/lj_skills/create",
+          create_course:  "http://127.0.0.1:5009/lj_courses/create"
+        }
       };
     },
     computed: {
@@ -80,14 +88,22 @@ const create_journey = Vue.createApp({
           this.errorMsgs.role = "";
         }
       },
+      resetValues(){
+        this.skills_roles_list= [];
+        this.skill_list = [];
+        this.course_list=[];  
+        this.course_dict= {};
+        this.selected_courses= [];
+        this.selected_role= "";
+        this.course_skills= {};
+        this.selectCourses= [];
+        this.role= "";
+        this.role_id= "",
+        this.getNewLJID();
+      },
       change(event) {
         if (!this.errorMsgs.role) {
-          this.skills_roles_list= [];
-          this.skill_list = [];
-          this.course_list=[];  
-          this.course_dict= {};
-          this.selected_courses= [];
-          this.selectCourses= [];
+          this.resetValues()
           this.role = event.target.value;
           for (role of this.role_list) {
             if (role.role_name == this.role) {
@@ -155,6 +171,75 @@ const create_journey = Vue.createApp({
         await new Promise((resolve, reject) => setTimeout(resolve, 3000));
         return ;
       },
+      async getNewLJID(){
+       await axios
+        .get("http://127.0.0.1:5004/learning_journeys/" + this.staff_id)
+        .then((response) => {
+          console.log(response.data.data.learning_journeys[0])
+          lj_list = response.data.data.learning_journeys;
+          this.new_lj_id= lj_list[lj_list.length -1].learning_journey_id+1;
+          console.log(this.new_lj_id)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      },
+      async createNewLJ() {
+
+        try{
+            await axios 
+            .post(this.lj_api.create_lj, {
+              learning_journey_id: this.new_lj_id,
+              learning_journey_name: this.name,
+              staff_id: this.staff_id,
+              role_id: this.role_id,
+            })
+            .then((response) => {
+              console.log(response);
+            });
+
+          for (sid of this.selected_skills){
+            await axios 
+            .post(this.lj_api.create_role_skill, {
+              learning_journey_id: this.new_lj_id,
+              role_id: this.role_id,
+              skill_id: sid
+            })
+            .then((response) => {
+              console.log(response);
+            });
+          }
+
+          for (cid of this.selected_courses){
+            await axios 
+            .post(this.lj_api.create_course, 
+              {
+              learning_journey_id: this.new_lj_id,
+              course_id: cid
+            })
+            .then((response) => {
+              console.log(response);
+            });
+            
+          }
+          //reset values
+          this.alerts.successMsg= "Learning Journey " + this.name + " has been created successfully."
+          this.alerts.showSuccess = true;
+          this.name="";
+          this.resetValues();
+
+        }
+        catch(err){
+          console.error(err);
+          this.alerts.alertMsg = "Please try again later."
+          this.alerts.showAlert = true;
+          this.name="";
+          this.resetValues();
+        }
+     
+     
+      }
+      
   },
     mounted() {
       axios
@@ -166,6 +251,15 @@ const create_journey = Vue.createApp({
         .catch((error) => {
           console.log(error);
         });
+     
+    },
+    created() {
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("staff_id")) {
+        this.staff_id = urlParams.get("staff_id");
+      }
+      this.getNewLJID();
+    
     },
   });
   
