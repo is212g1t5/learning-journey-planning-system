@@ -8,7 +8,7 @@ const create_journey = Vue.createApp({
       learning_id: "",
       skill_list: [],
       course_list: {},
-      skills_roles_list: [],
+      mapped_skills: [],
       existing_names: [],
       course_dict: {},
       lj_courses: [],
@@ -40,6 +40,7 @@ const create_journey = Vue.createApp({
     },
     hasNoCourses() {
       //return true if no new courses getting added and all existing courses being removed
+      console.log(this.lj_courses);
       return this.checked_courses.length === 0 && this.lj_courses.length === this.removed_courses.length;
     },
     hasChanges() {
@@ -67,7 +68,7 @@ const create_journey = Vue.createApp({
   methods: {
     change(event) {
       if (!this.errorMsgs.role) {
-        this.skills_roles_list = [];//list of skill_role objects based on role of learning journey
+        this.mapped_skills = [];//list of skill_role objects based on role of learning journey
         this.skill_list = [];       //list of skill objects associated with role of leearning journey
         this.course_list = {};      //list of ids of skill(key): list of course ids(value) of learning journey
         this.course_dict = {};      //list of course objects mapped to learning journey
@@ -93,7 +94,19 @@ const create_journey = Vue.createApp({
     },
     //number of courses assigned in this skill
     skill_course_count(sid) {
-      return this.course_list[sid] ? this.course_list[sid].length : 0;
+      if (this.course_list[sid]) {
+        let counter = 0;
+
+        for (let cid of this.course_list[sid]) {
+          //count course as assigned if course mapped to lj and not in removed array
+          if (this.isLjCourse(cid) && !this.isRemovedCourse(cid)) {
+            counter++;
+          }
+        }
+        return counter;
+      }
+
+      return 0;
     },
     async loadData() {
       await axios
@@ -103,19 +116,20 @@ const create_journey = Vue.createApp({
             this.existing_names.push(lj_names.learning_journey_name.toLowerCase());
           }
         });
-
+      
+      //retrieve skill ids of skills mapped to learning journey
       await axios
-        .get("http://127.0.0.1:5006/skills_roles/" + this.role_id)
+        .get("http://127.0.0.1:5007/lj_skills/" + this.learning_id)
         .then((response) => {
-          this.skills_roles_list = response.data.data.skills_roles;
+          this.mapped_skills = response.data.data.lj_skills.map(obj => {return obj.skill_id});
         })
         .catch((error) => {
           console.log(error);
         });
 
-      for (skill_roles of this.skills_roles_list) {
+      for (sid of this.mapped_skills) {
         await axios
-          .get("http://127.0.0.1:5001/skills/" + skill_roles.skills_id)
+          .get("http://127.0.0.1:5001/skills/" + sid)
           .then((response) => {
             this.skill_list.push(response.data);
           })
@@ -148,6 +162,8 @@ const create_journey = Vue.createApp({
         }
       }
 
+      console.log(this.course_list);
+
       //get courses mapped to learning journey
       await axios
         .get("http://127.0.0.1:5009/lj_courses/" + this.learning_id)
@@ -160,7 +176,7 @@ const create_journey = Vue.createApp({
     },
     refreshData() {
       //reset updated data variables
-      this.skills_roles_list = [];
+      this.mapped_skills = [];
       this.skill_list = [];
       this.course_list = {};
       this.course_dict = {};
