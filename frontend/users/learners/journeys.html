@@ -95,7 +95,7 @@
                     <td>{{learning_journey.learning_journey_name}}</td>
                     <td>
                       <div class = "progress" v-if="show">
-                        <div class="progress-bar" role="progressbar" :style="`width: ${this.progress_list[index]}%;`" :aria-valuenow="`${this.progress_list[index]}`" aria-valuemin="0" aria-valuemax="100">{{this.progress_list[index]}}%</div>
+                        <div class="progress-bar" role="progressbar" :style="`width: ${ljDetails[learning_journey.learning_journey_id].progress}%;`" :aria-valuenow="`${ljDetails[learning_journey.learning_journey_id].progress}`" aria-valuemin="0" aria-valuemax="100">{{ljDetails[learning_journey.learning_journey_id].progress}}%</div>
                       </div>
                       <!-- <div v-else>
                         <button type="button" class="btn btn-light btn-sm mx-1" @click="journeyProgress(learning_journey.learning_journey_id)"><i

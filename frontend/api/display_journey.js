@@ -2,6 +2,7 @@ const display_journey = Vue.createApp({
     data(){
         return{
             learning_journeys: [],
+            ljDetails: {},
             emptyText: "",
             searchQuery: null,
             fields: [
@@ -136,7 +137,7 @@ const display_journey = Vue.createApp({
         .then((response) => {
             var learning_journeys = response.data.data.learning_journeys;
             this.learning_journeys= learning_journeys;
-            console.log(learning_journeys);
+            // console.log(learning_journeys);
 
             this.totalRows = this.learning_journeys.length;
             this.pageSize = Math.ceil(this.totalRows/this.perPage);  
@@ -149,8 +150,12 @@ const display_journey = Vue.createApp({
                 .get("http://localhost:5004/learning_journeys/id/" + learning_journey_id)
                 .then((response) => {
                     var course_completion = response.data.data.learning_journey.courses;
-                    console.log(course_completion)
+                    var lj = response.data.data.learning_journey
+                    var lj_id = lj["learning_journey_id"]
+                    // console.log(course_completion)
                     var total_course = (Object.keys(course_completion).length);
+                    var progess = 0
+
                     if (total_course > 0){
                         this.show = true;
                         var completed = 0;
@@ -162,11 +167,13 @@ const display_journey = Vue.createApp({
                                 completed += 0;
                             }
                         }
-                        this.progress_list.push((completed / total_course) * 100);
+                        progess = (completed / total_course) * 100;
                     }
-                    else {
-                        this.progress_list.push(0);
-                    }
+
+                    lj["progress"] = progess;
+                    console.log(lj);
+                    this.ljDetails[lj_id] = lj
+
                 })
                 .catch((error) => {
                     if (error) {
