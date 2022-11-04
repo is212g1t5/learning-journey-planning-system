@@ -132,12 +132,12 @@
                                         </div>
                                         <h5>Available Courses</h5>
                                         <i class="float-start text-danger material-icons " v-if="!(skills_with_courses.includes(skill.skill_id))">error</i>
-                                        <p class="text-danger" v-if="!(skills_with_courses.includes(skill.skill_id))">No available courses for this skill yet.</p>
+                                        <p class="text-danger" v-if="!(skills_with_courses.includes(skill.skill_id))">No available active courses for this skill yet.</p>
 
                                         <div  v-for="(course,key) in course_list">
                                             <div class="row mb-3"  v-if="skill.skill_id== course[0].skill_id" v-for="course in course_list[key]">
                                                 <!--Course Title and Tags-->
-                                                <div class="col-lg-9 col-12">
+                                                <div class="col-lg-9 col-12" v-if="course_dict[course.course_id]['course_status']==1">
                                                     <p class="m-0 course-title">{{course_dict[course.course_id]["course_name"]}}</p>
                                                     <span class="badge bg-warning mx-2"  v-if="isOngoing(course.course_id)">Ongoing</span>
                                                     <span class="badge bg-success mx-2"  v-if="isCompleted(course.course_id)">Completed</span>
@@ -148,16 +148,17 @@
                                         
                                                 <!--View Course Detail Button-->
                                                 <button type="button" class="btn btn-secondary mx-1 my-2 col-lg-2 col-10" 
-                                                    data-bs-toggle="modal" :data-bs-target="'#'+ course.course_id + course.skill_id">
+                                                    data-bs-toggle="modal" :data-bs-target="'#'+ course.course_id + course.skill_id"
+                                                    v-if="course_dict[course.course_id]['course_status']==1">
                                                     Course Details
                                                 </button>
 
                                                   <!--Select Course Checkbox-->
                                                 <input class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" v-model="selected_courses" type="checkbox" :value="course.course_id" 
-                                                aria-label="Checkbox for following text input" v-if="!isCompleted(course.course_id)">
+                                                aria-label="Checkbox for following text input" v-if="!isCompleted(course.course_id)&&course_dict[course.course_id]['course_status']==1">
 
                                                 <input style="background-color:grey;" checked class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" disabled="true" v-model="selected_courses" type="checkbox" :value="course.course_id" 
-                                                aria-label="Checkbox for following text input" v-if="isCompleted(course.course_id)|| isOngoing(course.course_id)">
+                                                aria-label="Checkbox for following text input" v-if="(isCompleted(course.course_id)|| isOngoing(course.course_id))&&course_dict[course.course_id]['course_status']==1 ">
 
                                                 <!--View Course Detail Modal-->
                                                 <div class="modal fade" :id="course.course_id+ course.skill_id" tabindex="-1"

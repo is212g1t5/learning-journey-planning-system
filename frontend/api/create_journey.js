@@ -8,7 +8,6 @@ const create_journey = Vue.createApp({
       skill_list: [],
       skill_dict: {},
       course_list: [],
-      course_skills: {},
       selected_role: "",
       selected_courses: [],
       role_list: [],
@@ -20,6 +19,7 @@ const create_journey = Vue.createApp({
       completed_courses: [],
       ongoing_courses: [],
       course_dict: {},
+      active_course_skills: {},
       alerts: {
         showAlert: false,
         alertMsg: "",
@@ -54,13 +54,13 @@ const create_journey = Vue.createApp({
     selected_skills() {
       var all_skills= []
       for(course of this.selected_courses){
-        all_skills.push(this.course_skills[course])
+        all_skills.push(this.active_course_skills[course])
       }
       let selected_skills = [...new Set(all_skills.flat(1))];
       return selected_skills
     },
     skills_with_courses(){
-      all_skills= Object.values(this.course_skills)
+      all_skills= Object.values(this.active_course_skills)
       let skills_with_courses = [...new Set(all_skills.flat(1))];
       return skills_with_courses
     }
@@ -181,15 +181,15 @@ const create_journey = Vue.createApp({
 
       var course_flat_list= this.course_list.flat()
       for(course of course_flat_list){
-        if(course.course_id in this.course_skills && !(course.skill_id in this.course_skills[course.course_id])){
-          this.course_skills[course.course_id].push(course.skill_id)
-        }else{
-          this.course_skills[course.course_id]=[course.skill_id]
-        }
         await axios
         .get("http://127.0.0.1:5003/courses/" + course.course_id)
         .then((response) => {
             this.course_dict[course.course_id]= response.data.data;
+            if (response.data.data.course_status == true && course.course_id in this.active_course_skills && !(course.skill_id in this.active_course_skills[course.course_id])) {
+              this.active_course_skills[course.course_id].push(course.skill_id)
+            }else{
+              this.active_course_skills[course.course_id]=[course.skill_id]
+            }
         })
         .catch((error) => {
           console.log(error);
