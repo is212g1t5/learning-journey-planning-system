@@ -8,7 +8,7 @@ sys.path.insert(0, '../../services/skill/')
 
 from skill import Skills
 
-class TestLearningJourney(unittest.TestCase):
+class TestSkills(unittest.TestCase):
     def test_to_json(self):
         skill1 = Skills(skill_id=2, skill_name="Creative Thinking", skill_category="Thinking Critically", skill_desc="Adopt diverse perspectives in combining ideas or information and making connections between different fields to create different ideas, .....", skill_status=1)
 
