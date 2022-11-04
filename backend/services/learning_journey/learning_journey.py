@@ -137,8 +137,6 @@ def get_all_lj_details(learning_journey_id):
             skills_courses_result = invoke_http(lj_skills_courses_URL, method="GET", json=None)
             skills[row_skill_id]["mapping"] = [d["course_id"] for d in skills_courses_result["data"]["skills_courses"] if d["course_id"] in list_of_courses]  if skills_courses_result["code"] in range(200,300) else []
 
-    
-
     # code_results = [role_result["code"], lj_role_skill_result["code"], skill_result["code"], skills_courses_result["code"], lj_courses_result["code"], staff_registration_result["code"]]
 
     response = {
