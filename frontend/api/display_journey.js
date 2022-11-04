@@ -7,7 +7,7 @@ const display_journey = Vue.createApp({
             searchQuery: null,
             fields: [
                 { key: 'learning_journey_name', label: 'Learning Journey Name', sortable: true, sortDirection: 'desc' },
-                { key: 'progress', label: 'Progress', sortable: true},
+                { key: 'progress', label: 'Progress'},
                 { key: 'actions', label: 'Actions' }
                 ],
                 totalRows: 1,
@@ -24,7 +24,6 @@ const display_journey = Vue.createApp({
                 currentSortDir:'asc',
                 sortIcon: {
                     'learning_journey_name': 'mx-2 fa fa-xs fa-sort',
-                    'progress': 'mx-2 fa fa-xs fa-sort',
                 },
                 pageItemIcon: {
                 'false': 'page-item',
