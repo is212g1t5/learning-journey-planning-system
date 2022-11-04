@@ -29,6 +29,20 @@
   <navbar></navbar>
 </div>
 <div class="container mt-5" id="display_learning_journey_details">
+    <h2 class="my-5">Edit Learning Journey</h2>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="./journeys.html">
+                        All Learning Journeys
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    View Learning Journey Details
+                </li>
+            </ol>
+        </nav>
+    <div><button type="button" class="btn btn-success btn-sm mb-2 float-end" @click="updateJourney(lj_id)"><i class="fa fa-edit"></i> Update Learning Journey</button></div>
     <div class="input-group mb-3">
     <span class="input-group-text" id="basic-addon1"><strong>Learning Journey</strong></span>
     <input type="text" class="form-control" :placeholder="lj_name" aria-label="Username" aria-describedby="basic-addon1" disabled>
@@ -37,7 +51,13 @@
     <span class="input-group-text" id="basic-addon1"><strong>Role</strong></span>
     <input type="text" class="form-control" :placeholder="role_name" aria-label="Username" aria-describedby="basic-addon1" disabled>
     </div>
+
+       
+
+    
   <div class="container mt-4">
+    
+    
     <div class="row">
       <table class="table table-hover table-striped table-bordered table-responsive">
         <thead class="thead-dark">
@@ -45,7 +65,6 @@
             <th scope="col">Skill</th>
             <th scope="col">Course Code</th>
             <th scope="col">Course Progression</th>
-            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -55,11 +74,6 @@
               <td>{{lj.course_code}}</td>
               <td v-if="lj.course_status == ''">Not Enrolled/Registration Rejected</td>
               <td v-else>{{lj.course_status}}</td>
-              
-              <td>
-                <button type="button" class="btn btn-success btn-sm mx-1" @click="updateJourney(lj.lj_id)"><i
-                    class="fa fa-edit"></i> Update</button>
-              </td>
           </template>
           <tr v-else>
             <td class="text-center" colspan="5">
