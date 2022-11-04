@@ -248,12 +248,71 @@ const create_journey = Vue.createApp({
         }
         console.log(error);
       });
-    }
+    },
+    async createNewLJ() {
+      try{
+          await axios 
+          .post(this.lj_api.create_lj, {
+            learning_journey_id: this.new_lj_id,
+            learning_journey_name: this.name,
+            staff_id: this.staff_id,
+            role_id: this.role_id,
+          })
+          .then((response) => {
+            console.log(response);
+          });
+
+        for (sid of this.selected_skills){
+          await axios 
+          .post(this.lj_api.create_role_skill, {
+            learning_journey_id: this.new_lj_id,
+            role_id: this.role_id,
+            skill_id: sid
+          })
+          .then((response) => {
+            console.log(response);
+          });
+        }
+
+        for (cid of this.selected_courses){
+          await axios 
+          .post(this.lj_api.create_course, 
+            {
+            learning_journey_id: this.new_lj_id,
+            course_id: cid
+          })
+          .then((response) => {
+            console.log(response);
+          });
+          
+        }
+        //reset values
+        this.alerts.successMsg= "Learning Journey '" + this.name + "' has been created successfully."
+        this.alerts.showSuccess = true;
+        this.name="";
+        this.resetValues();
+
+        //clear role id
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("role_id")) {
+          let curr_url=  window.location.href
+          var new_url= curr_url.slice(0, curr_url.lastIndexOf('&role_id'))
+          window.history.replaceState(window.history.state, "", new_url);
+        }
+      }
+      catch(err){
+        console.error(err);
+        this.alerts.alertMsg = "Please try again later."
+        this.alerts.showAlert = true;
+        this.name="";
+        this.resetValues();
+      }
+  },
 },
   mounted() {
     let urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("id")) {
-      this.role_id = urlParams.get("id");
+    if (urlParams.has("role_id")) {
+      this.role_id = urlParams.get("role_id");
       axios
         .get("http://127.0.0.1:5002/roles/" + this.role_id)
         .then((response) => {

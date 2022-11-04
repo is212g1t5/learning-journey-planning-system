@@ -198,12 +198,56 @@
                         </div>
                 </div>
 
-                <!-- submit button; only able to submit when required inputs are valid -->
+                <!-- Create LJ Button to view Modal: only enabled when inputs are valid-->
                 <button type="button" class="btn btn-success my-3 w-100 p-3" 
                 data-bs-toggle="modal" data-bs-target="#lj_modal"
                     :disabled="isFormValid">
                     Create Learning Journey
                 </button>
+           
+                <!--Show Create Learning Journey Modal-->
+                <div class="modal fade" id="lj_modal" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div style="background-color:#dee2e6" class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                Create Learning Journey
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="lj_header">Learning Journey Name</p>
+                            <p class="lj_content">{{name}}</p>
+                            <p class="lj_header">Selected Role</p>
+                            <p class="lj_content">{{role}}</p>
+                            <p class="lj_header">Fulfilled Skills</p>
+                            <div v-for="skill in skill_list" >
+                                <input v-if="selected_skills.includes(skill['skill_id'])" checked="true" class="selected-skill-checkbox" type="checkbox" >
+                                <input v-if="!selected_skills.includes(skill['skill_id'])" disabled="true" class="selected-skill-checkbox" type="checkbox" >
+                                <label class="lj_content" for="skill_input">
+                                    {{skill["skill_name"]}}
+                                </label>
+                            </div>
+
+                            <br>
+                            <p class="lj_header">Selected Courses</p>
+                            <ol>
+                                <div style="margin-bottom: 10px;" :course_list v-for="selected_course in selected_courses">
+                                    <li class="lj_content">{{course_dict[selected_course].course_name}}</li>
+                                    <span class="badge bg-primary my-1 mx-1" v-for="skill_id in active_course_skills[selected_course]">{{skill_dict[skill_id]["skill_name"]}}</span>
+                                </div>
+                            </ol>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="createNewLJ">Confirm Creation</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
                 </form>
                 <!-- Create role form END -->
             </div>
