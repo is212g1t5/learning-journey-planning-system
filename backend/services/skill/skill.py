@@ -101,7 +101,7 @@ def create_skill():
 
     if request.is_json:
         skill = request.get_json()
-        print("\nReceived skill in JSON:", skill)
+        # print("\nReceived skill in JSON:", skill)
         result = processCreateSkill(skill)
         return result
 
@@ -135,7 +135,7 @@ def processCreateSkill(skill):
     try:
         db.session.add(newSkill)
         status = db.session.commit()
-        print(status)
+        # print(status)
     except:
         # 500 Internal Server Error - Server unable to commit into db for unknown reason(s)
         return jsonify(
