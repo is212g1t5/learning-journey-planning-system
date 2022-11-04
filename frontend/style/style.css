@@ -14,7 +14,7 @@ body {
     margin-top: 25px;
     font-size: 14px;
   }
-}
+} 
 
 @media (min-width: 1200px) {
   .btn-skill {
@@ -27,7 +27,7 @@ body {
 }
 
 .bg-success {
-  background-color: #3cb371 !important;
+  background-color: #3CB371 !important;
 }
 
 /* update role styling */
@@ -41,9 +41,13 @@ body {
   border: none;
 }
 
+.badge {
+  font-size: 1rem !important; 
+}
+
 /* create journey styling */
-.skill-description {
-  color: #545b62;
+.skill-description{
+  color:#545b62;
 }
 
 .course-title {
@@ -51,11 +55,31 @@ body {
   margin-bottom: auto;
   font-size: large;
   color: #545b62;
+  display: inline;
 }
+
 .select-course-checkbox {
   min-height: 2em;
-  min-width: 2em;
-  margin-bottom: 0;
+  min-width: 2em; 
+  margin-bottom: 0; 
+}
+
+.selected-skill-checkbox {
+  min-height:1em;
+  min-width:1em; 
+  margin-bottom: 0; 
+  margin-right: 3px;
+}
+
+.lj_header {
+  font-size:20px;
+  font-weight: bold;
+  margin-bottom: 0; 
+
+}
+
+.lj_content {
+  font-size:18px;
 }
 
 /* update/edit learning journey styling */
