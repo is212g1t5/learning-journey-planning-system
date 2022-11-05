@@ -107,7 +107,7 @@
               <td>{{skill.skill_name}}</td>
               <td>{{skill.skill_category}}</td>
               <td v-if="skill.skill_status">Active</td>
-              <td v-else>Inactive</td>
+              <td v-else>Retired</td>
               <td>
                 <button name="show_details" type="button" class="btn btn-secondary btn-sm mx-1"
                   data-bs-toggle="collapse" :data-bs-target="`#collapse-${skill.skill_id}`">
