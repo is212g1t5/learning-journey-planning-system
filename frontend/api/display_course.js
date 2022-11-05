@@ -144,6 +144,9 @@ const display_courses = Vue.createApp({
         }
     },
     methods: {
+        joinList(list){
+            return list.join(', ')
+        },
         getAllCourses(){
             axios
                 .get("http://localhost:5003/courses")
