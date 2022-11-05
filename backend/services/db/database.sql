@@ -115,7 +115,8 @@ CREATE TABLE `learning_journeys` (
 --
 
 INSERT INTO `learning_journeys` (`learning_journey_id`, `learning_journey_name`, `staff_id`, `role_id`) VALUES
-(1, 'My LJ to become CEO', 140078, 2);
+(1, 'My LJ to become CEO', 140078, 2),
+(2, 'My Second Learning Journey', 140078, 2);
 
 -- --------------------------------------------------------
 
@@ -135,7 +136,8 @@ CREATE TABLE `lj_courses` (
 
 INSERT INTO `lj_courses` (`learning_journey_id`, `course_id`) VALUES
 (1, 'COR001'),
-(1, 'SAL001');
+(2, "FIN001"),
+(2, "FIN002");
 
 -- --------------------------------------------------------
 
@@ -155,10 +157,10 @@ CREATE TABLE `lj_role_skill` (
 --
 
 INSERT INTO `lj_role_skill` (`learning_journey_id`, `skill_id`, `role_id`) VALUES
-(1, 1, 2),
-(1, 5, 2),
-(1, 8, 2),
-(1, 9, 2);
+(1, 1, 1),
+(1, 2, 1),
+(1, 3, 1),
+(1, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -639,6 +641,7 @@ INSERT INTO `skills_courses` (`skill_id`, `course_id`) VALUES
 (2, 'COR001'),
 (2, 'COR002'),
 (4, 'FIN001'),
+(8, 'MGT002'),
 (9, 'FIN001'),
 (5, 'SAL001'),
 (9, 'SAL001'),

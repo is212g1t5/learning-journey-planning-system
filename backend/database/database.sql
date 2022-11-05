@@ -120,6 +120,15 @@ CREATE TABLE `lj_courses` (
   `course_id` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `lj_courses`
+--
+
+INSERT INTO `lj_courses`(`learning_journey_id`, `course_id`) VALUES 
+(1, "COR001"),
+(2, "FIN001"),
+(2, "FIN002");
+
 -- --------------------------------------------------------
 
 --
@@ -618,6 +627,7 @@ INSERT INTO `skills_courses` (`skill_id`, `course_id`) VALUES
 (2, 'COR001'),
 (2, 'COR002'),
 (4, 'FIN001'),
+(8, 'MGT002'),
 (9, 'FIN001'),
 (5, 'SAL001'),
 (9, 'SAL001'),
@@ -642,6 +652,7 @@ INSERT INTO `skills_roles` (`skill_id`, `role_id`) VALUES
 (1, 1),
 (2, 1),
 (3, 1),
+(8, 1),
 (1, 2),
 (5, 2),
 (8, 2),
