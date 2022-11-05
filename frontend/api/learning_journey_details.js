@@ -26,17 +26,12 @@ const display_learning_journey_details = Vue.createApp({
                         console.log(skillsInfoList)
                         final_results = []
                         for(sk of skillsInfoList){
-                            var skill_info = {
-                                'learning_journey_id': this.lj_id,
-                                'skill_name': sk.skill_name
-                            }
+                            
                             for(course of sk.mapping){
-                                skill_info['course_code'] =course
-                                skill_info['course_status']= courses[course]['status']
-                                final_results.push(skill_info)
+                                final_results.push([this.lj_id, sk.skill_name, course, courses[course]['status']])
                             }
                         }
-                        
+                        console.log(final_results)
                         this.lj_name = information['learning_journey_name']
 
                         this.role_name = information['role']['role_name']

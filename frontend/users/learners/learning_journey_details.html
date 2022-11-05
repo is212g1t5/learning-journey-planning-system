@@ -70,10 +70,10 @@
         <tbody>
           <template v-if="emptyText==''" v-for="lj in learning_journey_details">
             <tr>
-              <td>{{lj.skill_name}}</td>
-              <td>{{lj.course_code}}</td>
-              <td v-if="lj.course_status == ''">Not Enrolled/Registration Rejected</td>
-              <td v-else>{{lj.course_status}}</td>
+              <td>{{lj[1]}}</td>
+              <td>{{lj[2]}}</td>
+              <td v-if="lj[3] == ''">Not Enrolled/Registration Rejected</td>
+              <td v-else>{{lj[3]}}</td>
           </template>
           <tr v-else>
             <td class="text-center" colspan="5">
