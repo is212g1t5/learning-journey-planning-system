@@ -22,38 +22,40 @@
 </head>
 
 <body>
-    <div id="navbar">
-        <navbar></navbar>
-    </div>
-    <div class="container" id="display_journey">
-        <h2 class="mt-5">Learning Journey Management</h2>
-        <div class="container mt-3">
-          <div class="row">
-            <div class="second col-lg-9">
-              <div class="column my-4 col-lg-6">
-                <div class="form-group mb-0">
-                  <label for="filter-input">Filter</label>
-                  <div class="input-group mb-3" id="filter-input" type="search">
-                    <input type="text" class="form-control" v-model="searchQuery" placeholder="Search Learning Journey">
-                    <div class="input-group-append">
-                      <span class="input-group-text" :disabled="!searchQuery" @click="searchQuery = ''">Clear</span>
+    <div id="display_journey">
+      <div id="navbar">
+        <navbar :staff="id" />
+      </div>
+      <div class="container">
+        <p>{{this.id}}</p>
+          <h2 class="mt-5">Learning Journey Management</h2>
+          <div class="container mt-3">
+            <div class="row">
+              <div class="second col-lg-9">
+                <div class="column my-4 col-lg-6">
+                  <div class="form-group mb-0">
+                    <label for="filter-input">Filter</label>
+                    <div class="input-group mb-3" id="filter-input" type="search">
+                      <input type="text" class="form-control" v-model="searchQuery" placeholder="Search Learning Journey">
+                      <div class="input-group-append">
+                        <span class="input-group-text" :disabled="!searchQuery" @click="searchQuery = ''">Clear</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="first column col-lg-3 col-md-3 col-sm-6 col-xs-8">
+                <a class="btn btn-primary btn-md btn-skill" @click="createJourney" role="button">Create New Learning Journey</a>
+              </div>
             </div>
-            <div class="first column col-lg-3 col-md-3 col-sm-6 col-xs-8">
-              <a class="btn btn-primary btn-md btn-skill" @click="createJourney" role="button">Create New Learning Journey</a>
-            </div>
-          </div>
-      
-      
-          <div class="row">
-            <div class="column col-lg-9 col-md-6 col-sm-5">
-              Per page
-              <select class="form-control form-control-sm w-25" id="per-page-select" v-model="perPage">
-                <option v-for="page in pageOptions">{{page}}</option>
-              </select>
+        
+        
+            <div class="row">
+              <div class="column col-lg-9 col-md-6 col-sm-5">
+                Per page
+                <select class="form-control form-control-sm w-25" id="per-page-select" v-model="perPage">
+                  <option v-for="page in pageOptions">{{page}}</option>
+                </select>
             </div>
       
             <div class="column col-lg-3 col-md-6 col-sm-7">
@@ -84,7 +86,7 @@
                 <tr>
                   <th @click="sort('learning_journey_name')" data-field="learning_journey" data-sortable="true" scope="col" style="width: 55%;">Learning Journey<i
                       :class="sortIcon.learning_journey_name"></i></th>
-                  <th @click="sort('progress')" data-field="progress" data-sortable="true" scope="col" style="width: 15%;">Progress<i
+                  <th data-field="progress" data-sortable="true" scope="col" style="width: 15%;">Progress<i
                     :class="sortIcon.progress"></i></th>
                   <th data-field="actions" data-sortable="true" scope="col" style="width: 70%;">Actions</th>
                 </tr>
@@ -122,6 +124,8 @@
           </div>
         </div>
       </div>
+    </div>
+    
 
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"

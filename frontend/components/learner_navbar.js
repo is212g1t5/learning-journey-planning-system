@@ -7,12 +7,14 @@ navbar.component("navbar", {
       appName: "ljps",
     };
   },
+  props: ['staff'],
   computed: {
     links() {
       if (window.location.href.includes("learners")) {
+        // console.log("LOOK HERE" + this.staff);
         return {
-          roleLink: "./roles.html",
-          ljLink: "./journeys.html",
+          roleLink: "./roles.html?staff_id=" + this.staff,
+          ljLink: "./journeys.html?staff_id=" + this.staff,
           hrLink: "../hr",
           learnerLink: "./",
         };

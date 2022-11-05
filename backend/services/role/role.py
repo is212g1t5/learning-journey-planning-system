@@ -83,7 +83,7 @@ def create_role():
     data = request.get_json()
     role_list = Role.query.all()
     role_names = []
-    data['role_id'] = ''
+    data['role_id'] = None
     for role in role_list:
         role_names.append(role.role_name.lower())
 

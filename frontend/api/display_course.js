@@ -197,7 +197,7 @@ const display_courses = Vue.createApp({
                 })
         },
         mapSkill(id) {
-            window.location.href = 'map_skill.html?id=' + id;
+            window.location.href = 'map_course.html?course_id=' + id;
         },
         sort(s) {
             //if s == current sort, reverse
