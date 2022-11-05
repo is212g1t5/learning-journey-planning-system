@@ -25,7 +25,7 @@
         <h2 class="my-5">Edit Role</h2>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="./index.html">All Roles</a></li>
+                <li class="breadcrumb-item"><a href="./roles.html">All Roles</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Edit Role
                 </li>
             </ol>
@@ -120,7 +120,7 @@
                         <!-- assigned skills pills -->
                         <div class="mb-3">
                             <template v-for="skill in skillsList">
-                                <span class="badge rounded-pill bg-dark p-2 me-3" v-if="assignedSkills.includes(skill.skill_id) && !removedSkills.includes(skill.skill_id) && skill.skill_status == 1" :style="statusStyle">
+                                <span class="badge rounded-pill bg-dark p-2 me-3" v-if="assignedSkills.includes(skill.skill_id) && !removedSkills.includes(skill.skill_id)" :style="statusStyle">
                                     {{ skill.skill_name }}
                                     <button type="button" class="ps-1 text-secondary close-btn" @click="removedSkills.push(skill.skill_id)" :disabled="!roleForm.status">
                                         &times;
