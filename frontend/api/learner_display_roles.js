@@ -114,7 +114,7 @@ const learner_display_roles = Vue.createApp({
       this.startRow = parseInt(this.endRow) - parseInt(this.perPage);
     },
     createJourney(role_id) {
-      window.location.href = "create_journey.html?staff_id=" + this.staff_id + "&id=" + role_id;
+      window.location.href = "create_journey.html?staff_id=" + this.staff_id + "&role_id=" + role_id;
     },
   },
   created() {
