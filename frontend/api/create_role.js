@@ -120,12 +120,10 @@ const createRole = Vue.createApp({
                   role_status: this.roleForm.status
                },
             });
-
-            data = res.data.data;
-            console.log("New skill " + data.role_name + " created successfully");
+            console.log("New skill " + this.roleForm.name + " created successfully");
             this.confirmationMsg = "";
 
-            this.alerts.successMsg = "New role '" + data.role_name + "' created successfully";
+             this.alerts.successMsg = "New role '" + this.roleForm.name + "' created successfully";
             this.alerts.showSuccess = true;
             this.getAllRoleNames();
 

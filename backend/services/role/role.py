@@ -160,12 +160,6 @@ def create_role():
     try:
         db.session.add(role)
         db.session.commit()
-        return jsonify(
-            {
-                "code": 201,
-                "data": f"{data['role_name']} has been created."
-            }
-            ), 201
     except:
         return jsonify(
             {
@@ -176,7 +170,12 @@ def create_role():
                 "message": "An error occurred creating the role."
             }
         ), 500
-
+    return jsonify(
+            {
+                "code": 201,
+                "data": f"{data['role_name']} has been created."
+            }
+            ), 201
     
 
 
