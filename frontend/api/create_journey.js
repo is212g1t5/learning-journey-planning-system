@@ -9,6 +9,7 @@ const create_journey = Vue.createApp({
       active_skill_list:[],
       skill_dict: {},
       course_list: [],
+      active_course_list:[],
       selected_role: "",
       selected_courses: [],
       role_list: [],
@@ -120,6 +121,8 @@ const create_journey = Vue.createApp({
       this.getCurrentLJNames();
       this.errorMsgs.no_skills="";
       this.active_skill_list=[];
+      this.active_course_list=[];
+      this.active_course_skills={};
     },
     change(event) {
       if (!this.errorMsgs.role) {
@@ -189,9 +192,10 @@ const create_journey = Vue.createApp({
         .then((response) => {
             this.course_dict[course.course_id]= response.data.data;
             if (response.data.data.course_status == true && course.course_id in this.active_course_skills && !(course.skill_id in this.active_course_skills[course.course_id])) {
-              this.active_course_skills[course.course_id].push(course.skill_id)
+              this.active_course_skills[course.course_id].push(course.skill_id);
             }else{
-              this.active_course_skills[course.course_id]=[course.skill_id]
+              this.active_course_skills[course.course_id]=[course.skill_id];
+              this.active_course_list.push(course.course_id);
             }
         })
         .catch((error) => {
@@ -277,7 +281,7 @@ const create_journey = Vue.createApp({
           });
         }
 
-        for (cid of this.selected_courses){
+        for (cid of this.active_course_list){
           await axios 
           .post(this.lj_api.create_course, 
             {
