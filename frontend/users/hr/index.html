@@ -32,6 +32,9 @@
                 <div>
                     <form>
                         <div class="row">
+                            <div v-if="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>{{errorMessage}}</strong>
+                            </div>
                             <div class="col-sm">
                                 <div class="mb-3">
                                     <label for="username-input" class="form-label">
@@ -56,12 +59,30 @@
             data() {
                 return {
                     id: "",
+                    errorAlert: false,
+                    errorMessage: ""
                 };
             },
             methods: {
                 enter() {
-                    console.log(this.id)
-                    window.location.href = "roles.html"
+                    // console.log(this.id);
+                    axios
+                    .get("http://localhost:5011/staffs/id/" + this.id)
+                    .then((response) => {
+                        staff = response.data.data;
+                        if (staff.group == 2) {
+                            window.location.href = "roles.html";
+                        } else {
+                            this.errorAlert = true;
+                            this.errorMessage= "❌ Not a Human Resource Staff ❌";
+                        }
+                    })
+                    .catch((error) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                    })
+                    
                 }
             },
         });
