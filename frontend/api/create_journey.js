@@ -311,6 +311,7 @@ const create_journey = Vue.createApp({
 },
   mounted() {
     let urlParams = new URLSearchParams(window.location.search);
+    
     if (urlParams.has("role_id")) {
       this.role_id = urlParams.get("role_id");
       axios

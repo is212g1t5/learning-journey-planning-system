@@ -127,6 +127,9 @@ const display_journey = Vue.createApp({
         if (urlParams.has("staff_id")) {
             this.id = urlParams.get("staff_id");
         }
+        if (urlParams.has("staff_id")) {
+            this.staff_id = urlParams.get("staff_id");
+        }
     },
     mounted(){
         // var learning_journey_list = [];
