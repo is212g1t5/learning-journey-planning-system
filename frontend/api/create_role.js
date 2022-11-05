@@ -125,6 +125,7 @@ const createRole = Vue.createApp({
 
              this.alerts.successMsg = "New role '" + this.roleForm.name + "' created successfully";
             this.alerts.showSuccess = true;
+            this.alerts.showAlert = false;
             this.getAllRoleNames();
 
          //to be continued...
@@ -132,6 +133,7 @@ const createRole = Vue.createApp({
          } catch (err) {
             // Handle Error Here
             console.error(err);
+            this.alerts.showSuccess = false;
             this.alerts.showAlert = true;
             this.alerts.alertMsg = err;
          }
