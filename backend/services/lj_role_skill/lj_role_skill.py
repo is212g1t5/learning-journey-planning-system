@@ -52,7 +52,7 @@ def get_all_by_lj(learning_journey_id):
 def create_lj_skill():
     data = request.get_json()
     lj_skill_list = LjSkills.query.all()
-    if (len(lj_skill_list)):
+    if data in lj_skill_list:
         return jsonify(
             {
                 "code": 400,
@@ -60,10 +60,8 @@ def create_lj_skill():
                     "lj_skills": "lj_skill already exists."
                 }
             }
-        ), 400
-
+        )
     lj_skill = LjSkills(**data)
-
     try:
         db.session.add(lj_skill)
         db.session.commit()
@@ -83,6 +81,7 @@ def create_lj_skill():
             "data": lj_skill.json()
         }
     ), 201
+
 
 #-- Delete lj_skill --
 @app.route("/lj_skills/delete/<int:learning_journey_id>/<int:skill_id>/<int:role_id>", methods=['DELETE'])
