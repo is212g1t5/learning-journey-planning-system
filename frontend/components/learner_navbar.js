@@ -11,8 +11,8 @@ navbar.component("navbar", {
     links() {
       if (window.location.href.includes("learners")) {
         return {
-          roleLink: "./roles",
-          ljLink: "./journeys",
+          roleLink: "./roles.html",
+          ljLink: "./journeys.html",
           hrLink: "../hr",
           learnerLink: "./",
         };
