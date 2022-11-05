@@ -125,7 +125,7 @@
                           
                           <td v-if="course.course_status == 1">Active</td>
                             <td v-else>Retired</td>
-                          <td>{{course.skill_values}}</td>
+                          <td>{{joinList(course.skill_names)}}</td>
                           <td>
                             <button type="button" class="btn btn-success btn-sm mx-1" @click="mapSkill(course.course_id)"><i class="fa fa-pencil"></i> Map Skill</button>
                               <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="collapse" :data-bs-target="`#collapse-${course.course_id}`">
@@ -139,11 +139,40 @@
                                 <div class="container pr-5">
                                   <strong>Course Details</strong>
                                   <table id="single-course-detail" class="table table-hover table-bordered" >
-                                    <tr v-for="(value,key) in course" v-if="key!= '_showDetails'" >
+                                    <tr>
+                                        <td width="10%" class="table-secondary">Course ID</td>
+                                        <td>{{course.course_id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%" class="table-secondary">Course Name</td>
+                                        <td>{{course.course_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%" class="table-secondary">Course Category</td>
+                                        <td>{{course.course_category}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%" class="table-secondary">Course Description</td>
+                                        <td>{{course.course_desc}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%" class="table-secondary">Course Status</td>
+                                        <td v-if="course.course_status == 1">Active</td>
+                                        <td v-else>Retired</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%" class="table-secondary">Course Type</td>
+                                        <td>{{course.course_type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%" class="table-secondary">Skill Name</td>
+                                        <td>{{joinList(course.skill_names)}}</td>
+                                    </tr>
+                                    <!-- <tr v-for="(value,key) in course" v-if="key!= '_showDetails'" >
                                         <td width="10%" class="table-secondary">{{key[0].toUpperCase()}}{{key.split('_')[0].substring(1)}}
                                             {{key.split('_')[1][0].toUpperCase()}}{{key.split('_')[1].substring(1)}}</td>
                                         <td>{{value}}</td>
-                                    </tr>
+                                    </tr> -->
                                   </table>
                                 </div>
                             </td>
