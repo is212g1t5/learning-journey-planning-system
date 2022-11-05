@@ -39,6 +39,9 @@ const delete_journey = Vue.createApp({
         if (urlParams.has("id")) {
             this.id = urlParams.get("id");
         }
+        if (urlParams.has("staff_id")) {
+            this.staff_id = urlParams.get("staff_id");
+        }
     },
     mounted() {
         axios

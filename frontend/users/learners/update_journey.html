@@ -28,12 +28,12 @@
         <navbar></navbar>
     </div>
 
-    <div class="container">
+    <div class="container" id="update_journey">
         <h2 class="my-5">Edit Learning Journey</h2>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="./journeys.html">
+                    <a :href="'./journeys.html?staff_id=' + staff_id">
                         All Learning Journeys
                     </a>
                 </li>
@@ -43,7 +43,7 @@
             </ol>
         </nav>
         <div class="rounded-3 bg-light p-5">
-            <div id="update_journey">
+            <div>
                 <div>
                     <!-- Failure, success alerts -->
                     <div v-if="alerts.showAlert" class="alert alert-danger alert-dismissible fade show" role="alert">

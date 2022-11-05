@@ -26,16 +26,16 @@
         <navbar></navbar>
     </div>
 
-    <div class="container">
+    <div class="container" id="delete_journey">
         <h2 class="my-5">Delete Learning Journey</h2>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="./journeys.html">View All Learning Journeys</a></li>
+                <li class="breadcrumb-item"><a :href="'./journeys.html?staff_id=' + staff_id">View All Learning Journeys</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Delete Learning Journey
                 </li>
             </ol>
         </nav>
-        <div class="rounded-3 bg-light p-5" id="delete_journey">
+        <div class="rounded-3 bg-light p-5">
             <div>
                 <div v-if="msges.errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>{{msges.errorMsg}}</strong>

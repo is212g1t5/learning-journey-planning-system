@@ -29,11 +29,11 @@
   <navbar></navbar>
 </div>
 <div class="container mt-5" id="display_learning_journey_details">
-    <h2 class="my-5">Edit Learning Journey</h2>
+    <h2 class="my-5">View Learning Journey</h2>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="./journeys.html">
+                    <a :href="'./journeys.html?staff_id=' + staff_id">
                         All Learning Journeys
                     </a>
                 </li>

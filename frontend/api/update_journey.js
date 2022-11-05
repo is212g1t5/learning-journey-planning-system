@@ -254,6 +254,9 @@ const create_journey = Vue.createApp({
     if (urlParams.has("id")) {
       this.learning_id = urlParams.get("id");
     }
+    if (urlParams.has("staff_id")) {
+      this.staff_id = urlParams.get("staff_id");
+    }
     axios
       .get(
         "http://127.0.0.1:5004/learning_journeys/single_journey/" +

@@ -70,16 +70,16 @@ const display_journey = Vue.createApp({
     },
     methods: {
         createJourney(){
-            window.location.href = 'create_journey.html';
+            window.location.href = 'create_journey.html' + "?staff_id=" + this.id;
         },
         viewJourneyDetails(learning_journey_id){
-            window.location.href = 'learning_journey_details.html?id=' + learning_journey_id;
+            window.location.href = 'learning_journey_details.html?id=' + learning_journey_id + "&staff_id=" + this.id;
         },
         updateJourney(learning_journey_id){
-            window.location.href = 'update_journey.html?id=' + learning_journey_id;
+            window.location.href = 'update_journey.html?id=' + learning_journey_id + "&staff_id=" + this.id;
         },
         deleteJourney(learning_journey_id){
-            window.location.href = 'delete_journey.html?id=' + learning_journey_id;
+            window.location.href = 'delete_journey.html?id=' + learning_journey_id + "&staff_id=" + this.id;
         },
         sort(s) {
             //if s == current sort, reverse
@@ -166,7 +166,7 @@ const display_journey = Vue.createApp({
                                 completed += 0;
                             }
                         }
-                        progess = (completed / total_course) * 100;
+                        progess = ((completed / total_course) * 100).toFixed(2);
                     }
 
                     lj["progress"] = progess;

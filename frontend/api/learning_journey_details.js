@@ -72,13 +72,16 @@ const display_learning_journey_details = Vue.createApp({
         },
         updateJourney() {
 
-            window.location.href = 'update_journey.html?id=' + this.lj_id;
+            window.location.href = 'update_journey.html?id=' + this.lj_id + '&staff_id=' + this.staff_id;
         }
     },
     async mounted() {
         let urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has("id")) {
             this.lj_id = urlParams.get("id");
+        }
+        if (urlParams.has("staff_id")) {
+            this.staff_id = urlParams.get("staff_id");
         }
         await this.getLearningJourneyDetails(this.lj_id);
     },

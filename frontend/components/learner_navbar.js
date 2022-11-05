@@ -7,19 +7,23 @@ navbar.component("navbar", {
       appName: "ljps",
     };
   },
-  props: ['staff'],
   computed: {
     links() {
       if (window.location.href.includes("learners")) {
-        // console.log("LOOK HERE" + this.staff);
         return {
-          roleLink: "./roles.html?staff_id=" + this.staff,
-          ljLink: "./journeys.html?staff_id=" + this.staff,
+          roleLink: "./roles.html?staff_id=" + this.id,
+          ljLink: "./journeys.html?staff_id=" + this.id,
           hrLink: "../hr",
           learnerLink: "./",
         };
       }
     },
+  },
+  created() {
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("staff_id")) {
+        this.id = urlParams.get("staff_id");
+    }
   },
   template: `<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
