@@ -128,7 +128,18 @@ def get_all_by_lj(learning_journey_id):
 def create_lj_course():
     data = request.get_json()
     lj_course_list = LjCourses.query.all()
-    if data in lj_course_list:
+     
+    lj_courses = []
+    for lj_course in lj_course_list:
+        existing_course= {}
+        existing_course["learning_journey_id"]= lj_course.learning_journey_id
+        existing_course["course_id"]= lj_course.course_id
+        lj_courses.append(existing_course)
+   
+    new_course= {}
+    new_course["learning_journey_id"]= data["learning_journey_id"]
+    new_course["course_id"]= data["course_id"]
+    if new_course in lj_courses:
         return jsonify(
             {
                 "code": 400,
@@ -137,6 +148,7 @@ def create_lj_course():
                 }
             }
         )
+
     lj_course = LjCourses(**data)
     try:
         db.session.add(lj_course)
