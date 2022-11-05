@@ -115,7 +115,8 @@ CREATE TABLE `learning_journeys` (
 --
 
 INSERT INTO `learning_journeys` (`learning_journey_id`, `learning_journey_name`, `staff_id`, `role_id`) VALUES
-(1, 'My LJ to become CEO', 140078, 2);
+(1, 'My LJ to become CEO', 140078, 2),
+(2, 'My Second Learning Journey', 140078, 2);
 
 -- --------------------------------------------------------
 
