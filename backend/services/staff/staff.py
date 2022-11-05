@@ -64,16 +64,33 @@ def get_all():
 def find_by_group(group):
     staff_list = Staff.query.filter_by(group=group).all()
     if len(staff_list):
+        return jsonify({
+            "code": 200,
+            "data": [staff.json() for staff in staff_list]
+        }), 200
+        
+    return jsonify(
+        {
+            "code": 404,
+            "message": "No staffs found."
+        }
+    ), 404
+
+# View Staff Details by staff_id
+@app.route("/staffs/id/<int:staff_id>")
+def find_by_staff_id(staff_id):
+    staff = Staff.query.filter_by(staff_id=staff_id).first()
+    if staff:
         return jsonify(
             {
                 "code": 200,
-                "data": [staff.json() for staff in staff_list]
+                "data": staff.json()
             }
         )
     return jsonify(
         {
             "code": 404,
-            "message": "No staffs found."
+            "message": "No staffs found with this staff id."
         }
     ), 404
 
