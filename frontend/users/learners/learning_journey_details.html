@@ -28,32 +28,52 @@
 <div id="navbar">
   <navbar></navbar>
 </div>
-<div class="container" id="display_learning_journey_details">
-  <h2 class="mt-5">{{lj_name}}</h2>
-  <div class="container mt-3">
+<div class="container mt-5" id="display_learning_journey_details">
+    <h2 class="my-5">Edit Learning Journey</h2>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="./journeys.html">
+                        All Learning Journeys
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    View Learning Journey Details
+                </li>
+            </ol>
+        </nav>
+    <div><button type="button" class="btn btn-success btn-sm mb-2 float-end" @click="updateJourney(lj_id)"><i class="fa fa-edit"></i> Update Learning Journey</button></div>
+    <div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1"><strong>Learning Journey</strong></span>
+    <input type="text" class="form-control" :placeholder="lj_name" aria-label="Username" aria-describedby="basic-addon1" disabled>
+    </div>
+    <div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1"><strong>Role</strong></span>
+    <input type="text" class="form-control" :placeholder="role_name" aria-label="Username" aria-describedby="basic-addon1" disabled>
+    </div>
 
+       
 
+    
+  <div class="container mt-4">
+    
+    
     <div class="row">
       <table class="table table-hover table-striped table-bordered table-responsive">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Course Name </th>
-            <th scope="col">Course Progress</th>
-            <th scope="col">Skills</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Skill</th>
+            <th scope="col">Course Code</th>
+            <th scope="col">Course Progression</th>
           </tr>
         </thead>
         <tbody>
           <template v-if="emptyText==''" v-for="lj in learning_journey_details">
             <tr>
+              <td>{{lj.skill_name}}</td>
               <td>{{lj.course_code}}</td>
-              <td v-if="lj.status == ''">Unknown</td>
-              <td v-else>{{lj.status}}</td>
-              <td>{{lj.skills}}</td>
-              <td>
-                <button type="button" class="btn btn-danger btn-sm mx-1" @click="deleteCourse(lj.course_code)"><i
-                    class="fa fa-trash"></i> Delete</button>
-              </td>
+              <td v-if="lj.course_status == ''">Not Enrolled/Registration Rejected</td>
+              <td v-else>{{lj.course_status}}</td>
           </template>
           <tr v-else>
             <td class="text-center" colspan="5">
