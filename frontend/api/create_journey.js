@@ -6,6 +6,7 @@ const create_journey = Vue.createApp({
       role_id: "",
       current_ljs: [],
       skill_list: [],
+      active_skill_list:[],
       skill_dict: {},
       course_list: [],
       selected_role: "",
@@ -118,6 +119,7 @@ const create_journey = Vue.createApp({
       this.getNewLJID();
       this.getCurrentLJNames();
       this.errorMsgs.no_skills="";
+      this.active_skill_list=[];
     },
     change(event) {
       if (!this.errorMsgs.role) {
@@ -160,6 +162,7 @@ const create_journey = Vue.createApp({
           .then((response) => {
             if (response.data.skill_status == true) {
               this.skill_list.push(response.data);
+              this.active_skill_list.push(response.data.skill_id);
               this.skill_dict[skill_roles.skills_id]= response.data;
             }
             })
@@ -262,7 +265,7 @@ const create_journey = Vue.createApp({
             console.log(response);
           });
 
-        for (sid of this.selected_skills){
+        for (sid of this.active_skill_list){
           await axios 
           .post(this.lj_api.create_role_skill, {
             learning_journey_id: this.new_lj_id,
