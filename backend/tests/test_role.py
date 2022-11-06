@@ -329,7 +329,7 @@ class TestRole(TestApp):
          "data": {
             "role_id": 1, 
             "role_name": "Software Engineer",
-            "role_desc": "Develop and maintain internal and client software",
+            "role_desc": "Build and optimize software infrastructure",
             "role_status": False,
             "role_sector": "Software Development",
             "role_track": "Product Design"
@@ -371,7 +371,7 @@ class TestRole(TestApp):
          "data": {
             "role_id": 1, 
             "role_name": "Software Engineer",
-            "role_desc": "Develop and maintain internal and client software",
+            "role_desc": "Build and optimize software infrastructure",
             "role_status": True,
             "role_sector": "Software Development",
             "role_track": "Product Design"
