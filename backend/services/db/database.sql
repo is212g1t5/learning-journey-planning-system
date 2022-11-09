@@ -136,6 +136,7 @@ CREATE TABLE `lj_courses` (
 
 INSERT INTO `lj_courses` (`learning_journey_id`, `course_id`) VALUES
 (1, 'COR001'),
+(1, "MGT002"),
 (2, "FIN001"),
 (2, "FIN002");
 

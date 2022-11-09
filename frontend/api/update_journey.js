@@ -40,7 +40,7 @@ const create_journey = Vue.createApp({
     },
     hasNoCourses() {
       //return true if no new courses getting added and all existing courses being removed
-      console.log(this.lj_courses);
+      // console.log(this.lj_courses);
       return this.checked_courses.length === 0 && this.lj_courses.length === this.removed_courses.length;
     },
     hasChanges() {
