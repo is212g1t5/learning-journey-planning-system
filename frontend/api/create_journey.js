@@ -88,7 +88,6 @@ const create_journey = Vue.createApp({
       }
     },
     selected_courses(newValue){
-      console.log(newValue.length)
       if(!newValue.length){
         this.errorMsgs.selected_courses =
             "Please select at least one course";
@@ -244,7 +243,7 @@ const create_journey = Vue.createApp({
           if(value["completion_status"] == "Completed"){
             this.completed_courses.push(value["course_id"])
           }
-          else if (value["completion_status"] == "Ongoing"){
+          else if (value["completion_status"] == "OnGoing"){
             this.ongoing_courses.push(value["course_id"])
           }
         }
