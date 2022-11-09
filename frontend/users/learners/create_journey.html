@@ -155,7 +155,7 @@
 
                                                   <!--Select Course Checkbox-->
                                                 <input class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" v-model="selected_courses" type="checkbox" :value="course.course_id" 
-                                                aria-label="Checkbox for following text input" v-if="!isCompleted(course.course_id)&&course_dict[course.course_id]['course_status']==1">
+                                                aria-label="Checkbox for following text input" v-if="!isCompleted(course.course_id) && !isOngoing(course.course_id) &&course_dict[course.course_id]['course_status']==1 ">
 
                                                 <input style="background-color:grey;" checked class="form-check-input col-lg-1 col-1 my-2 select-course-checkbox" disabled="true" v-model="selected_courses" type="checkbox" :value="course.course_id" 
                                                 aria-label="Checkbox for following text input" v-if="(isCompleted(course.course_id)|| isOngoing(course.course_id))&&course_dict[course.course_id]['course_status']==1 ">
