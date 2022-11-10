@@ -8,6 +8,16 @@ This is a project aimed to allow its users to plan their career progression. The
 ## Development Approach
 We will be using Scrum approach where weekly sprints and daily stand ups will be conducted.
 
+## Application Start Up
+### Pre-Requisite Installations before running the application
+- WAMP/MAMP 
+- Docker
+- Selenium (For system test only)
+- Ensure that ports 5001-5012 (for LJPS Services) & 8080 (for PhpMyAdmin) & 9906 (for MySQL) to be open
+
+### Steps
+1. `cd/backend/services`
+
 ## Tech Stack
 
 - Vue.js
